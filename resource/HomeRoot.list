@@ -1,0 +1,28 @@
+## 1st field must be "FOLDERS"|"FILES_IN"
+## 2nd field must be the source path of folders or files in the path
+## 3rd field is  ANY|DAILY|MONTHLY|ARCHIVED for the frequency
+## 4th field is TRUE | FALSE for recursion
+## ex. FILES_IN;/home/barry/bin;ANY;FALSE
+FILES_IN;/home/barry/bin;bin;ANY;FALSE
+FILES_IN;/home/barry/crontabs;contabsMONTHLY;FALSE
+FILES_IN;/home/barry/Desktop;ANY;FALSE
+FOLDERS;/home/barry/logs;MONTHLY;TRUE
+FILES_IN;/home/barry/logs;MONTHLY;FALSE
+FILES_IN;/home/barry/Public;ANY;FALSE
+FILES_IN;/home/barry/Templates;MONTHLY;FALSE
+FILES_IN;/home/barry/.config/caladanbackup;DAILY;TRUE
+FILES_IN;/home/barry/.config/calibre;DAILY;TRUE
+FILES_IN;/home/barry/.config/GIMP;DAILY;TRUE
+FILES_IN;/home/barry/.config/gnucash;DAILY;TRUE
+FILES_IN;/home/barry/.config/google-chrome;DAILY;TRUE
+FILES_IN;/home/barry/.config/JetBrains;DAILY;TRUE
+FILES_IN;/home/barry/.config/joplin-desktop;DAILY;TRUE
+FILES_IN;/home/barry/.config/KeePass;DAILY;TRUE
+FILES_IN;/home/barry/.config/sqlitebrowser;DAILY;TRUE
+FILES_IN;/home/barry/.config/UMS;DAILY;TRUE
+FILES_IN;/home/barry/.config/variety;DAILY;TRUE
+FILES_IN;/home/barry/.config/VirtualBox;DAILY;TRUE
+FILES_IN;/home/barry/.joplin;ANY;TRUE
+FOLDERS;/home/barry/.mozilla/firefox/barry.default-release/;ANY;TRUE
+FOLDERS;/home/barry/.thunderbird/BarryOnizak;ANY;TRUE
+FILES_IN;/home/barry/.ssh;ANY;TRUE

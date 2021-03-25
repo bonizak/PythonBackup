@@ -1,0 +1,14 @@
+## 1st field must be FOLDERS|FILES_IN
+## 2nd field must be the source path of folders or files in the path
+## 3rd field is  ANY|DAILY|MONTHLY|ARCHIVED for the frequency
+## 4th field is TRUE | FALSE for recursion
+## ex. FILES_IN;/home/barry/bin;ANY;FALSE
+FOLDERS;/home/barry/My Images;MONTHLY;TRUE
+FOLDERS;/home/barry/Pictures;MONTHLY;TRUE
+FOLDERS;/home/barry/DVD Profiler;MONTHLY;TRUE
+FOLDERS;/home/barry/Music/Library;ARCHIVE;TRUE
+FOLDERS;/AVMedia/Produced;ARCHIVE;TRUE
+FOLDERS;/AVMedia/OnizakAlbum;ARCHIVE;TRUE
+FOLDERS;/AVMedia/public_html;ARCHIVE;TRUE
+FOLDERS;/AVMedia/Schick-Onizak;ARCHIVE;TRUE
+FOLDERS;/AVMedia/WorkingImagesFolders;ARCHIVE;TRUE

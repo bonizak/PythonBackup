@@ -1,0 +1,7 @@
+## 1st field must be FOLDERS|FILES_IN|FULL
+## 2nd field must be the source path of folders or files in the path
+## 3rd field is  ANY|DAILY|WEEKLY|MONTHLY|ARCHIVED for the frequency
+## 4th field is TRUE | FALSE for recursion
+## ex. FILES_IN;/home/barry/bin;ANY;FALSE
+FOLDERS;/home/barry/Documents/DataCrowV4;MONTHLY;TRUE
+FOLDERS;/home/barry/Documents/DVDProfiler;MONTHLY;TRUE
