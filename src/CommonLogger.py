@@ -21,17 +21,14 @@ class LoggerServices:
     Logging: none
     
     """
-
     __author__ = "Barry Onizak"
-    __copyright__ = 'Copyright (c) 2020 IBM All rights reserved.' \
-                    ' No part of this script may be copied or translated' \
-                    ' in any form or by any means without prior written permission from IBM.'
-    __license__ = "IBM Internal Use Only"
     __version__ = "1.14"
-
     # # # # # End of header # # # #
+
     def __init__(self):
         self.log_file = self.setLogFile()
+        self.log_level = "DEBUG"
+
 
     @staticmethod
     def whichOs():
@@ -57,13 +54,10 @@ class LoggerServices:
 
     def setLogFile(self):
         """
-        This method sets log file
-        to be written to for each
-        script run
+        This method sets log file to be written to for each script run
         """
-        self.log_file = os.path.join(self.getLogDir(),
-                                     f'{str(os.path.basename(sys.argv[0])).replace(".py","")}.{self.file_date()}.log')
-        return self.log_file
+        return os.path.join(self.getLogDir(),
+                            f'{str(os.path.basename(sys.argv[0])).replace(".py","")}.{self.file_date()}.log')
 
     def getLogDir(self):
         """
@@ -83,36 +77,34 @@ class LoggerServices:
             else:
                 return log_dir
 
-    def getLogger(self):
+    def getLogger(self, name):
         """
-        This method creates and returns
-        a logger object used to log each
-        script run
+        This method creates and returns a object used to log each script run
         """
         self.openlogfile()
-        logger = logging.getLogger(sys.argv[0].strip(".\\"))
-        logging.basicConfig(filename=self.setLogFile(), level=logging.DEBUG,
+        # logger = logging.getLogger(sys.argv[0].strip(".\\"))
+        logger = logging.getLogger(name)
+        logging.basicConfig(filename=self.log_file, level=self.log_level,
                             format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
 
         return logger
 
     def openlogfile(self):
-        """ This method opens the logfile and prepends the starting info"""
-
+        """ This method opens the logfile and prepends the starting info """
         try:
-            if os.path.exists(self.setLogFile()):
-                fo = open(self.setLogFile(), 'a', encoding='utf-8')
-                print(f'\nUsing logfile {self.setLogFile()}')
+            if os.path.exists(self.log_file):
+                fo = open(self.log_file, 'a', encoding='utf-8')
+                print(f'\nUsing logfile {self.log_file}')
             else:
-                fo = open(self.setLogFile(), 'w', encoding='utf-8')
-                print(f'\nCreated logfile {self.setLogFile()}')
+                fo = open(self.log_file, 'w', encoding='utf-8')
+                print(f'\nCreated logfile {self.log_file}')
 
             fo.write("\n\n")
             fo.write(self.startScriptLine())
             fo.write("\n")
             fo.close()
-        except IOError as e:
-            msg = f'Log file {self.setLogFile} write error. {e}.'
+        except IOError as ioe:
+            msg = f'Log file {self.log_file} write error. {ioe}.'
             print(f'{self.date()}: {msg}')
 
     def startScriptLine(self):
@@ -131,6 +123,14 @@ class LoggerServices:
         This method returns a 30 char separation bar
         """
         return 30*f'='
+
+    def critical(self, msg):
+        """
+        This method takes a message logs it as a
+        CRITICAL to the script run log
+        """
+        logging.critical(msg)
+        return None
 
     def error(self, msg):
         """
@@ -162,4 +162,12 @@ class LoggerServices:
         DEBUG message to the script run log
         """
         logging.debug(msg)
+        return None
+
+    def notset(self, msg):
+        """
+        This method takes a message logs it as a
+        NOTSET message to the script run log
+        """
+        logging.log(self, msg)
         return None

@@ -96,7 +96,7 @@ class OsServices(logger_services):
         """
         self.crontabs_dir = os.path.join(str(Path.home()), 'crontabs')
 
-        if os.path.isdir(self.crontabs_dir):
+        if not os.path.isdir(self.crontabs_dir):
             os.makedirs(self.crontabs_dir)
 
             if not os.path.exists(self.crontabs_dir):
@@ -121,18 +121,6 @@ class OsServices(logger_services):
         print(f'{self.date()}: {self.msg}')
         logger_services.error(self, self.msg)
         return None
-
-    def getHostName(self):
-        """
-        This method returns the hostname of the machine
-        """
-        try:
-            hostname = socket.gethostname()
-        except Exception as error:
-            print(f'{self.date()}: Cannot lookup hostname..see the following error')
-            raise error
-        else:
-            return hostname
 
     @staticmethod
     def date():
@@ -160,14 +148,6 @@ class OsServices(logger_services):
             raise error
         else:
             return ip_list
-
-    @staticmethod
-    def getScriptName():
-        """
-        This method returns the script name
-        """
-
-        return str(os.path.basename(sys.argv[0])).split('.')[0]
 
     def extractCommonLogVars(self, msg_tuple):
         """
@@ -225,20 +205,6 @@ class OsServices(logger_services):
         """
         pass
 
-    def load_json(self):
-        config_path = os.path.join(Path.home(), ".config", self.getScriptName())
-        with open(f'{config_path}/caladan-2004/config.json', "r") as config_json:
-            self.config_json = json.load(config_json)
-
-        with open(f'{config_path}/caladan-2004/BackupSets.json', "r") as backupset_json:
-            self.backupset_json = json.load(backupset_json)
-
-        with open(f'{config_path}/caladan-2004/StorageSets.json', "r") as storageset_json:
-            self.storageset_json = json.load(storageset_json)
-
-        with open(f'{config_path}/caladan-2004/FileSets.json', "r") as fileset_json:
-            self.fileset_json = json.load(fileset_json)
-
     def startScriptLine(self):
         """This method introduces the script
         that is about to be run and returns
@@ -256,22 +222,6 @@ class OsServices(logger_services):
         return script_start
 
     @staticmethod
-    def separationBar():
-        """
-        This method returns a separation
-        bar to be used as part of
-        the common template
-        """
-        return '============================================================================='
-
-    @staticmethod
-    def separationBar2():
-        """
-        This method returns a separation
-        bar to be used as part of
-        the common template
-        """
-        return '##############################################################################'
 
     def log_file_path(self):
         """
