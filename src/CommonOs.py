@@ -56,17 +56,10 @@ class OsServices(logger_services):
         This method takes a list of cmd line args
         passed and displays each running script in a similar view
         """
-        print(self.startScriptLine())
-        logger_services.info(self, self.startScriptLine())
+        # print(self.startScriptLine())
+        # logger_services.info(self, self.startScriptLine())
         print(f'{self.date()}: Extracting input Params:', *parameter_list)
         logger_services.info(self, f''"Extracting input params: {}".format(' '.join(map(str, parameter_list))))
-        # notify_params = self.getNotifyOps(self, parameter_list)
-        # if len(notify_params) == 0:
-        # print(f'{self.date()}: No notify option specified:')
-        # logger_services.info(self, 'No notify option specified:')
-        # else:
-        # print(f'{self.date()}: Will use inputted notify options:', *notify_params)
-        # logger_services.info(self,"Will use inputted notify options: {}".format(' '.join(map(str, notify_params))))
         return None
 
     def setReportDir(self):
@@ -166,7 +159,6 @@ class OsServices(logger_services):
         """
         This method returns the script name
         """
-
         return str(os.path.basename(sys.argv[0])).split('.')[0]
 
     def extractCommonLogVars(self, msg_tuple):
@@ -227,33 +219,17 @@ class OsServices(logger_services):
 
     def load_json(self):
         config_path = os.path.join(Path.home(), ".config", self.getScriptName())
-        with open(f'{config_path}/caladan-2004/config.json', "r") as config_json:
+        with open(f'{config_path}/config.json', "r") as config_json:
             self.config_json = json.load(config_json)
 
-        with open(f'{config_path}/caladan-2004/BackupSets.json', "r") as backupset_json:
+        with open(f'{config_path}/BackupSets.json', "r") as backupset_json:
             self.backupset_json = json.load(backupset_json)
 
-        with open(f'{config_path}/caladan-2004/StorageSets.json', "r") as storageset_json:
+        with open(f'{config_path}/StorageSets.json', "r") as storageset_json:
             self.storageset_json = json.load(storageset_json)
 
-        with open(f'{config_path}/caladan-2004/FileSets.json', "r") as fileset_json:
+        with open(f'{config_path}/FileSets.json', "r") as fileset_json:
             self.fileset_json = json.load(fileset_json)
-
-    def startScriptLine(self):
-        """This method introduces the script
-        that is about to be run and returns
-        it in a variable to be called as
-        apart of the Common Template"""
-        if self.whichOs() != 'Windows':
-            self.script_path = os.path.normpath(os.path.join(os.popen("pwd").read().strip(
-                '\n'), str(sys.argv[0])))  # sets the script path for non Windows OS
-            # checks if the script exist in the location before trying to run it
-            if not os.path.isfile(self.script_path):
-                print('No such script name in toolkit folder...exiting')
-                sys.exit(1)
-
-        script_start = f'\n{self.separationBar()} \n Starting script {self.script_path} \n{self.separationBar()}'
-        return script_start
 
     @staticmethod
     def separationBar():
