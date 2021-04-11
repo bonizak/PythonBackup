@@ -23,10 +23,6 @@ class LoggerServices:
     """
 
     __author__ = "Barry Onizak"
-    __copyright__ = 'Copyright (c) 2020 IBM All rights reserved.' \
-                    ' No part of this script may be copied or translated' \
-                    ' in any form or by any means without prior written permission from IBM.'
-    __license__ = "IBM Internal Use Only"
     __version__ = "1.14"
 
     # # # # # End of header # # # #
@@ -61,16 +57,14 @@ class LoggerServices:
         to be written to for each
         script run
         """
-        self.log_file = os.path.join(self.getLogDir(),
-                                     f'{str(os.path.basename(sys.argv[0])).replace(".py","")}.{self.file_date()}.log')
-        return self.log_file
+        return os.path.join(self.getLogDir(),  f'{self.getScriptName()}.{self.file_date()}.log')
 
     def getLogDir(self):
         """
         This method sets the logs
         directory based on the OS
         """
-        log_dir = os.path.join(str(Path.home()), 'logs', 'caladan-backup')
+        log_dir = os.path.join(str(Path.home()), 'logs', f'{self.getScriptName()}')
 
         if os.path.isdir(log_dir):
             return log_dir
@@ -85,13 +79,12 @@ class LoggerServices:
 
     def getLogger(self):
         """
-        This method creates and returns
-        a logger object used to log each
+        This method creates and returns a logger object used to log each
         script run
         """
         self.openlogfile()
         logger = logging.getLogger(sys.argv[0].strip(".\\"))
-        logging.basicConfig(filename=self.setLogFile(), level=logging.DEBUG,
+        logging.basicConfig(filename=self.log_file, level=logging.DEBUG,
                             format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
 
         return logger
@@ -100,20 +93,27 @@ class LoggerServices:
         """ This method opens the logfile and prepends the starting info"""
 
         try:
-            if os.path.exists(self.setLogFile()):
-                fo = open(self.setLogFile(), 'a', encoding='utf-8')
-                print(f'\nUsing logfile {self.setLogFile()}')
+            if os.path.exists(self.log_file):
+                fo = open(self.log_file, 'a', encoding='utf-8')
+                print(f'\nUsing logfile {self.log_file}')
             else:
-                fo = open(self.setLogFile(), 'w', encoding='utf-8')
-                print(f'\nCreated logfile {self.setLogFile()}')
+                fo = open(self.log_file, 'w', encoding='utf-8')
+                print(f'\nCreated logfile {self.log_file}')
 
             fo.write("\n\n")
             fo.write(self.startScriptLine())
             fo.write("\n")
             fo.close()
         except IOError as e:
-            msg = f'Log file {self.setLogFile} write error. {e}.'
+            msg = f'Log file {self.log_file} write error. {e}.'
             print(f'{self.date()}: {msg}')
+
+    @staticmethod
+    def getScriptName():
+        """
+        This method returns the script name
+        """
+        return str(os.path.basename(sys.argv[0])).split('.')[0]
 
     def startScriptLine(self):
         """This method returns the script logfile opening info """
