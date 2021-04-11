@@ -21,14 +21,13 @@ class LoggerServices:
     Logging: none
     
     """
+
     __author__ = "Barry Onizak"
     __version__ = "1.14"
-    # # # # # End of header # # # #
 
+    # # # # # End of header # # # #
     def __init__(self):
         self.log_file = self.setLogFile()
-        self.log_level = "DEBUG"
-
 
     @staticmethod
     def whichOs():
@@ -54,17 +53,18 @@ class LoggerServices:
 
     def setLogFile(self):
         """
-        This method sets log file to be written to for each script run
+        This method sets log file
+        to be written to for each
+        script run
         """
-        return os.path.join(self.getLogDir(),
-                            f'{str(os.path.basename(sys.argv[0])).replace(".py","")}.{self.file_date()}.log')
+        return os.path.join(self.getLogDir(),  f'{self.getScriptName()}.{self.file_date()}.log')
 
     def getLogDir(self):
         """
         This method sets the logs
         directory based on the OS
         """
-        log_dir = os.path.join(str(Path.home()), 'logs', 'caladan-backup')
+        log_dir = os.path.join(str(Path.home()), 'logs', f'{self.getScriptName()}')
 
         if os.path.isdir(log_dir):
             return log_dir
@@ -77,20 +77,21 @@ class LoggerServices:
             else:
                 return log_dir
 
-    def getLogger(self, name):
+    def getLogger(self):
         """
-        This method creates and returns a object used to log each script run
+        This method creates and returns a logger object used to log each
+        script run
         """
         self.openlogfile()
-        # logger = logging.getLogger(sys.argv[0].strip(".\\"))
-        logger = logging.getLogger(name)
-        logging.basicConfig(filename=self.log_file, level=self.log_level,
+        logger = logging.getLogger(sys.argv[0].strip(".\\"))
+        logging.basicConfig(filename=self.log_file, level=logging.DEBUG,
                             format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
 
         return logger
 
     def openlogfile(self):
-        """ This method opens the logfile and prepends the starting info """
+        """ This method opens the logfile and prepends the starting info"""
+
         try:
             if os.path.exists(self.log_file):
                 fo = open(self.log_file, 'a', encoding='utf-8')
@@ -103,9 +104,16 @@ class LoggerServices:
             fo.write(self.startScriptLine())
             fo.write("\n")
             fo.close()
-        except IOError as ioe:
-            msg = f'Log file {self.log_file} write error. {ioe}.'
+        except IOError as e:
+            msg = f'Log file {self.log_file} write error. {e}.'
             print(f'{self.date()}: {msg}')
+
+    @staticmethod
+    def getScriptName():
+        """
+        This method returns the script name
+        """
+        return str(os.path.basename(sys.argv[0])).split('.')[0]
 
     def startScriptLine(self):
         """This method returns the script logfile opening info """
@@ -123,14 +131,6 @@ class LoggerServices:
         This method returns a 30 char separation bar
         """
         return 30*f'='
-
-    def critical(self, msg):
-        """
-        This method takes a message logs it as a
-        CRITICAL to the script run log
-        """
-        logging.critical(msg)
-        return None
 
     def error(self, msg):
         """
@@ -162,12 +162,4 @@ class LoggerServices:
         DEBUG message to the script run log
         """
         logging.debug(msg)
-        return None
-
-    def notset(self, msg):
-        """
-        This method takes a message logs it as a
-        NOTSET message to the script run log
-        """
-        logging.log(self, msg)
         return None
