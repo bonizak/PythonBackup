@@ -2,24 +2,24 @@ import argparse
 import datetime
 import json
 import os
+import re
+import socket
 import sys
 import tarfile
 import time
-import re
 from pathlib import Path
 
-from CommonLogger import LoggerServices as logger_services
-from CommonOs import OsServices as os_services
 import Target_File_Builder as tfb
+from CommonLogger import LoggerServices as logger_services
 
 
-class PythonBackup(os_services, logger_services):
-    def __init__(self):
-        #super().__init__()
-        #self.config_json = config_json
-        #self.backupset_json = backupset_json
-        #self.storageset_json = storageset_json
-        #self.fileset_json = fileset_json
+class PythonBackup(logger_services):
+    def __init__(self, config_json, backupset_json, storageset_json, fileset_json):
+        super().__init__()
+        self.config_json = config_json
+        self.backupset_json = backupset_json
+        self.storageset_json = storageset_json
+        self.fileset_json = fileset_json
         self.skipping = True
         self.args = ""
 
@@ -36,9 +36,8 @@ class PythonBackup(os_services, logger_services):
                 "frequency",
                 help=f'Pass the backup frequency from DAILY, WEEKLY, MONTHLY, or ARCHIVE')
 
-            group_0 = parser.add_mutually_exclusive_group()
-
-            group_1 = parser.add_mutually_exclusive_group()
+            # group_0 = parser.add_mutually_exclusive_group()
+            # group_1 = parser.add_mutually_exclusive_group()
             self.args = parser.parse_args()
         except Exception as e:
             print(
@@ -48,12 +47,12 @@ class PythonBackup(os_services, logger_services):
 
     def run_object(self, frequency):
         logger_services.info(self, f'Starting {os.uname()[1]} backup')
-        os_services.load_json(self)
+        self.load_json()
         self.backup_start(frequency)
         logger_services.info(self, f'Completed {os.uname()[1]} backup')
 
     def backup_start(self, frequency):
-        json_in = self.backup_set_decoder()
+        json_in = self.backupset_json
 
         backupset_name = None
         file_set_name = None
@@ -119,15 +118,49 @@ class PythonBackup(os_services, logger_services):
                     logger_services.debug(self, f"Searching for the number of {archive_target_basefile}* files")
                     archive_builder = tfb.Target_File_Builder(f'{archive_target_basefile}', backup_versions)
                     archive_file = archive_builder.archive_target_file
-                    archive_rc = self.write_tar_file(archive_file, include_files_list, True)
+                    # archive_rc = self.write_tar_file(archive_file, include_files_list, True)
                     logger_services.info(self, f'Back up of Backup Set Name {backupset_name} '
-                                               f'into {archive_file} '
-                                               f'returned {archive_rc}\n')
+                                               f'into {archive_file} \n')
+                                               # f'returned {archive_rc}\n')
 
                     # end of for key in sSet
                 # end of for sSet
             # end of if BackupSets
         # end of major_key loop
+
+    def load_json(self):
+        config_path = str(os.path.join(Path.home(), ".config", self.getScriptName()))
+        try:
+            json_in_file = f'{config_path}/caladan-2004/config.json'
+            with open(json_in_file, "r") as read_json:
+                self.config_json = json.load(read_json)
+
+            json_in_file = f'{config_path}/caladan-2004/BackupSets.json'
+            with open(json_in_file, "r") as read_json:
+                self.backupset_json = json.load(read_json)
+
+            json_in_file = f'{config_path}/caladan-2004/StorageSets.json'
+            with open(json_in_file, "r") as read_json:
+                self.storageset_json = json.load(read_json)
+
+            json_in_file = f'{config_path}/caladan-2004/FileSets.json'
+            with open(json_in_file, "r") as read_json:
+                self.fileset_json = json.load(read_json)
+
+        except FileNotFoundError as fnfe:
+            logger_services.critical(self, f" {fnfe}: Unable to find {json_in_file}")
+
+    def get_backupset_json(self):
+        return self.backupset_json
+
+    def get_storageset_json(self):
+        return self.storageset_json
+
+    def get_fileset_json(self):
+        return self.fileset_json
+
+    def get_config_json(self):
+        return self.config_json
 
     def storage_path_getter(self, storageSet_needle):
         json_in = self.storageset_json
@@ -169,11 +202,21 @@ class PythonBackup(os_services, logger_services):
 
         return fs_excludes
 
+    def display_template(self, parameter_list, args):
+        """
+        This method takes a list of cmd line args
+        passed and displays each running script in a similar view
+        """
+        logger_services.info(self, f''"Extracting input params: {}".format(' '.join(map(str, parameter_list))))
+        return None
+
     @staticmethod
-    def backup_set_decoder():
-        config_path = os.path.join(Path.home(), ".config", os_services.getScriptName())
-        with open(f'{config_path}/BackupSets.json', "r") as backupset_json:
-            return json.load(backupset_json)
+    def getScriptName():
+        """
+        This method returns the script name
+        """
+
+        return str(os.path.basename(sys.argv[0])).split('.')[0]
 
     @staticmethod
     def file_date():
@@ -184,6 +227,36 @@ class PythonBackup(os_services, logger_services):
     def date():
         """This method returns a formatted string of the date in YYYYMMDDhhmmss format"""
         return datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
+
+    def getHostName(self):
+        """
+        This method returns the hostname of the machine
+        """
+        try:
+            hostname = socket.gethostname()
+        except Exception as error:
+            print(f'{self.date()}: Cannot lookup hostname..see the following error')
+            raise error
+        else:
+            return hostname
+
+    @staticmethod
+    def separationBar():
+        """
+        This method returns a separation
+        bar to be used as part of
+        the common template
+        """
+        return 75*f'*'
+
+    @staticmethod
+    def separationBar2():
+        """
+        This method returns a separation
+        bar to be used as part of
+        the common template
+        """
+        return 75*f'#'
 
     @staticmethod
     def is_file_older_than_x_days(file, days=1):
@@ -206,8 +279,8 @@ class PythonBackup(os_services, logger_services):
 
 # =================================
 if __name__ == '__main__':
-    obj = PythonBackup()
-    obj.getLogger()
+    obj = PythonBackup(None, None, None, None)
+    obj.getLogger(__name__)
     args = obj.parseCommandLine()
     obj.display_template(sys.argv[1:], args)
     obj.run_object(sys.argv[1])
