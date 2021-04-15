@@ -1,0 +1,261 @@
+{
+  "ServerName": "caladan-2004",
+  "BackupSets": [
+    {
+      "id": 0,
+      "BackupSetName": "AndroidSpace",
+      "StorageSetName": "ArchivesDevApps",
+      "FileSetName": "AndroidSpace",
+      "Versions": 1,
+      "Frequency": "ARCHIVE"
+    },
+    {
+      "id": 1,
+      "BackupSetName": "ArchivedAlbum",
+      "StorageSetName": "ArchivesAlbums",
+      "FileSetName": "ArchivedAlbum",
+      "Versions": 1,
+      "Frequency": "ARCHIVE"
+    },
+    {
+      "id": 2,
+      "BackupSetName": "ArchivedCalibre",
+      "StorageSetName": "ArchivesLibrary",
+      "FileSetName": "ArchivedCalibre",
+      "Versions": 1,
+      "Frequency": "ARCHIVE"
+    },
+    {
+      "id": 3,
+      "BackupSetName": "ArchivedDevAppls",
+      "StorageSetName": "ArchivesDevApps",
+      "FileSetName": "ArchivedDevAppls",
+      "Versions": 1,
+      "Frequency": "ARCHIVE"
+    },
+    {
+      "id": 4,
+      "BackupSetName": "TechBooks",
+      "StorageSetName": "ArchivesLibrary",
+      "FileSetName": "ArchivedLibrary",
+      "Versions": 4,
+      "Frequency": "MONTHLY"
+    },
+    {
+      "id": 5,
+      "BackupSetName": "CaladanWeb",
+      "StorageSetName": "AVMediaMedia",
+      "FileSetName": "CaladanWeb",
+      "Versions": 2,
+      "Frequency": "Monthly"
+    },
+    {
+      "id": 6,
+      "BackupSetName": "CalibreLibrary",
+      "StorageSetName": "AVMediaLibrary",
+      "FileSetName": "CalibreLibrary",
+      "Versions": 2,
+      "Frequency": "Monthly"
+    },
+    {
+      "id": 7,
+      "BackupSetName": "CodeSamples",
+      "StorageSetName": "DevApps",
+      "FileSetName": "CodeSamples",
+      "Versions": 2,
+      "Frequency": "Weekly"
+    },
+    {
+      "id": 8,
+      "BackupSetName": "ComputerFiles",
+      "StorageSetName": "CaladanDocuments",
+      "FileSetName": "ComputerFiles",
+      "Versions": 4,
+      "Frequency": "Daily"
+    },
+    {
+      "id": 9,
+      "BackupSetName": "DevAppls",
+      "StorageSetName": "DevApps",
+      "FileSetName": "DevAppls",
+      "Versions": 4,
+      "Frequency": "Weekly"
+    },
+    {
+      "id": 10,
+      "BackupSetName": "DevLibrary",
+      "StorageSetName": "AVMediaLibrary",
+      "FileSetName": "DevLibrary",
+      "Versions": 2,
+      "Frequency": "Monthly"
+    },
+    {
+      "id": 11,
+      "BackupSetName": "DevResources",
+      "StorageSetName": "DevApps",
+      "FileSetName": "DevResources",
+      "Versions": 2,
+      "Frequency": "Monthly"
+    },
+    {
+      "id": 12,
+      "BackupSetName": "DevTools",
+      "StorageSetName": "DevApps",
+      "FileSetName": "DevTools",
+      "Versions": 2,
+      "Frequency": "Monthly"
+    },
+    {
+      "id": 13,
+      "BackupSetName": "DevWork",
+      "StorageSetName": "DevApps",
+      "FileSetName": "DevWork",
+      "Versions": 4,
+      "Frequency": "Weekly"
+    },
+    {
+      "id": 14,
+      "BackupSetName": "Documents",
+      "StorageSetName": "CaladanDocuments",
+      "FileSetName": "Documents",
+      "Versions": 4,
+      "Frequency": "MONTHLY"
+    },
+    {
+      "id": 15,
+      "BackupSetName": "EclipseSpace",
+      "StorageSetName": "DevApps",
+      "FileSetName": "EclipseSpace",
+      "Versions": 4,
+      "Frequency": "Daily"
+    },
+    {
+      "id": 16,
+      "BackupSetName": "Family",
+      "StorageSetName": "CaladanDocuments",
+      "FileSetName": "Family",
+      "Versions": 4,
+      "Frequency": "Daily"
+    },
+    {
+      "id": 17,
+      "BackupSetName": "Financials",
+      "StorageSetName": "CaladanDocuments",
+      "FileSetName": "Financials",
+      "Versions": 4,
+      "Frequency": "Daily"
+    },
+    {
+      "id": 18,
+      "BackupSetName": "Genealogy",
+      "StorageSetName": "CaladanDocuments",
+      "FileSetName": "Genealogy",
+      "Versions": 2,
+      "Frequency": "MONTHLY"
+    },
+    {
+      "id": 19,
+      "BackupSetName": "Git",
+      "StorageSetName": "Archivesgit",
+      "FileSetName": "Git",
+      "Versions": 1,
+      "Frequency": "Archive"
+    },
+    {
+      "id": 20,
+      "BackupSetName": "HomeFiles",
+      "StorageSetName": "CaladanHome",
+      "FileSetName": "HomeFiles",
+      "Versions": 4,
+      "Frequency": "Daily"
+    },
+    {
+      "id": 21,
+      "BackupSetName": "IBM",
+      "StorageSetName": "CaladanDocuments",
+      "FileSetName": "IBM",
+      "Versions": 2,
+      "Frequency": "Weekly"
+    },
+    {
+      "id": 22,
+      "BackupSetName": "Media",
+      "StorageSetName": "AVMediaMedia",
+      "FileSetName": "Media",
+      "Versions": 1,
+      "Frequency": "Archive"
+    },
+    {
+      "id": 23,
+      "BackupSetName": "Movies",
+      "StorageSetName": "AVMediaMovies",
+      "FileSetName": "Movies",
+      "Versions": 1,
+      "Frequency": "Archive"
+    },
+    {
+      "id": 24,
+      "BackupSetName": "Music",
+      "StorageSetName": "AVMediaMusic",
+      "FileSetName": "Music",
+      "Versions": 2,
+      "Frequency": "Monthly"
+    },
+    {
+      "id": 25,
+      "BackupSetName": "OnizakAlbums",
+      "StorageSetName": "AVMediaAlbums",
+      "FileSetName": "OnizakAlbums",
+      "Versions": 2,
+      "Frequency": "Monthly"
+    },
+    {
+      "id": 26,
+      "BackupSetName": "OnizakVideos",
+      "StorageSetName": "AVMediaAlbums",
+      "FileSetName": "OnizakVideos",
+      "Versions": 2,
+      "Frequency": "Monthly"
+    },
+    {
+      "id": 27,
+      "BackupSetName": "PythonWork",
+      "StorageSetName": "DevApps",
+      "FileSetName": "PythonWork",
+      "Versions": 4,
+      "Frequency": "Daily"
+    },
+    {
+      "id": 28,
+      "BackupSetName": "Security",
+      "StorageSetName": "CaladanDocuments",
+      "FileSetName": "Security",
+      "Versions": 4,
+      "Frequency": "Daily"
+    },
+    {
+      "id": 29,
+      "BackupSetName": "Software",
+      "StorageSetName": "ArchivesSoftware",
+      "FileSetName": "Software",
+      "Versions": 1,
+      "Frequency": "Archive"
+    },
+    {
+      "id": 30,
+      "BackupSetName": "VM",
+      "StorageSetName": "ArchivesVM",
+      "FileSetName": "VM",
+      "Versions": 2,
+      "Frequency": "Monthly"
+    },
+    {
+      "id": 31,
+      "BackupSetName": "TaxFiles",
+      "StorageSetName": "ArchivesTaxFiles",
+      "FileSetName": "Taxfiles",
+      "Versions": 1,
+      "Frequency": "Archive"
+    }
+  ]
+}

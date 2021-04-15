@@ -14,7 +14,7 @@ import Target_File_Builder as tfb
 
 class PythonBackup(os_services, logger_services):
     def __init__(self):
-        #super().__init__()
+        super().__init__()
         #self.config_json = config_json
         #self.backupset_json = backupset_json
         #self.storageset_json = storageset_json
@@ -207,5 +207,5 @@ if __name__ == '__main__':
     obj = PythonBackup()
     obj.getLogger()
     args = obj.parseCommandLine()
-    obj.display_template(sys.argv[1:], args)
+    obj.start_template(sys.argv[1:], args)
     obj.run_object(sys.argv[1])
