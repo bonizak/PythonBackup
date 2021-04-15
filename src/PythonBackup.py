@@ -46,9 +46,10 @@ class PythonBackup(logger_services):
             return self.args
 
     def run_object(self, frequency):
+        uc_frequency = frequency.upper()
         logger_services.info(self, f'Starting {os.uname()[1]} backup')
         self.load_json()
-        self.backup_start(frequency)
+        self.backup_start(uc_frequency)
         logger_services.info(self, f'Completed {os.uname()[1]} backup')
 
     def backup_start(self, frequency):
@@ -129,7 +130,8 @@ class PythonBackup(logger_services):
         # end of major_key loop
 
     def load_json(self):
-        resource_path = os.path.join(os.path.dirname(os.path.curdir()), "resource")
+        lj_rc = False
+        resource_path = os.path.join(os.path.dirname(os.path.abspath(os.curdir)), "resource")
         try:
             json_in_file = f'{resource_path}/config.json'
             with open(json_in_file, "r") as read_json:

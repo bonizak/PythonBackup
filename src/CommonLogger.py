@@ -23,12 +23,12 @@ class LoggerServices:
     """
     __author__ = "Barry Onizak"
     __version__ = "1.14"
+
     # # # # # End of header # # # #
 
     def __init__(self):
         self.log_file = self.setLogFile()
         self.log_level = "DEBUG"
-
 
     @staticmethod
     def whichOs():
@@ -57,14 +57,14 @@ class LoggerServices:
         This method sets log file to be written to for each script run
         """
         return os.path.join(self.getLogDir(),
-                            f'{str(os.path.basename(sys.argv[0])).replace(".py","")}.{self.file_date()}.log')
+                            f'{str(os.path.basename(sys.argv[0])).replace(".py", "")}.{self.file_date()}.log')
 
     def getLogDir(self):
         """
         This method sets the logs
         directory based on the OS
         """
-        log_dir = os.path.join(str(Path.home()), 'logs', 'caladan-backup')
+        log_dir = os.path.join(str(Path.home()), 'logs', self.getScriptName())
 
         if os.path.isdir(log_dir):
             return log_dir
@@ -107,6 +107,13 @@ class LoggerServices:
             msg = f'Log file {self.log_file} write error. {ioe}.'
             print(f'{self.date()}: {msg}')
 
+    @staticmethod
+    def getScriptName():
+        """
+        This method returns the script name        """
+
+        return str(os.path.basename(sys.argv[0])).split('.')[0]
+
     def startScriptLine(self):
         """This method returns the script logfile opening info """
         script_path = os.path.normpath(os.path.join(os.popen("pwd").read().strip('\n'), str(sys.argv[0])))
@@ -122,7 +129,7 @@ class LoggerServices:
         """
         This method returns a 30 char separation bar
         """
-        return 30*f'='
+        return 30 * f'='
 
     def critical(self, msg):
         """
