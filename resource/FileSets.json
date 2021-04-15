@@ -1,0 +1,269 @@
+{
+  "ServerName": "li-6f103b4c-22af-11b2-a85c-d46026ec3c59.ibm.com",
+  "FileSets": [
+    {
+      "id": 0,
+      "FileSetName": "HomeRoot",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/bonizak/bin",
+        "/home/bonizak/Desktop",
+        "/home/bonizak/logs",
+        "/home/bonizak/Pictures",
+        "/home/bonizak/Public",
+        "/home/bonizak/reports",
+        "/home/bonizak/Templates"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 1,
+      "FileSetName": "APPData",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/bonizak/APPData/gitRepo"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 2,
+      "FileSetName": "Apps",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/bonizak/Apps/eclipse",        
+        "/home/bonizak/Apps/giteye",
+        "/home/bonizak/Apps/pycharm-community-2020.3.2"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 3,
+      "FileSetName": "DevWorkSpace",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+      	  "/home/bonizak/DevWorkSpace/Dev-Db2-PythonToolkit-master",
+      	  "/home/bonizak/DevWorkSpace/Python_Space",
+      	  "/home/bonizak/DevWorkSpace/Test_Space",
+      	  "/home/bonizak/DevWorkSpace/VSCodeSpace",
+      	  "/home/bonizak/DevWorkSpace/Documents",
+      	  "/home/bonizak/DevWorkSpace/PythonProjects",
+      	  "/home/bonizak/DevWorkSpace/Replication",
+      	  "/home/bonizak/DevWorkSpace/Toolkit_Space"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 4,
+      "FileSetName": "Documents",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/bonizak/Documents/Db2",
+        "/home/bonizak/Documents/General",
+        "/home/bonizak/Documents/ITD",
+        "/home/bonizak/Documents/NewCo"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 5,
+      "FileSetName": "Accounts",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/bonizak/Documents/Accounts/Billing_RU",
+        "/home/bonizak/Documents/Accounts/Cooperators",
+        "/home/bonizak/Documents/Accounts/CRSOC",
+        "/home/bonizak/Documents/Accounts/Desjardins",
+        "/home/bonizak/Documents/Accounts/DOUs",
+        "/home/bonizak/Documents/Accounts/EIG",
+        "/home/bonizak/Documents/Accounts/General",
+        "/home/bonizak/Documents/Accounts/IFGA",
+        "/home/bonizak/Documents/Accounts/MBGov",
+        "/home/bonizak/Documents/Accounts/MoH",
+        "/home/bonizak/Documents/Accounts/MPI",
+        "/home/bonizak/Documents/Accounts/SMI",
+        "/home/bonizak/Documents/Accounts/Viarail"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 6,
+      "FileSetName": "GTS",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/bonizak/Documents/GTS/Agile",
+        "/home/bonizak/Documents/GTS/AHDM",
+        "/home/bonizak/Documents/GTS/AHSDM",
+        "/home/bonizak/Documents/GTS/Archives",
+        "/home/bonizak/Documents/GTS/General",
+        "/home/bonizak/Documents/GTS/GTS-EHCS",
+        "/home/bonizak/Documents/GTS/ILC_Claim_Metrics",
+        "/home/bonizak/Documents/GTS/Interlock_Reports",
+        "/home/bonizak/Documents/GTS/LabourRates",
+        "/home/bonizak/Documents/GTS/Maximo",
+        "/home/bonizak/Documents/GTS/Metrics_CostModels",
+        "/home/bonizak/Documents/GTS/PblmChg",
+        "/home/bonizak/Documents/GTS/Security",
+        "/home/bonizak/Documents/GTS/TheNextBigThing"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 7,
+      "FileSetName": "Personal",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/bonizak/Documents/Personal/Agile",
+        "/home/bonizak/Documents/Personal/Backup",
+        "/home/bonizak/Documents/Personal/Claim",
+        "/home/bonizak/Documents/Personal/Education",
+        "/home/bonizak/Documents/Personal/Kudos_Personal",
+        "/home/bonizak/Documents/Personal/Laptop",
+        "/home/bonizak/Documents/Personal/Paystubs",
+        "/home/bonizak/Documents/Personal/Resumes",
+        "/home/bonizak/Documents/Personal/Security",
+        "/home/bonizak/Documents/Personal/Think40"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 8,
+      "FileSetName": "SSO",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/bonizak/Documents/SSO/Automation_BigFix",
+        "/home/bonizak/Documents/SSO/BPO",
+        "/home/bonizak/Documents/SSO/Cost_Models",
+        "/home/bonizak/Documents/SSO/DBACompetencyInfo",
+        "/home/bonizak/Documents/SSO/EHCS_C4",
+        "/home/bonizak/Documents/SSO/EngagementsTransitions",
+        "/home/bonizak/Documents/SSO/Everbridge",
+        "/home/bonizak/Documents/SSO/FrameWorkBlue",
+        "/home/bonizak/Documents/SSO/GlobalCMT",
+        "/home/bonizak/Documents/SSO/GlobalDBAServices",
+        "/home/bonizak/Documents/SSO/GlobalDelivery",
+        "/home/bonizak/Documents/SSO/GlobalDMSL",
+        "/home/bonizak/Documents/SSO/GlobalDMSL-Tools",
+        "/home/bonizak/Documents/SSO/GlobalSecurity",
+        "/home/bonizak/Documents/SSO/GSAR",
+        "/home/bonizak/Documents/SSO/ILC",
+        "/home/bonizak/Documents/SSO/ISeC",
+        "/home/bonizak/Documents/SSO/Network",
+        "/home/bonizak/Documents/SSO/Process",
+        "/home/bonizak/Documents/SSO/SavedQMXLinks",
+        "/home/bonizak/Documents/SSO/SMB",
+        "/home/bonizak/Documents/SSO/SRMsSCDsDOUsSOWs",
+        "/home/bonizak/Documents/SSO/SSOArchive",
+        "/home/bonizak/Documents/SSO/TransformTransition"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 9,
+      "FileSetName": "NodesData",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/bonizak/lotus/notes/data/AA-Badge-explorer-352.jpg",
+        "/home/bonizak/lotus/notes/data/AppHosting-DatabaseExperienced.png",
+        "/home/bonizak/lotus/notes/data/BDFL1.jpg",
+        "/home/bonizak/lotus/notes/data/Continuous-Engineering---Automation-Maker.png",
+        "/home/bonizak/lotus/notes/data/DSF_L2.jpg",
+        "/home/bonizak/lotus/notes/data/DSFL1.jpg",
+        "/home/bonizak/lotus/notes/data/MWDB_LSADBadge.jpg",
+        "/home/bonizak/lotus/notes/data/MWDB_LSADBadge.png",
+        "/home/bonizak/lotus/notes/data/binary.gif",
+        "/home/bonizak/lotus/notes/data/email.jpg",
+        "/home/bonizak/lotus/notes/data/error.gif",
+        "/home/bonizak/lotus/notes/data/folder.gif",
+        "/home/bonizak/lotus/notes/data/graphic.gif",
+        "/home/bonizak/lotus/notes/data/image.gif",
+        "/home/bonizak/lotus/notes/data/itilfnd.jpg",
+        "/home/bonizak/lotus/notes/data/link.gif",
+        "/home/bonizak/lotus/notes/data/movie.gif",
+        "/home/bonizak/lotus/notes/data/oldblackphone.jpg",
+        "/home/bonizak/lotus/notes/data/phone.jpg",
+        "/home/bonizak/lotus/notes/data/quote.gif",
+        "/home/bonizak/lotus/notes/data/sound.gif",
+        "/home/bonizak/lotus/notes/data/text.gif",
+        "/home/bonizak/lotus/notes/data/unknown.gif",
+        "/home/bonizak/lotus/notes/data/bonizak.id",
+        "/home/bonizak/lotus/notes/data/cert.id",
+        "/home/bonizak/lotus/notes/data/db2rythm.id",
+        "/home/bonizak/lotus/notes/data/db2udbca.id",
+        "/home/bonizak/lotus/notes/data/user.id",
+        "/home/bonizak/lotus/notes/data/bonizak.html",
+        "/home/bonizak/lotus/notes/data/populatedHTML.htm",
+        "/home/bonizak/lotus/notes/data/notes.ini",
+        "/home/bonizak/lotus/notes/data/desktop8.ndk",
+        "/home/bonizak/lotus/notes/data/bookmark.nsf",
+        "/home/bonizak/lotus/notes/data/names.nsf",
+        "/home/bonizak/lotus/notes/data/pasteInfo.nsf",
+        "/home/bonizak/lotus/notes/data/wpgmid1.nsf",
+        "/home/bonizak/lotus/notes/data/names.nsf"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 10,
+      "FileSetName": "NotesNSF",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/bonizak/lotus/notes/data/as_BOnizak.nsf",
+        "/home/bonizak/lotus/notes/data/as_DB2RYTHM.nsf",
+        "/home/bonizak/lotus/notes/data/atchrpos_barry_onizak.nsf",
+        "/home/bonizak/lotus/notes/data/atchrpos_db2udbca.nsf",
+        "/home/bonizak/lotus/notes/data/atchtool_barry1_onizak.nsf",
+        "/home/bonizak/lotus/notes/data/BONIZAKAttachTool.nsf",
+        "/home/bonizak/lotus/notes/data/BONIZAKAttachTool_3_9.nsf",
+        "/home/bonizak/lotus/notes/data/archive/prodmet.nsf"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 11,
+      "FileSetName": "Joplin",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+      	  "/home/bonizak/DevWorkSpace/Joplin_Exports",
+        "/home/bonizak/Documents/Personal/Joplin",
+        "/home/bonizak/Documents/Personal/joplin_backup"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    }
+  ]
+}

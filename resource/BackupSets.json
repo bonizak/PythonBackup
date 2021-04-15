@@ -1,0 +1,101 @@
+{
+  "ServerName": "li-6f103b4c-22af-11b2-a85c-d46026ec3c59.ibm.com",
+  "BackupSets": [
+    {
+      "id": 0,
+      "BackupSetName": "HomeRoot",
+      "StorageSetName": "HomeRoot",
+      "FileSetName": "HomeRoot",
+      "Versions": 1,
+      "Frequency": "DAILY"
+    },
+    {
+      "id": 1,
+      "BackupSetName": "APPData",
+      "StorageSetName": "APPData",
+      "FileSetName": "APPData",
+      "Versions": 1,
+      "Frequency": "WEEKLY"
+    },
+    {
+      "id": 2,
+      "BackupSetName": "Apps",
+      "StorageSetName": "APPData",
+      "FileSetName": "Apps",
+      "Versions": 1,
+      "Frequency": "ARCHIVE"
+    },
+    {
+      "id": 3,
+      "BackupSetName": "DevWorkSpace",
+      "StorageSetName": "DevWorkSpace",
+      "FileSetName": "DevWorkSpace",
+      "Versions": 1,
+      "Frequency": "DAILY"
+    },
+    {
+      "id": 4,
+      "BackupSetName": "Documents",
+      "StorageSetName": "Documents",
+      "FileSetName": "Documents",
+      "Versions": 1,
+      "Frequency": "DAILY"
+    },
+    {
+      "id": 5,
+      "BackupSetName": "Accounts",
+      "StorageSetName": "Documents",
+      "FileSetName": "Accounts",
+      "Versions": 1,
+      "Frequency": "WEEKLY"
+    },
+    {
+      "id": 6,
+      "BackupSetName": "GTS",
+      "StorageSetName": "Documents",
+      "FileSetName": "GTS",
+      "Versions": 1,
+      "Frequency": "ARCHIVE"
+    },
+    {
+      "id": 7,
+      "BackupSetName": "Personal",
+      "StorageSetName": "Documents",
+      "FileSetName": "Personal",
+      "Versions": 2,
+      "Frequency": "DAILY"
+    },
+    {
+      "id": 8,
+      "BackupSetName": "SSO",
+      "StorageSetName": "Documents",
+      "FileSetName": "SSO",
+      "Versions": 2,
+      "Frequency": "MONTHLY"
+    },
+    {
+      "id": 9,
+      "BackupSetName": "NotesData",
+      "StorageSetName": "Notes",
+      "FileSetName": "NotesData",
+      "Versions": 4,
+      "Frequency": "DAILY"
+    },
+    {
+      "id": 10,
+      "BackupSetName": "NotesNSF",
+      "StorageSetName": "Notes",
+      "FileSetName": "NotesNSF",
+      "Versions": 4,
+      "Frequency": "MONTHLY"
+    },
+    {
+      "id": 11,
+      "BackupSetName": "Joplin",
+      "StorageSetName": "Documents",
+      "FileSetName": "Joplin",
+      "Versions": 2,
+      "Frequency": "WEEKLY"
+    }
+  ]
+}

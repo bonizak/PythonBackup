@@ -1,0 +1,35 @@
+{
+  "ServerName": "li-6f103b4c-22af-11b2-a85c-d46026ec3c59.ibm.com",
+  "StorageSets": [
+    {
+      "id": 0,
+      "StorageSetName": "HomeRoot",
+      "Device": "USB-Stick",
+      "StoragePath": "/run/media/bonizak/SECURITY/backups/HomeRoot"
+    },
+    {
+      "id": 0,
+      "StorageSetName": "APPData",
+      "Device": "USB-Stick",
+      "StoragePath": "/run/media/bonizak/SECURITY/backups/APPData"
+    },
+    {
+      "id": 0,
+      "StorageSetName": "DevWorkSpace",
+      "Device": "USB-Stick",
+      "StoragePath": "/run/media/bonizak/SECURITY/backups/DevWorkSpace"
+    },
+    {
+      "id": 2,
+      "StorageSetName": "Documents",
+      "Device": "USB-Stick",
+      "StoragePath": "/run/media/bonizak/SECURITY/backups/Documents"
+    },
+    {
+      "id": 2,
+      "StorageSetName": "Notes",
+      "Device": "USB-Stick",
+      "StoragePath": "/run/media/bonizak/SECURITY/backups/Notes"
+    }
+  ]
+}

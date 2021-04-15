@@ -1,0 +1,26 @@
+{
+  "ServerName": "li-6f103b4c-22af-11b2-a85c-d46026ec3c59.ibm.com",
+  "Config": [
+  {
+  "CONFIG_RELEASE": "2.0",
+  "BACKUP_FREQUENCIES": [
+  	  "DAILY",
+  	  "WEEKLY",
+  	  "MONTHLY",
+  	  "ARCHIVE"
+  ],
+  "BACKUPSET_JSON": "/home/barry/.config/CaladanBackup/BackupSets.json",
+  "STORAGE_DEVICE_TYPES":[
+  	  "DISK",
+  	  "USB-STICK",
+  	  "TAPE"
+  ],
+  "STORAGESET_JSON": "/home/barry/.config/CaladanBackup/StorageSets.json",
+  "DEBUG": "TRUE",
+  "Spreadsheet_Report": "/home/barry/Documents/General/Backuplist.xlsx",
+  "BACKUP_EXT": ".tgz",
+  "BACKUP_HOME": "/SECURITY",
+  "FILESET_JSON": "/home/barry/.config/CaladanBackup/FileSets.json"
+  }
+  ]
+}

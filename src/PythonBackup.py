@@ -129,21 +129,21 @@ class PythonBackup(logger_services):
         # end of major_key loop
 
     def load_json(self):
-        config_path = str(os.path.join(Path.home(), ".config", self.getScriptName()))
+        resource_path = os.path.join(os.path.dirname(os.path.curdir()), "resource")
         try:
-            json_in_file = f'{config_path}/caladan-2004/config.json'
+            json_in_file = f'{resource_path}/config.json'
             with open(json_in_file, "r") as read_json:
                 self.config_json = json.load(read_json)
 
-            json_in_file = f'{config_path}/caladan-2004/BackupSets.json'
+            json_in_file = f'{resource_path}/BackupSets.json'
             with open(json_in_file, "r") as read_json:
                 self.backupset_json = json.load(read_json)
 
-            json_in_file = f'{config_path}/caladan-2004/StorageSets.json'
+            json_in_file = f'{resource_path}/StorageSets.json'
             with open(json_in_file, "r") as read_json:
                 self.storageset_json = json.load(read_json)
 
-            json_in_file = f'{config_path}/caladan-2004/FileSets.json'
+            json_in_file = f'{resource_path}/FileSets.json'
             with open(json_in_file, "r") as read_json:
                 self.fileset_json = json.load(read_json)
 
