@@ -6,7 +6,6 @@ import sys
 import tarfile
 import time
 import re
-from pathlib import Path
 
 from CommonLogger import LoggerServices as logger_services
 from CommonOs import OsServices as os_services
@@ -15,7 +14,7 @@ import Target_File_Builder as tfb
 
 class PythonBackup(os_services, logger_services):
     def __init__(self):
-        #super().__init__()
+        super().__init__()
         #self.config_json = config_json
         #self.backupset_json = backupset_json
         #self.storageset_json = storageset_json
@@ -171,8 +170,7 @@ class PythonBackup(os_services, logger_services):
 
     @staticmethod
     def backup_set_decoder():
-        config_path = os.path.join(Path.home(), ".config", os_services.getScriptName())
-        with open(f'{config_path}/BackupSets.json', "r") as backupset_json:
+        with open("/home/barry/.config/caladanbackup/caladan-2004/BackupSets.json", "r") as backupset_json:
             return json.load(backupset_json)
 
     @staticmethod
@@ -209,5 +207,5 @@ if __name__ == '__main__':
     obj = PythonBackup()
     obj.getLogger()
     args = obj.parseCommandLine()
-    obj.display_template(sys.argv[1:], args)
+    obj.start_template(sys.argv[1:], args)
     obj.run_object(sys.argv[1])

@@ -28,6 +28,7 @@ class LoggerServices:
     # # # # # End of header # # # #
     def __init__(self):
         self.log_file = self.setLogFile()
+        print("Init opened")
 
     @staticmethod
     def whichOs():
