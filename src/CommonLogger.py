@@ -28,7 +28,6 @@ class LoggerServices:
 
     def __init__(self):
         self.log_file = self.setLogFile()
-        self.log_level = "DEBUG"
 
     @staticmethod
     def whichOs():
@@ -77,17 +76,28 @@ class LoggerServices:
             else:
                 return log_dir
 
-    def getLogger(self, name):
+    def getLogger(self, name, config_json):
         """
         This method creates and returns a object used to log each script run
         """
         self.openlogfile()
+        log_level = self.get_log_level(config_json)
         # logger = logging.getLogger(sys.argv[0].strip(".\\"))
         logger = logging.getLogger(name)
-        logging.basicConfig(filename=self.log_file, level=self.log_level,
+        logging.basicConfig(filename=self.log_file, level=log_level,
                             format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
 
         return logger
+
+    def get_log_level(self, json_in):
+        log_level = "DEBUG"
+        for major_key in json_in:
+            if "Config" in major_key:
+                for cfg_Set in json_in[major_key]:
+                    for key in cfg_Set:
+                        if "LOG_LEVEL" in key:
+                            log_level = cfg_Set["LOG_LEVEL"]
+        return log_level
 
     def openlogfile(self):
         """ This method opens the logfile and prepends the starting info """
