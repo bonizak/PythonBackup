@@ -26,9 +26,8 @@ class LoggerServices:
     __version__ = "1.14"
 
     # # # # # End of header # # # #
-    def __init__(self):
-        self.log_file = self.setLogFile()
-        print("Init opened")
+    log_file = ""
+    log_level = "DEBUG"
 
     @staticmethod
     def whichOs():
@@ -54,16 +53,13 @@ class LoggerServices:
 
     def setLogFile(self):
         """
-        This method sets log file
-        to be written to for each
-        script run
+        This method sets log file to be written to for each script run
         """
         return os.path.join(self.getLogDir(),  f'{self.getScriptName()}.{self.file_date()}.log')
 
     def getLogDir(self):
         """
-        This method sets the logs
-        directory based on the OS
+        This method sets the logs directory
         """
         log_dir = os.path.join(str(Path.home()), 'logs', f'{self.getScriptName()}')
 
@@ -83,9 +79,10 @@ class LoggerServices:
         This method creates and returns a logger object used to log each
         script run
         """
+        self.log_file = self.setLogFile()
         self.openlogfile()
         logger = logging.getLogger(sys.argv[0].strip(".\\"))
-        logging.basicConfig(filename=self.log_file, level=logging.DEBUG,
+        logging.basicConfig(filename=self.log_file, level=self.log_level,
                             format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
 
         return logger
@@ -105,8 +102,8 @@ class LoggerServices:
             fo.write(self.startScriptLine())
             fo.write("\n")
             fo.close()
-        except IOError as e:
-            msg = f'Log file {self.log_file} write error. {e}.'
+        except IOError as ioe:
+            msg = f'Log file {self.log_file} write error. {ioe}.'
             print(f'{self.date()}: {msg}')
 
     @staticmethod
@@ -132,6 +129,14 @@ class LoggerServices:
         This method returns a 30 char separation bar
         """
         return 30*f'='
+
+    def critical(self, msg):
+        """
+        This method takes a message logs it as a
+        CRITICAL to the script run log
+        """
+        logging.critical(msg)
+        return None
 
     def error(self, msg):
         """
@@ -163,4 +168,12 @@ class LoggerServices:
         DEBUG message to the script run log
         """
         logging.debug(msg)
+        return None
+
+    def notset(self, msg):
+        """
+        This method takes a message logs it as a
+        NOTSET message to the script run log
+        """
+        logging.log(self, msg)
         return None

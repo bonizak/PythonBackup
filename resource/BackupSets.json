@@ -7,7 +7,7 @@
       "StorageSetName": "ArchivesDevApps",
       "FileSetName": "AndroidSpace",
       "Versions": 1,
-      "Frequency": "ARCHIVE"
+      "Frequency": "DAILY"
     },
     {
       "id": 1,

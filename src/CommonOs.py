@@ -32,25 +32,19 @@ class OsServices(logger_services):
     # sets the  path from which all scripts are run
     script_path = os.path.join(os.getcwd(), sys.argv[0])
     msg = ''
-    params_XML = None
     reports_dir = ''
-    crontabs_dir = ''
-    log_dir = ''
-    log_file = ''
 
     def __init__(self, config_json, backupset_json, storageset_json, fileset_json):
         """
         This method constructs the CommonOS class object with the basic
         methods needed to setup all script runs
         """
-        super().__init__()
+        super(OsServices, self).__init__()
         self.config_json = config_json
         self.backupset_json = backupset_json
         self.storageset_json = storageset_json
         self.fileset_json = fileset_json
         self.setReportDir()  # set the reports dir path
-        self.setLogDir()  # set the logs dir path
-        self.setCronDir()  # the cron dir under UNIX/LINUX
 
     def start_template(self, parameter_list, args):
         """
@@ -81,28 +75,6 @@ class OsServices(logger_services):
         This method returns the report directory set on the class
         """
         return self.reports_dir
-
-    def setCronDir(self):
-        """
-        This method sets the cron  directory
-        """
-        self.crontabs_dir = os.path.join(str(Path.home()), 'crontabs')
-
-        if os.path.isdir(self.crontabs_dir):
-            os.makedirs(self.crontabs_dir)
-
-            if not os.path.exists(self.crontabs_dir):
-                self.msg = 'Initial setup of crontab dir failed, exiting script run!'
-                print(f'{self.date()}: {self.msg}')
-                logger_services.error(self, self.msg)
-                sys.exit(1)
-
-    def getCronDir(self):
-        """
-        This method returns the cron
-        directory set on the class
-        """
-        return self.crontabs_dir
 
     def haltScript(self):
         """
@@ -146,20 +118,6 @@ class OsServices(logger_services):
         This method returns the script name
         """
         return str(os.path.basename(sys.argv[0])).split('.')[0]
-
-    def load_json(self):
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(os.path.curdir)), 'resource')
-        with open(f'{resource_path}/config.json', "r") as config_json:
-            self.config_json = json.load(config_json)
-
-        with open(f'{resource_path}/BackupSets.json', "r") as backupset_json:
-            self.backupset_json = json.load(backupset_json)
-
-        with open(f'{resource_path}/StorageSets.json', "r") as storageset_json:
-            self.storageset_json = json.load(storageset_json)
-
-        with open(f'{resource_path}/FileSets.json', "r") as fileset_json:
-            self.fileset_json = json.load(fileset_json)
 
     @staticmethod
     def separationBar():
