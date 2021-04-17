@@ -5,7 +5,6 @@ import platform
 import socket
 import sys
 from pathlib import Path
-import xml.etree.ElementTree as BigTree
 
 from CommonLogger import LoggerServices as logger_services
 
@@ -32,26 +31,31 @@ class OsServices(logger_services):
     # sets the  path from which all scripts are run
     script_path = os.path.join(os.getcwd(), sys.argv[0])
     msg = ''
+    params_XML = None
     reports_dir = ''
+    crontabs_dir = ''
+    log_dir = ''
+    log_file = ''
 
     def __init__(self, config_json, backupset_json, storageset_json, fileset_json):
         """
         This method constructs the CommonOS class object with the basic
         methods needed to setup all script runs
         """
-        super(OsServices, self).__init__()
+        super().__init__()
         self.config_json = config_json
         self.backupset_json = backupset_json
         self.storageset_json = storageset_json
         self.fileset_json = fileset_json
         self.setReportDir()  # set the reports dir path
+        self.setLogDir()  # set the logs dir path
+        self.setCronDir()  # the cron dir under UNIX/LINUX
 
-    def start_template(self, parameter_list, args):
+    def display_template(self, parameter_list, args):
         """
-        This method takes the list of cmd line args passed
-        and opens the running script in a similar view
+        This method takes a list of cmd line args
+        passed and displays each running script in a similar view
         """
-        print(f'{self.date()}: Extracting input Params:', *parameter_list)
         logger_services.info(self, f''"Extracting input params: {}".format(' '.join(map(str, parameter_list))))
         return None
 
@@ -76,6 +80,28 @@ class OsServices(logger_services):
         """
         return self.reports_dir
 
+    def setCronDir(self):
+        """
+        This method sets the cron  directory
+        """
+        self.crontabs_dir = os.path.join(str(Path.home()), 'crontabs')
+
+        if not os.path.isdir(self.crontabs_dir):
+            os.makedirs(self.crontabs_dir)
+
+            if not os.path.exists(self.crontabs_dir):
+                self.msg = 'Initial setup of crontab dir failed, exiting script run!'
+                print(f'{self.date()}: {self.msg}')
+                logger_services.error(self, self.msg)
+                sys.exit(1)
+
+    def getCronDir(self):
+        """
+        This method returns the cron
+        directory set on the class
+        """
+        return self.crontabs_dir
+
     def haltScript(self):
         """
         This method stop the script  from executing if the
@@ -85,18 +111,6 @@ class OsServices(logger_services):
         print(f'{self.date()}: {self.msg}')
         logger_services.error(self, self.msg)
         return None
-
-    def getHostName(self):
-        """
-        This method returns the hostname of the machine
-        """
-        try:
-            hostname = socket.gethostname()
-        except Exception as error:
-            print(f'{self.date()}: Cannot lookup hostname..see the following error')
-            raise error
-        else:
-            return hostname
 
     @staticmethod
     def date():
@@ -112,27 +126,40 @@ class OsServices(logger_services):
         """
         return datetime.datetime.now().strftime('%Y%m%d')
 
-    @staticmethod
-    def getScriptName():
+    def getIpAddress(self):
         """
-        This method returns the script name
+        This method returns the IP address of the host
         """
-        return str(os.path.basename(sys.argv[0])).split('.')[0]
+        try:
+            ip_obj = socket.gethostbyname_ex(self.getHostName())
+            ip_list = [ip for ip in ip_obj[2]]
+        except Exception as error:
+            print(f'{self.date()}: Cannot lookup IP address..see the following error')
+            raise error
+        else:
+            return ip_list
 
-    @staticmethod
-    def separationBar():
+    def scriptRunCheck(self):
         """
-        This method returns a separation
-        bar to be used as part of
-        the common template
+        This method checks if 
+        the script about to be run is 
+        already running against the instance
+        and returns a boolean value
         """
-        return 75*f'='
+        pass
 
-    @staticmethod
-    def separationBar2():
-        """
-        This method returns a separation
-        bar to be used as part of
-        the common template
-        """
-        return 75*f'#'
+    def startScriptLine(self):
+        """This method introduces the script
+        that is about to be run and returns
+        it in a variable to be called as
+        apart of the Common Template"""
+        if self.whichOs() != 'Windows':
+            self.script_path = os.path.normpath(os.path.join(os.popen("pwd").read().strip(
+                '\n'), str(sys.argv[0])))  # sets the script path for non Windows OS
+            # checks if the script exist in the location before trying to run it
+            if not os.path.isfile(self.script_path):
+                print('No such script name in toolkit folder...exiting')
+                sys.exit(1)
+
+        script_start = f'\n{self.separationBar()} \n Starting script {self.script_path} \n{self.separationBar()}'
+        return script_start

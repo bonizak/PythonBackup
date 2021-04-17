@@ -21,13 +21,13 @@ class LoggerServices:
     Logging: none
     
     """
-
     __author__ = "Barry Onizak"
     __version__ = "1.14"
 
     # # # # # End of header # # # #
-    log_file = ""
-    log_level = "DEBUG"
+
+    def __init__(self):
+        self.log_file = self.setLogFile()
 
     @staticmethod
     def whichOs():
@@ -55,13 +55,15 @@ class LoggerServices:
         """
         This method sets log file to be written to for each script run
         """
-        return os.path.join(self.getLogDir(),  f'{self.getScriptName()}.{self.file_date()}.log')
+        return os.path.join(self.getLogDir(),
+                            f'{str(os.path.basename(sys.argv[0])).replace(".py", "")}.{self.file_date()}.log')
 
     def getLogDir(self):
         """
-        This method sets the logs directory
+        This method sets the logs
+        directory based on the OS
         """
-        log_dir = os.path.join(str(Path.home()), 'logs', f'{self.getScriptName()}')
+        log_dir = os.path.join(str(Path.home()), 'logs', self.getScriptName())
 
         if os.path.isdir(log_dir):
             return log_dir
@@ -74,22 +76,31 @@ class LoggerServices:
             else:
                 return log_dir
 
-    def getLogger(self):
+    def getLogger(self, name, config_json):
         """
-        This method creates and returns a logger object used to log each
-        script run
+        This method creates and returns a object used to log each script run
         """
-        self.log_file = self.setLogFile()
         self.openlogfile()
-        logger = logging.getLogger(sys.argv[0].strip(".\\"))
-        logging.basicConfig(filename=self.log_file, level=self.log_level,
+        log_level = self.get_log_level(config_json)
+        # logger = logging.getLogger(sys.argv[0].strip(".\\"))
+        logger = logging.getLogger(name)
+        logging.basicConfig(filename=self.log_file, level=log_level,
                             format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
 
         return logger
 
-    def openlogfile(self):
-        """ This method opens the logfile and prepends the starting info"""
+    def get_log_level(self, json_in):
+        log_level = "DEBUG"
+        for major_key in json_in:
+            if "Config" in major_key:
+                for cfg_Set in json_in[major_key]:
+                    for key in cfg_Set:
+                        if "LOG_LEVEL" in key:
+                            log_level = cfg_Set["LOG_LEVEL"]
+        return log_level
 
+    def openlogfile(self):
+        """ This method opens the logfile and prepends the starting info """
         try:
             if os.path.exists(self.log_file):
                 fo = open(self.log_file, 'a', encoding='utf-8')
@@ -109,8 +120,8 @@ class LoggerServices:
     @staticmethod
     def getScriptName():
         """
-        This method returns the script name
-        """
+        This method returns the script name        """
+
         return str(os.path.basename(sys.argv[0])).split('.')[0]
 
     def startScriptLine(self):
@@ -128,7 +139,7 @@ class LoggerServices:
         """
         This method returns a 30 char separation bar
         """
-        return 30*f'='
+        return 30 * f'='
 
     def critical(self, msg):
         """
