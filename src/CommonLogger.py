@@ -1,9 +1,7 @@
 import datetime
 import logging
-import platform
-import sys
 import os
-
+import sys
 from pathlib import Path
 
 
@@ -22,20 +20,12 @@ class LoggerServices:
     
     """
     __author__ = "Barry Onizak"
-    __version__ = "1.14"
+    __version__ = "0.01"
 
     # # # # # End of header # # # #
 
     def __init__(self):
         self.log_file = self.setLogFile()
-
-    @staticmethod
-    def whichOs():
-        """
-        This method returns a string
-        of the current OS type
-        """
-        return platform.system()
 
     @staticmethod
     def date():
@@ -47,7 +37,7 @@ class LoggerServices:
     @staticmethod
     def file_date():
         """
-            This method returns a formatted date string in YYYYMMDD for appending to file names
+        This method returns a formatted date string in YYYYMMDD for appending to file names
         """
         return datetime.datetime.now().strftime('%Y%m%d')
 
@@ -60,8 +50,7 @@ class LoggerServices:
 
     def getLogDir(self):
         """
-        This method sets the logs
-        directory based on the OS
+        This method sets the logs directory
         """
         log_dir = os.path.join(str(Path.home()), 'logs', self.getScriptName())
 
@@ -90,6 +79,9 @@ class LoggerServices:
         return logger
 
     def get_log_level(self, json_in):
+        """
+        This method gets the log_level setting from the config_json
+        """
         log_level = "DEBUG"
         for major_key in json_in:
             if "Config" in major_key:
@@ -100,7 +92,9 @@ class LoggerServices:
         return log_level
 
     def openlogfile(self):
-        """ This method opens the logfile and prepends the starting info """
+        """
+        This method opens the logfile and prepends the starting info
+        """
         try:
             if os.path.exists(self.log_file):
                 fo = open(self.log_file, 'a', encoding='utf-8')
@@ -120,12 +114,14 @@ class LoggerServices:
     @staticmethod
     def getScriptName():
         """
-        This method returns the script name        """
-
+        This method returns the script name
+        """
         return str(os.path.basename(sys.argv[0])).split('.')[0]
 
     def startScriptLine(self):
-        """This method returns the script logfile opening info """
+        """
+        This method returns the script logfile opening info
+        """
         script_path = os.path.normpath(os.path.join(os.popen("pwd").read().strip('\n'), str(sys.argv[0])))
         if not os.path.isfile(script_path):
             print('No such script name in toolkit folder...exiting')
@@ -143,7 +139,7 @@ class LoggerServices:
 
     def critical(self, msg):
         """
-        This method takes a message logs it as a
+        This method takes a message and logs it as a
         CRITICAL to the script run log
         """
         logging.critical(msg)
@@ -151,7 +147,7 @@ class LoggerServices:
 
     def error(self, msg):
         """
-        This method takes a message logs it as an
+        This method takes a message and logs it as an
         ERROR  to the script run log
         """
         logging.error(msg)
@@ -159,7 +155,7 @@ class LoggerServices:
 
     def warn(self, msg):
         """
-        This method takes a message logs it as an
+        This method takes a message and logs it as an
         WARNING to the script run log
         """
         logging.warning(msg)
@@ -167,7 +163,7 @@ class LoggerServices:
 
     def info(self, msg):
         """
-        This method takes a message logs it as an
+        This method takes a message and logs it as an
         INFO to the script run log
         """
         logging.info(msg)
@@ -175,7 +171,7 @@ class LoggerServices:
 
     def debug(self, msg):
         """
-        This method takes a message logs it as a
+        This method takes a message and logs it as a
         DEBUG message to the script run log
         """
         logging.debug(msg)
@@ -183,7 +179,7 @@ class LoggerServices:
 
     def notset(self, msg):
         """
-        This method takes a message logs it as a
+        This method takes a message and logs it as a
         NOTSET message to the script run log
         """
         logging.log(self, msg)
