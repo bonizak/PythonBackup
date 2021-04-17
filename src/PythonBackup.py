@@ -34,9 +34,6 @@ class PythonBackup(logger_services, os_services):
             parser.add_argument(
                 "frequency",
                 help=f'Pass the backup frequency from DAILY, WEEKLY, MONTHLY, or ARCHIVE')
-
-            # group_0 = parser.add_mutually_exclusive_group()
-            # group_1 = parser.add_mutually_exclusive_group()
             self.args = parser.parse_args()
         except Exception as e:
             print(
@@ -116,7 +113,6 @@ class PythonBackup(logger_services, os_services):
                     logger_services.info(self, f'Back up of Backup Set Name {backupset_name} '
                                                f'into {archive_file} '
                                                f'returned {archive_rc}\n')
-
                 # loop thru backup sets
             # end of if BackupSets
         # end of major_key loop
