@@ -12,9 +12,9 @@ from CommonLogger import LoggerServices as logger_services
 from CommonOs import OsServices as os_services
 
 
-class PythonBackup(logger_services, os_services):
+class PythonBackup(os_services):
     def __init__(self, config_json, backupset_json, storageset_json, fileset_json):
-        super().__init__()
+        # super().__init__()
         self.config_json = config_json
         self.backupset_json = backupset_json
         self.storageset_json = storageset_json

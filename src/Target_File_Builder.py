@@ -7,9 +7,9 @@ from CommonOs import OsServices as os_services
 """ This package contains methods to roll a provided number of files to archive"""
 
 
-class Target_File_Builder(logger_services, os_services):
+class Target_File_Builder(os_services):
     def __init__(self, archive_target_file, versions):
-        super().__init__()
+        # super().__init__()
         self.versions = versions
         self.archive_target_file = archive_target_file
         self.create_target_file()
