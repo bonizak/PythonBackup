@@ -119,6 +119,7 @@ class LoggerServices:
         """
         This method opens the logfile and prepends the starting info
         """
+        self.log_file = self.setLogFile()
         try:
             if os.path.exists(self.log_file):
                 fo = open(self.log_file, 'a', encoding='utf-8')
