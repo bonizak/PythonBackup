@@ -118,7 +118,7 @@ class PythonBackup(os_services):
         # end of major_key loop
 
     def load_config(self):
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(os.curdir)), "resource")
+        resource_path = os.path.join(os.path.dirname(self.get_script_path()), "resource")
         json_in_file = ""
         try:
             json_in_file = f'{resource_path}/config.json'
@@ -130,7 +130,7 @@ class PythonBackup(os_services):
             sys.exit(1)
 
     def load_json(self):
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(os.curdir)), "resource")
+        resource_path = os.path.join(os.path.dirname(self.get_script_path()), "resource")
         json_in_file = ""
         try:
             json_in_file = f'{resource_path}/config.json'
@@ -152,6 +152,9 @@ class PythonBackup(os_services):
         except FileNotFoundError as fnfe:
             logger_services.critical(self, f" {fnfe}: Unable to find {json_in_file}")
             sys.exit(1)
+
+    def get_script_path(self):
+        return os.path.join(os.path.dirname(sys.argv[0]))
 
     def get_backupset_json(self):
         return self.backupset_json

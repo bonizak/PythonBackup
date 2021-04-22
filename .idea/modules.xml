@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/CaladanBackup.iml" filepath="$PROJECT_DIR$/.idea/CaladanBackup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PythonBackup.iml" filepath="$PROJECT_DIR$/.idea/PythonBackup.iml" />
     </modules>
   </component>
 </project>
