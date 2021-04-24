@@ -12,9 +12,9 @@ from CommonLogger import LoggerServices as logger_services
 from CommonOs import OsServices as os_services
 
 
-class PythonBackup(logger_services, os_services):
+class PythonBackup(os_services):
     def __init__(self, config_json, backupset_json, storageset_json, fileset_json):
-        super().__init__()
+        #super().__init__()
         self.config_json = config_json
         self.backupset_json = backupset_json
         self.storageset_json = storageset_json
@@ -67,10 +67,10 @@ class PythonBackup(logger_services, os_services):
                     include_files_list = []
                     exclude_files_list = []
                     self.skipping = True
-                    print(buSet)
                     for key in buSet:
                         if "BackupSetName" in key:
                             backupset_name = buSet["BackupSetName"]
+                            logger_services.info(self, f'Running BackupSet {backupset_name} ')
                         if "StorageSetName" in key:
                             storage_path = self.storage_path_getter(buSet["StorageSetName"])
                             # storage_set_name = buSet["StorageSetName"]
@@ -95,11 +95,10 @@ class PythonBackup(logger_services, os_services):
                                               f"Storage Path \'{storage_path}\' does not exist.")
                         continue
                     else:
-                        logger_services.info(self, f'Running BackupSet {backupset_name} '
-                                                   f'for FileSet {file_set_name} '
-                                                   f'using StoragePath {storage_path}')
-                        logger_services.debug(self, f' Includes {include_files_list}')
-                        logger_services.debug(self, f' Excludes {exclude_files_list}')
+                        logger_services.info(self, f' FileSet {file_set_name} '
+                                                   f' StoragePath {storage_path}')
+                        logger_services.debug(self, f'  Includes {include_files_list}')
+                        logger_services.debug(self, f'  Excludes {exclude_files_list}')
 
                     # remove any excluded files from the includes list
                     if len(exclude_files_list) > 0:
@@ -190,8 +189,11 @@ class PythonBackup(logger_services, os_services):
                     for key in sSet:
                         if "FileSetName" in key and filesetname_needle in sSet[key]:
                             for fs in sSet["IncludePaths"]:
-                                fs_includes.append(fs)
-
+                                if os.path.exists(fs):
+                                    fs_includes.append(fs)
+                                else:
+                                    self.msg = f'  File Set {fs} does not exist. Remove it from FileSets.json'
+                                    logger_services.error(self, self.msg)
         return fs_includes
 
     def fileset_excludes_getter(self, filesetname_needle):
