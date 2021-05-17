@@ -13,7 +13,7 @@ from CommonOs import OsServices as os_services
 
 
 class PythonBackup(os_services):
-    def __init__(self, config_json, backupset_json, storageset_json, fileset_json):
+    def __init__(self, config_json=None, backupset_json=None, storageset_json=None, fileset_json=None):
         #super().__init__()
         self.config_json = config_json
         self.backupset_json = backupset_json
@@ -31,12 +31,8 @@ class PythonBackup(os_services):
             parser = argparse.ArgumentParser(prog=str(sys.argv[0]),
                                              usage='%(prog)s Backups a database or a list of databases in the mode '
                                                    'specified.')
-            parser.add_argument(
-                "frequency",
-                help=f'Pass the backup frequency from DAILY, WEEKLY, MONTHLY, or ARCHIVE')
-
-            # group_0 = parser.add_mutually_exclusive_group()
-            # group_1 = parser.add_mutually_exclusive_group()
+            parser.add_argument("frequency",
+                help=f'Pass the backup frequency from DAILY, WEEKLY, MONTHLY, ARCHIVE or ANY')
             self.args = parser.parse_args()
         except Exception as e:
             print(
@@ -44,11 +40,10 @@ class PythonBackup(os_services):
         else:
             return self.args
 
-    def run_object(self, frequency):
-        uc_frequency = frequency.upper()
-        logger_services.info(self, f'Starting {os.uname()[1]} backup')
+    def run_object(self):
+        #logger_services.info(self, f'Starting {os.uname()[1]} backup')
         self.load_json()
-        self.backup_start(uc_frequency)
+        self.backup_start(str(self.args.frequency).upper())
         logger_services.info(self, f'Completed {os.uname()[1]} backup')
 
     def backup_start(self, frequency):
@@ -62,7 +57,6 @@ class PythonBackup(os_services):
                     backupset_name = None
                     file_set_name = None
                     storage_path = None
-                    # storage_set_name = None
                     backup_versions = 1
                     include_files_list = []
                     exclude_files_list = []
@@ -70,10 +64,9 @@ class PythonBackup(os_services):
                     for key in buSet:
                         if "BackupSetName" in key:
                             backupset_name = buSet["BackupSetName"]
-                            logger_services.info(self, f'Running BackupSet {backupset_name} ')
+                            logger_services.info(self, f'Running BackupSet \'{backupset_name}\' ')
                         if "StorageSetName" in key:
                             storage_path = self.storage_path_getter(buSet["StorageSetName"])
-                            # storage_set_name = buSet["StorageSetName"]
                         if "FileSetName" in key:
                             include_files_list = self.fileset_includes_getter(buSet["FileSetName"])
                             exclude_files_list = self.fileset_excludes_getter(buSet["FileSetName"])
@@ -95,10 +88,10 @@ class PythonBackup(os_services):
                                               f"Storage Path \'{storage_path}\' does not exist.")
                         continue
                     else:
-                        logger_services.info(self, f' FileSet {file_set_name} '
-                                                   f' StoragePath {storage_path}')
-                        logger_services.debug(self, f'  Includes {include_files_list}')
-                        logger_services.debug(self, f'  Excludes {exclude_files_list}')
+                        logger_services.info(self, f' FileSet: {file_set_name} ')
+                        logger_services.info(self,  f' StoragePath: {storage_path}')
+                        logger_services.debug(self, f'  Includes: {include_files_list} ')
+                        logger_services.debug(self, f'  Excludes: {exclude_files_list}')
 
                     # remove any excluded files from the includes list
                     if len(exclude_files_list) > 0:
@@ -115,13 +108,12 @@ class PythonBackup(os_services):
                     logger_services.info(self, f'Back up of Backup Set Name {backupset_name} '
                                                f'into {archive_file} '
                                                f'returned {archive_rc}\n')
-
                 # loop thru backup sets
             # end of if BackupSets
         # end of major_key loop
 
     def load_config(self):
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(os.curdir)), "resource")
+        resource_path = os.path.join(os.path.dirname(os.path.abspath( __file__ )), "..", "resource")
         json_in_file = ""
         try:
             json_in_file = f'{resource_path}/config.json'
@@ -133,7 +125,7 @@ class PythonBackup(os_services):
             sys.exit(1)
 
     def load_json(self):
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(os.curdir)), "resource")
+        resource_path = os.path.join(os.path.dirname(os.path.abspath( __file__ )), "..", "resource")
         json_in_file = ""
         try:
             json_in_file = f'{resource_path}/config.json'
@@ -212,54 +204,6 @@ class PythonBackup(os_services):
         return fs_excludes
 
     @staticmethod
-    def getScriptName():
-        """
-        This method returns the script name
-        """
-
-        return str(os.path.basename(sys.argv[0])).split('.')[0]
-
-    @staticmethod
-    def file_date():
-        """This method returns a formatted string of the date in YYYYMMDD format"""
-        return datetime.datetime.now().strftime('%Y%m%d')
-
-    @staticmethod
-    def date():
-        """This method returns a formatted string of the date in YYYYMMDDhhmmss format"""
-        return datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
-
-    def getHostName(self):
-        """
-        This method returns the hostname of the machine
-        """
-        try:
-            hostname = socket.gethostname()
-        except Exception as error:
-            print(f'{self.date()}: Cannot lookup hostname..see the following error')
-            raise error
-        else:
-            return hostname
-
-    @staticmethod
-    def separationBar():
-        """
-        This method returns a separation
-        bar to be used as part of
-        the common template
-        """
-        return 75*f'*'
-
-    @staticmethod
-    def separationBar2():
-        """
-        This method returns a separation
-        bar to be used as part of
-        the common template
-        """
-        return 75*f'#'
-
-    @staticmethod
     def is_file_older_than_x_days(file, days=1):
         file_time = os.path.getmtime(file)
         # Check against 24 hours
@@ -280,9 +224,9 @@ class PythonBackup(os_services):
 
 # =================================
 if __name__ == '__main__':
-    obj = PythonBackup(None, None, None, None)
-    config_json = obj.load_config()
-    obj.getLogger(__name__, config_json)
+    obj = PythonBackup()
     args = obj.parseCommandLine()
-    obj.display_template(sys.argv[1:], args)
-    obj.run_object(sys.argv[1])
+    obj.getLogger(__name__, obj.load_config())
+    obj.starting_template(sys.argv[1:], args)
+    obj.run_object()
+    obj.ending_template(sys.argv[1:], args)

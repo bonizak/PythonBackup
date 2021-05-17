@@ -1,5 +1,6 @@
 import os
 import re
+import time
 
 from CommonLogger import LoggerServices as logger_services
 from CommonOs import OsServices as os_services
@@ -22,14 +23,16 @@ class Target_File_Builder(os_services):
         atf_list = []
         logger_services.debug(self, f'Looking for {archive_target_basename} files in {archive_target_filename_path}')
 
-        # remove any excessive archive target files
+        # remove any excessive archive target files older than versions * frequency period
         if os.path.isdir(archive_target_filename_path):
             atf_list = self.atfp_scan(archive_target_filename_path)
             while len(atf_list) >= self.versions:
                 if len(atf_list) > 0:
                     # equal to or exceeded versions count - delete the oldest file
                     atf_eldest = os.path.join(archive_target_filename_path, sorted(atf_list)[0])
-                    logger_services.debug(self, f'Deleting {atf_eldest}')
+                    # if it is at least versions * frequency period old
+                    #if os.stat(atf_eldest).st_ctime
+                    logger_services.info(self, f'Purging oldest file {atf_eldest}')
                     os.remove(atf_eldest)
                     atf_list = self.atfp_scan(archive_target_filename_path)
                 else:
@@ -58,3 +61,9 @@ class Target_File_Builder(os_services):
             for atf in atf_list:
                 logger_services.debug(self, f'  {atf}')
         return atf_list
+
+    @staticmethod
+    def is_file_older_than_x_days(file, days=1):
+        file_time = os.path.getmtime(file)
+        # Check against 24 hours
+        return (time.time() - file_time) / 3600 > 24 * days

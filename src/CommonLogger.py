@@ -1,9 +1,7 @@
 import datetime
 import logging
-import platform
-import sys
 import os
-
+import sys
 from pathlib import Path
 
 
@@ -72,12 +70,28 @@ class LoggerServices:
         """
         self.log_file = self.setLogFile()
         log_level = self.get_log_level(config_json)
-        # logger = logging.getLogger(sys.argv[0].strip(".\\"))
         logger = logging.getLogger(name)
         logging.basicConfig(filename=self.log_file, level=log_level,
                             format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
-
+        self.openlogfile()
         return logger
+
+    def starting_template(self, parameter_list, args):
+        """
+        This method takes a list of cmd line args
+        passed and displays each running script in a similar view
+        """
+        self.info(f'Starting {self.getScriptName()}')
+        self.info(f"Extracting input params: {(' '.join(map(str, parameter_list)))}")
+        return None
+
+    def ending_template(self, parameter_list, args):
+        """
+        This method takes a list of cmd line args
+        passed and displays each running script in a similar view
+        """
+        self.info(f'End of {self.getScriptName()}\n\n')
+        return None
 
     def get_log_level(self, json_in):
         """
@@ -134,9 +148,9 @@ class LoggerServices:
     @staticmethod
     def separationBar():
         """
-        This method returns a 30 char separation bar
+        This method returns a 90 char separation bar
         """
-        return 30 * f'='
+        return 90 * f'='
 
     def critical(self, msg):
         """
@@ -176,12 +190,4 @@ class LoggerServices:
         DEBUG message to the script run log
         """
         logging.debug(msg)
-        return None
-
-    def notset(self, msg):
-        """
-        This method takes a message and logs it as a
-        NOTSET message to the script run log
-        """
-        logging.log(self, msg)
         return None

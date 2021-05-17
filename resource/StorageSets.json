@@ -1,35 +1,113 @@
 {
-  "ServerName": "li-6f103b4c-22af-11b2-a85c-d46026ec3c59.ibm.com",
+  "ServerName": "caladan-2004",
   "StorageSets": [
     {
       "id": 0,
-      "StorageSetName": "HomeRoot",
-      "Device": "USB-Stick",
-      "StoragePath": "/run/media/bonizak/SECURITY/backups/HomeRoot"
+      "StorageSetName": "ArchivesAlbums",
+      "Device": "DISK",
+      "StoragePath": "/Archives/Albums"
     },
     {
-      "id": 0,
-      "StorageSetName": "APPData",
-      "Device": "USB-Stick",
-      "StoragePath": "/run/media/bonizak/SECURITY/backups/APPData"
-    },
-    {
-      "id": 0,
-      "StorageSetName": "DevWorkSpace",
-      "Device": "USB-Stick",
-      "StoragePath": "/run/media/bonizak/SECURITY/backups/DevWorkSpace"
+      "id": 1,
+      "StorageSetName": "ArchivesSoftware",
+      "Device": "DISK",
+      "StoragePath": "/Archives/Software"
     },
     {
       "id": 2,
-      "StorageSetName": "Documents",
-      "Device": "USB-Stick",
-      "StoragePath": "/run/media/bonizak/SECURITY/backups/Documents"
+      "StorageSetName": "AVMediaLibrary",
+      "Device": "DISK",
+      "StoragePath": "/AVMedia/Library"
     },
     {
-      "id": 2,
-      "StorageSetName": "Notes",
-      "Device": "USB-Stick",
-      "StoragePath": "/run/media/bonizak/SECURITY/backups/Notes"
+      "id": 3,
+      "StorageSetName": "AVMediaMovies",
+      "Device": "DISK",
+      "StoragePath": "/AVMedia/Movies"
+    },
+    {
+      "id": 4,
+      "StorageSetName": "AVMediaVideos",
+      "Device": "DISK",
+      "StoragePath": "/AVMedia/Videos"
+    },
+    {
+      "id": 5,
+      "StorageSetName": "ArchivesCaladan",
+      "Device": "DISK",
+      "StoragePath": "/Backups/Archives/Caladan"
+    },
+    {
+      "id": 6,
+      "StorageSetName": "ArchivesDevApps",
+      "Device": "DISK",
+      "StoragePath": "/Backups/Archives/DevApps"
+    },
+    {
+      "id": 7,
+      "StorageSetName": "Archivesgit",
+      "Device": "DISK",
+      "StoragePath": "/Backups/Archives/git"
+    },
+    {
+      "id": 8,
+      "StorageSetName": "ArchivesLibrary",
+      "Device": "DISK",
+      "StoragePath": "/Backups/Archives/Library"
+    },
+    {
+      "id": 9,
+      "StorageSetName": "ArchivesMedia",
+      "Device": "DISK",
+      "StoragePath": "/Backups/Archives/Media"
+    },
+    {
+      "id": 10,
+      "StorageSetName": "ArchivesVM",
+      "Device": "DISK",
+      "StoragePath": "/Backups/Archives/VM"
+    },
+    {
+      "id": 11,
+      "StorageSetName": "AVMediaAlbums",
+      "Device": "DISK",
+      "StoragePath": "/Backups/AVMedia/Albums"
+    },
+    {
+      "id": 12,
+      "StorageSetName": "AVMediaMedia",
+      "Device": "DISK",
+      "StoragePath": "/Backups/AVMedia/Media"
+    },
+    {
+      "id": 13,
+      "StorageSetName": "AVMediaMusic",
+      "Device": "DISK",
+      "StoragePath": "/Backups/AVMedia/Music"
+    },
+    {
+      "id": 14,
+      "StorageSetName": "CaladanDocuments",
+      "Device": "DISK",
+      "StoragePath": "/Backups/Caladan/Documents"
+    },
+    {
+      "id": 15,
+      "StorageSetName": "CaladanHome",
+      "Device": "DISK",
+      "StoragePath": "/Backups/Caladan/Home"
+    },
+    {
+      "id": 16,
+      "StorageSetName": "MySQL",
+      "Device": "DISK",
+      "StoragePath": "/Backups/Caladan/MySQL"
+    },
+    {
+      "id": 17,
+      "StorageSetName": "DevApps",
+      "Device": "DISK",
+      "StoragePath": "/Backups/DevApps"
     }
   ]
 }

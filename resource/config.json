@@ -1,23 +1,22 @@
 {
-  "ServerName": "li-6f103b4c-22af-11b2-a85c-d46026ec3c59.ibm.com",
+  "ServerName": "caladan-2004",
   "Config": [
-    {
-    "CONFIG_RELEASE": "2.0",
-    "BACKUP_FREQUENCIES": [
+  {
+  "CONFIG_RELEASE": "2.0",
+  "BACKUP_FREQUENCIES": [
   	  "DAILY",
   	  "WEEKLY",
   	  "MONTHLY",
   	  "ARCHIVE"
-  	],
+  ],
   "STORAGE_DEVICE_TYPES":[
   	  "DISK",
   	  "USB-STICK",
   	  "TAPE"
   	],
   "LOG_LEVEL": "INFO",
-  "Spreadsheet_Report": "/home/bonizak/Documents/General/Backuplist.xlsx",
   "BACKUP_EXT": ".tgz",
-  "BACKUP_HOME": "/run/media/bonizak/SECURITY/backups"
+  "BACKUP_HOME": "/Backups"
   }
   ]
 }

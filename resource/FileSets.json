@@ -1,19 +1,14 @@
 {
-  "ServerName": "li-6f103b4c-22af-11b2-a85c-d46026ec3c59.ibm.com",
+  "ServerName": "caladan-2004",
   "FileSets": [
     {
       "id": 0,
-      "FileSetName": "HomeRoot",
+      "FileSetName": "AndroidSpace",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/home/bonizak/bin",
-        "/home/bonizak/Desktop",
-        "/home/bonizak/logs",
-        "/home/bonizak/Pictures",
-        "/home/bonizak/Public",
-        "/home/bonizak/reports",
-        "/home/bonizak/Templates"
+        "/DevApps/Android",
+        "/DevApps/AndroidStudio_Space"
       ],
       "ExcludePaths": [
         ""
@@ -21,11 +16,39 @@
     },
     {
       "id": 1,
-      "FileSetName": "APPData",
+      "FileSetName": "ArchivedAlbum",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/home/bonizak/APPData/gitRepo"
+        "/Archives/PixBackup",
+        "/Archives/albums/1978",
+        "/Archives/albums/1985",
+        "/Archives/albums/1987",
+        "/Archives/albums/1989",
+        "/Archives/albums/1990",
+        "/Archives/albums/1992",
+        "/Archives/albums/1994",
+        "/Archives/albums/1995",
+        "/Archives/albums/1997",
+        "/Archives/albums/1998",
+        "/Archives/albums/1999",
+        "/Archives/albums/2000",
+        "/Archives/albums/2001",
+        "/Archives/albums/2002",
+        "/Archives/albums/2003",
+        "/Archives/albums/2004",
+        "/Archives/albums/2005",
+        "/Archives/albums/2006",
+        "/Archives/albums/2007",
+        "/Archives/albums/2008",
+        "/Archives/albums/2009",
+        "/Archives/albums/2010",
+        "/Archives/albums/2011",
+        "/Archives/albums/2012",
+        "/Archives/albums/For Sale",
+        "/Archives/albums/Jeff and Mel",
+        "/Archives/albums/kimeconizakweb",
+        "/Archives/albums/schick"
       ],
       "ExcludePaths": [
         ""
@@ -33,13 +56,16 @@
     },
     {
       "id": 2,
-      "FileSetName": "Apps",
+      "FileSetName": "ArchivedCalibre\t",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/home/bonizak/Apps/eclipse",        
-        "/home/bonizak/Apps/giteye",
-        "/home/bonizak/Apps/pycharm-community-2020.3.2"
+        "/Archives/CalibreLibraries/LocalCalibreLibrary",
+        "/Archives/CalibreLibraries/SciFiCalibre",
+        "/Archives/CalibreLibraries/StarWarsBooks",
+        "/Archives/CalibreLibraries/StarWarsCalibre",
+        "/Archives/CalibreLibraries/TestCalibre",
+        "/Archives/CalibreLibraries/WebDevCalibre"
       ],
       "ExcludePaths": [
         ""
@@ -47,18 +73,22 @@
     },
     {
       "id": 3,
-      "FileSetName": "DevWorkSpace",
+      "FileSetName": "ArchivedDevAppls",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-      	  "/home/bonizak/DevWorkSpace/Dev-Db2-PythonToolkit-master",
-      	  "/home/bonizak/DevWorkSpace/Python_Space",
-      	  "/home/bonizak/DevWorkSpace/Test_Space",
-      	  "/home/bonizak/DevWorkSpace/VSCodeSpace",
-      	  "/home/bonizak/DevWorkSpace/Documents",
-      	  "/home/bonizak/DevWorkSpace/PythonProjects",
-      	  "/home/bonizak/DevWorkSpace/Replication",
-      	  "/home/bonizak/DevWorkSpace/Toolkit_Space"
+        "/Archives/APPData/Excel",
+        "/DevApps/PERL",
+        "/DevApps/DevApplications/Adobe",
+        "/DevApps/DevApplications/Algorithms",
+        "/DevApps/DevApplications/DB2KornKit",
+        "/DevApps/DevApplications/DB2PerlKit",
+        "/DevApps/DevApplications/DBTest",
+        "/DevApps/DevApplications/FaceBook_Golf",
+        "/DevApps/DevApplications/JessKmiec",
+        "/DevApps/DevApplications/PDF Toolkit",
+        "/DevApps/DevApplications/PerlRepository",
+        "/DevApps/DevApplications/smartgithg-6_0_6"
       ],
       "ExcludePaths": [
         ""
@@ -66,14 +96,19 @@
     },
     {
       "id": 4,
-      "FileSetName": "Documents",
+      "FileSetName": "ArchivedLibrary",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/home/bonizak/Documents/Db2",
-        "/home/bonizak/Documents/General",
-        "/home/bonizak/Documents/ITD",
-        "/home/bonizak/Documents/NewCo"
+        "/Archives/TecheBooks/Amazon",
+        "/Archives/TecheBooks/Casey Reas",
+        "/Archives/TecheBooks/Corphelion Interlude (by Troy Denning)",
+        "/Archives/TecheBooks/Count Dooku",
+        "/Archives/TecheBooks/David Roccheso",
+        "/Archives/TecheBooks/Enemy of the Empire 03",
+        "/Archives/TecheBooks/Invasion 00a",
+        "/Archives/TecheBooks/Kostas Terzidis",
+        "/Archives/TecheBooks/Mark Coker"
       ],
       "ExcludePaths": [
         ""
@@ -81,23 +116,15 @@
     },
     {
       "id": 5,
-      "FileSetName": "Accounts",
+      "FileSetName": "CaladanWeb",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/home/bonizak/Documents/Accounts/Billing_RU",
-        "/home/bonizak/Documents/Accounts/Cooperators",
-        "/home/bonizak/Documents/Accounts/CRSOC",
-        "/home/bonizak/Documents/Accounts/Desjardins",
-        "/home/bonizak/Documents/Accounts/DOUs",
-        "/home/bonizak/Documents/Accounts/EIG",
-        "/home/bonizak/Documents/Accounts/General",
-        "/home/bonizak/Documents/Accounts/IFGA",
-        "/home/bonizak/Documents/Accounts/MBGov",
-        "/home/bonizak/Documents/Accounts/MoH",
-        "/home/bonizak/Documents/Accounts/MPI",
-        "/home/bonizak/Documents/Accounts/SMI",
-        "/home/bonizak/Documents/Accounts/Viarail"
+        "/Archives/audio",
+        "/Archives/copperminePix",
+        "/AVMedia/public_html",
+        "/AVMedia/web/coppermine",
+        "/DevApps/Caladan"
       ],
       "ExcludePaths": [
         ""
@@ -105,24 +132,29 @@
     },
     {
       "id": 6,
-      "FileSetName": "GTS",
+      "FileSetName": "CalibreLibrary",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/home/bonizak/Documents/GTS/Agile",
-        "/home/bonizak/Documents/GTS/AHDM",
-        "/home/bonizak/Documents/GTS/AHSDM",
-        "/home/bonizak/Documents/GTS/Archives",
-        "/home/bonizak/Documents/GTS/General",
-        "/home/bonizak/Documents/GTS/GTS-EHCS",
-        "/home/bonizak/Documents/GTS/ILC_Claim_Metrics",
-        "/home/bonizak/Documents/GTS/Interlock_Reports",
-        "/home/bonizak/Documents/GTS/LabourRates",
-        "/home/bonizak/Documents/GTS/Maximo",
-        "/home/bonizak/Documents/GTS/Metrics_CostModels",
-        "/home/bonizak/Documents/GTS/PblmChg",
-        "/home/bonizak/Documents/GTS/Security",
-        "/home/bonizak/Documents/GTS/TheNextBigThing"
+        "/AVMedia/CalibreLibraries/LocalCalibreLibrary",
+        "/AVMedia/CalibreLibraries/SciFiCalibre",
+        "/AVMedia/CalibreLibraries/StarWarsBooks",
+        "/AVMedia/CalibreLibraries/StarWarsCalibre",
+        "/AVMedia/CalibreLibraries/TestCalibre",
+        "/AVMedia/CalibreLibraries/WebDevCalibre",
+        "/home/barry/Documents/Books/StarWars_Books",
+        "/home/barry/Documents/Books/StarWars_Comics",
+        "/home/barry/Documents/Books/StarWars_LegacyoftheForceandLastoftheJedi",
+        "/home/barry/Documents/Books/StarWars_RevisedTimelineCollectionUpdate060610",
+        "/home/barry/Documents/Books/TheCompleteStarWarsEncyclopedia",
+        "/home/barry/Documents/Books/UltimateStarWarsComicCollection",
+        "/home/barry/Documents/StarWars/Dark Horse Comics - Products - Zones - Timeline_files",
+        "/home/barry/Documents/StarWars/Star Wars Books",
+        "/home/barry/Documents/StarWars/Star Wars Comics",
+        "/home/barry/Documents/StarWars/Star Wars Legacy of the Force and Last of the Jedi",
+        "/home/barry/Documents/StarWars/Star Wars Revised Timeline Collection Update 06.06.10",
+        "/home/barry/Documents/StarWars/The Complete Star Wars Encyclopedia",
+        "/home/barry/Documents/StarWars/The Star Wars Literature Compendium The New Republic -- The Empire Fights Back_files"
       ],
       "ExcludePaths": [
         ""
@@ -130,20 +162,33 @@
     },
     {
       "id": 7,
-      "FileSetName": "Personal",
+      "FileSetName": "CodeSamples",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/home/bonizak/Documents/Personal/Agile",
-        "/home/bonizak/Documents/Personal/Backup",
-        "/home/bonizak/Documents/Personal/Claim",
-        "/home/bonizak/Documents/Personal/Education",
-        "/home/bonizak/Documents/Personal/Kudos_Personal",
-        "/home/bonizak/Documents/Personal/Laptop",
-        "/home/bonizak/Documents/Personal/Paystubs",
-        "/home/bonizak/Documents/Personal/Resumes",
-        "/home/bonizak/Documents/Personal/Security",
-        "/home/bonizak/Documents/Personal/Think40"
+        "/Archives/audio",
+        "/DevApps/RoboCode",
+        "/DevApps/Rosie",
+        "/DevApps/Wingman",
+        "/DevApps/CodeSamples/CdnFoodGuide_JSON",
+        "/DevApps/CodeSamples/DevDesign",
+        "/DevApps/CodeSamples/FirstGame",
+        "/DevApps/CodeSamples/gs-accessing-data-mysql-master",
+        "/DevApps/CodeSamples/gs-uploading-files-master",
+        "/DevApps/CodeSamples/HelloTest",
+        "/DevApps/CodeSamples/JavaFX",
+        "/DevApps/CodeSamples/JTable",
+        "/DevApps/CodeSamples/LightMeter-master",
+        "/DevApps/CodeSamples/mvc-exceptions-master",
+        "/DevApps/CodeSamples/node-web-scraper-master",
+        "/DevApps/CodeSamples/owmClient-master",
+        "/DevApps/CodeSamples/p5-zip",
+        "/DevApps/CodeSamples/processing",
+        "/DevApps/CodeSamples/Spring",
+        "/DevApps/CodeSamples/steigert-libgdx-blog",
+        "/DevApps/CodeSamples/steigert-libgdx-read-only",
+        "/DevApps/CodeSamples/sweble-wikitext",
+        "/DevApps/CodeSamples/swingmvc-example-code.zip"
       ],
       "ExcludePaths": [
         ""
@@ -151,34 +196,11 @@
     },
     {
       "id": 8,
-      "FileSetName": "SSO",
+      "FileSetName": "ComputerFiles",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/home/bonizak/Documents/SSO/Automation_BigFix",
-        "/home/bonizak/Documents/SSO/BPO",
-        "/home/bonizak/Documents/SSO/Cost_Models",
-        "/home/bonizak/Documents/SSO/DBACompetencyInfo",
-        "/home/bonizak/Documents/SSO/EHCS_C4",
-        "/home/bonizak/Documents/SSO/EngagementsTransitions",
-        "/home/bonizak/Documents/SSO/Everbridge",
-        "/home/bonizak/Documents/SSO/FrameWorkBlue",
-        "/home/bonizak/Documents/SSO/GlobalCMT",
-        "/home/bonizak/Documents/SSO/GlobalDBAServices",
-        "/home/bonizak/Documents/SSO/GlobalDelivery",
-        "/home/bonizak/Documents/SSO/GlobalDMSL",
-        "/home/bonizak/Documents/SSO/GlobalDMSL-Tools",
-        "/home/bonizak/Documents/SSO/GlobalSecurity",
-        "/home/bonizak/Documents/SSO/GSAR",
-        "/home/bonizak/Documents/SSO/ILC",
-        "/home/bonizak/Documents/SSO/ISeC",
-        "/home/bonizak/Documents/SSO/Network",
-        "/home/bonizak/Documents/SSO/Process",
-        "/home/bonizak/Documents/SSO/SavedQMXLinks",
-        "/home/bonizak/Documents/SSO/SMB",
-        "/home/bonizak/Documents/SSO/SRMsSCDsDOUsSOWs",
-        "/home/bonizak/Documents/SSO/SSOArchive",
-        "/home/bonizak/Documents/SSO/TransformTransition"
+        "/home/barry/Documents/ComputerFiles"
       ],
       "ExcludePaths": [
         ""
@@ -186,47 +208,37 @@
     },
     {
       "id": 9,
-      "FileSetName": "NodesData",
+      "FileSetName": "DevAppls",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/home/bonizak/lotus/notes/data/AA-Badge-explorer-352.jpg",
-        "/home/bonizak/lotus/notes/data/AppHosting-DatabaseExperienced.png",
-        "/home/bonizak/lotus/notes/data/BDFL1.jpg",
-        "/home/bonizak/lotus/notes/data/Continuous-Engineering---Automation-Maker.png",
-        "/home/bonizak/lotus/notes/data/DSF_L2.jpg",
-        "/home/bonizak/lotus/notes/data/DSFL1.jpg",
-        "/home/bonizak/lotus/notes/data/MWDB_LSADBadge.jpg",
-        "/home/bonizak/lotus/notes/data/MWDB_LSADBadge.png",
-        "/home/bonizak/lotus/notes/data/binary.gif",
-        "/home/bonizak/lotus/notes/data/email.jpg",
-        "/home/bonizak/lotus/notes/data/error.gif",
-        "/home/bonizak/lotus/notes/data/folder.gif",
-        "/home/bonizak/lotus/notes/data/graphic.gif",
-        "/home/bonizak/lotus/notes/data/image.gif",
-        "/home/bonizak/lotus/notes/data/itilfnd.jpg",
-        "/home/bonizak/lotus/notes/data/link.gif",
-        "/home/bonizak/lotus/notes/data/movie.gif",
-        "/home/bonizak/lotus/notes/data/oldblackphone.jpg",
-        "/home/bonizak/lotus/notes/data/phone.jpg",
-        "/home/bonizak/lotus/notes/data/quote.gif",
-        "/home/bonizak/lotus/notes/data/sound.gif",
-        "/home/bonizak/lotus/notes/data/text.gif",
-        "/home/bonizak/lotus/notes/data/unknown.gif",
-        "/home/bonizak/lotus/notes/data/bonizak.id",
-        "/home/bonizak/lotus/notes/data/cert.id",
-        "/home/bonizak/lotus/notes/data/db2rythm.id",
-        "/home/bonizak/lotus/notes/data/db2udbca.id",
-        "/home/bonizak/lotus/notes/data/user.id",
-        "/home/bonizak/lotus/notes/data/bonizak.html",
-        "/home/bonizak/lotus/notes/data/populatedHTML.htm",
-        "/home/bonizak/lotus/notes/data/notes.ini",
-        "/home/bonizak/lotus/notes/data/desktop8.ndk",
-        "/home/bonizak/lotus/notes/data/bookmark.nsf",
-        "/home/bonizak/lotus/notes/data/names.nsf",
-        "/home/bonizak/lotus/notes/data/pasteInfo.nsf",
-        "/home/bonizak/lotus/notes/data/wpgmid1.nsf",
-        "/home/bonizak/lotus/notes/data/names.nsf"
+        "/DevApps/BlenderFiles",
+        "/DevApps/Mono",
+        "/DevApps/MySQL",
+        "/DevApps/Resources",
+        "/DevApps/Unity",
+        "/DevApps/DevApplications/AcousticLight",
+        "/DevApps/DevApplications/BluePrint",
+        "/DevApps/DevApplications/DataCrow",
+        "/DevApps/DevApplications/doc",
+        "/DevApps/DevApplications/expc",
+        "/DevApps/DevApplications/gs-messaging-stomp-websocket-master",
+        "/DevApps/DevApplications/Icons",
+        "/DevApps/DevApplications/Java",
+        "/DevApps/DevApplications/JavaFX",
+        "/DevApps/DevApplications/JavaTesters",
+        "/DevApps/DevApplications/jsoup-master",
+        "/DevApps/DevApplications/MainSite",
+        "/DevApps/DevApplications/Message",
+        "/DevApps/DevApplications/MySQLWB",
+        "/DevApps/DevApplications/phpdvdprofiler",
+        "/DevApps/DevApplications/PurelyCanadianDocs",
+        "/DevApps/DevApplications/Recipes",
+        "/DevApps/DevApplications/resources",
+        "/DevApps/DevApplications/SQL",
+        "/DevApps/DevApplications/SQL_Library",
+        "/DevApps/DevApplications/TechEBooks",
+        "/DevApps/DevApplications/Tips"
       ],
       "ExcludePaths": [
         ""
@@ -234,18 +246,23 @@
     },
     {
       "id": 10,
-      "FileSetName": "NotesNSF",
+      "FileSetName": "DevLibrary",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/home/bonizak/lotus/notes/data/as_BOnizak.nsf",
-        "/home/bonizak/lotus/notes/data/as_DB2RYTHM.nsf",
-        "/home/bonizak/lotus/notes/data/atchrpos_barry_onizak.nsf",
-        "/home/bonizak/lotus/notes/data/atchrpos_db2udbca.nsf",
-        "/home/bonizak/lotus/notes/data/atchtool_barry1_onizak.nsf",
-        "/home/bonizak/lotus/notes/data/BONIZAKAttachTool.nsf",
-        "/home/bonizak/lotus/notes/data/BONIZAKAttachTool_3_9.nsf",
-        "/home/bonizak/lotus/notes/data/archive/prodmet.nsf"
+        "/DevApps/DataScience",
+        "/DevApps/Documentation",
+        "/DevApps/Libraries/Android",
+        "/DevApps/Libraries/ApacheODF",
+        "/DevApps/Libraries/fluent-interface-proxy-master",
+        "/DevApps/Libraries/Gradle",
+        "/DevApps/Libraries/GWT",
+        "/DevApps/Libraries/Java",
+        "/DevApps/Libraries/jmonkeyengine",
+        "/DevApps/Libraries/kiss_fft130",
+        "/DevApps/Libraries/libgdx.audio",
+        "/DevApps/Libraries/Spring",
+        "/DevApps/Libraries/WebParser"
       ],
       "ExcludePaths": [
         ""
@@ -253,13 +270,576 @@
     },
     {
       "id": 11,
-      "FileSetName": "Joplin",
+      "FileSetName": "DevResources",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-      	  "/home/bonizak/DevWorkSpace/Joplin_Exports",
-        "/home/bonizak/Documents/Personal/Joplin",
-        "/home/bonizak/Documents/Personal/joplin_backup"
+        "/DevApps/Resources",
+        "/DevApps/TTS"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 12,
+      "FileSetName": "DevTools",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/DevApps/DevTools/giteye",
+        "/DevApps/DevTools/java-mwapi-master",
+        "/DevApps/DevTools/jsonpp-master",
+        "/DevApps/DevTools/LIBGDX-TPGUI",
+        "/DevApps/DevTools/lwgl",
+        "/DevApps/DevTools/Markdown",
+        "/DevApps/DevTools/native",
+        "/DevApps/DevTools/pagelayout1.16",
+        "/DevApps/DevTools/pdfedit-0.4.5",
+        "/DevApps/DevTools/tablelayout-master",
+        "/DevApps/DevTools/texture_unpacker_scirpt-master"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 13,
+      "FileSetName": "DevWork",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/DevApps/MustardTrooper",
+        "/DevApps/NetBeansProjects",
+        "/DevApps/ProcessingSketchBook"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 14,
+      "FileSetName": "Documents",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/barry/Documents/Career",
+        "/home/barry/Documents/Co-Op",
+        "/home/barry/Documents/DataCrowV4",
+        "/home/barry/Documents/DVDProfiler",
+        "/home/barry/Documents/Education",
+        "/home/barry/Documents/Gaming",
+        "/home/barry/Documents/GeneralDocuments",
+        "/home/barry/Documents/Health",
+        "/home/barry/Documents/HouseAndHome",
+        "/home/barry/Documents/Joplin",
+        "/home/barry/Documents/Kindle",
+        "/home/barry/Documents/LifeinGeneral",
+        "/home/barry/Documents/MyKindleContent",
+        "/home/barry/Documents/Recipes",
+        "/home/barry/Documents/Religion",
+        "/home/barry/Documents/ScannedDocuments",
+        "/home/barry/Documents/Shopping",
+        "/home/barry/Documents/Spreadsheets"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 15,
+      "FileSetName": "EclipseSpace",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/DevApps/CaladanBackup_Rev1",
+        "/DevApps/CaladanBackup_Rev2",
+        "/DevApps/CaladanBackup_Rev3",
+        "/DevApps/CourseraWork",
+        "/DevApps/Espace_Android",
+        "/DevApps/Espace_Caladan",
+        "/DevApps/Espace_Coursera",
+        "/DevApps/Espace_Java",
+        "/DevApps/Espace_jME3",
+        "/DevApps/Espace_libGDX",
+        "/DevApps/Espace_Maven",
+        "/DevApps/Espace_MTroop",
+        "/DevApps/Espace_Perl",
+        "/DevApps/Espace_Python",
+        "/DevApps/Espace_R",
+        "/DevApps/Espace_Tester"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 16,
+      "FileSetName": "Family",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/barry/Documents/Family",
+        "/home/barry/Documents/Jeffrey",
+        "/home/barry/Documents/Kathy",
+        "/home/barry/Documents/MarieOnizak",
+        "/home/barry/Documents/Michael",
+        "/home/barry/Documents/Steven",
+        "/home/barry/Documents/VeraBuss"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 17,
+      "FileSetName": "Financials",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/barry/Documents/Financials"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 18,
+      "FileSetName": "Genealogy",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/barry/Documents/Genealogy",
+        "/home/barry/Documents/LegacyFamilyTree"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 19,
+      "FileSetName": "Git",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/Archives/git/AcronymAppProvider_P3-A1",
+        "/Archives/git/android-ndk",
+        "/Archives/git/backgroundpos",
+        "/Archives/git/Backup",
+        "/Archives/git/Blox",
+        "/Archives/git/Caladan",
+        "/Archives/git/ConnectMe",
+        "/Archives/git/coursera",
+        "/Archives/git/coursera-android",
+        "/Archives/git/drop",
+        "/Archives/git/JSONBuilder2",
+        "/Archives/git/LotterySelector",
+        "/Archives/git/mediawiki",
+        "/Archives/git/mTrooperBlox",
+        "/Archives/git/NewCalBackup",
+        "/Archives/git/POSA-P3A2-1_Video",
+        "/Archives/git/POSA-P3A3_UpDownVideo",
+        "/Archives/git/POSA-P3A3_VideoClient",
+        "/Archives/git/POSA-P3A3_VideoServer",
+        "/Archives/git/POSA-P4A2b_VideoServer",
+        "/Archives/git/POSA-P4A3b_VideoClient",
+        "/Archives/git/ragdoll",
+        "/Archives/git/ragdoll.git",
+        "/Archives/git/repository",
+        "/Archives/git/ruby-processing",
+        "/Archives/git/santosh-tekuri",
+        "/Archives/git/santoshtekuri",
+        "/Archives/git/themoviedbapi",
+        "/Archives/git/tutorials",
+        "/Archives/git/WeatherServiceApp_P2-A3",
+        "/Archives/git/WebParser",
+        "/Archives/git/WebProjects"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 20,
+      "FileSetName": "HomeFiles",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/barry/.wine",
+        "/home/barry/bin",
+        "/home/barry/.gramps",
+        "/home/barry/.processing",
+        "/home/barry/.ssh",
+        "/home/barry/.unison",
+        "/home/barry/.zoom",
+        "/home/barry/crontabs",
+        "/home/barry/Desktop",
+        "/home/barry/DVD Profiler",
+        "/home/barry/logs",
+        "/home/barry/PDF_Prints",
+        "/home/barry/Public",
+        "/home/barry/Templates",
+        "/home/barry/winehome",
+        "/home/barry/WineTricks",
+        "/home/barry/.config/@joplin",
+        "/home/barry/.config/autostart",
+        "/home/barry/.config/caladanbackup",
+        "/home/barry/.config/calibre",
+        "/home/barry/.config/gnucash",
+        "/home/barry/.config/JetBrains",
+        "/home/barry/.config/joplin-desktop",
+        "/home/barry/.config/KeePass",
+        "/home/barry/.config/UMS",
+        "/home/barry/.config/variety",
+        "/home/barry/.config/VirtualBox",
+        "/home/barry/.local/share",
+        "/home/barry/.local/share/applications",
+        "/home/barry/.local/share/calibre-ebook.com",
+        "/home/barry/.local/share/gnucash",
+        "/home/barry/.local/share/JetBrains",
+        "/home/barry/.local/share/keyrings",
+        "/home/barry/.mozilla/firefox/barry.default-release",
+        "/home/barry/.thunderbird/BarryOnizak"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 21,
+      "FileSetName": "IBM",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/barry/Documents/IBM"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 22,
+      "FileSetName": "Media",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/AVMedia/Podcasts"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 23,
+      "FileSetName": "Movies",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/AVMedia/Movies/ums/Action",
+        "/AVMedia/Movies/ums/Adventure",
+        "/AVMedia/Movies/ums/Animated",
+        "/AVMedia/Movies/ums/Comedy",
+        "/AVMedia/Movies/ums/Drama",
+        "/AVMedia/Movies/ums/Other",
+        "/AVMedia/Movies/ums/SciFi",
+        "/AVMedia/Movies/ums/subs",
+        "/AVMedia/Movies/ums/Thriller",
+        "/AVMedia/Movies/ums/TV_Shows"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 24,
+      "FileSetName": "Music",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/AVMedia/Music/Audacity",
+        "/AVMedia/Music/ChromeDownloaded",
+        "/AVMedia/Music/iTunes",
+        "/AVMedia/Music/Various",
+        "/AVMedia/Music/Library/100 Greatest Guitar Solos - The Complete Songs-FLAWL3SS",
+        "/AVMedia/Music/Library/100 Hits Christmas Legends",
+        "/AVMedia/Music/Library/40 Best Christmas Songs",
+        "/AVMedia/Music/Library/Adele",
+        "/AVMedia/Music/Library/Aerosmith",
+        "/AVMedia/Music/Library/America",
+        "/AVMedia/Music/Library/Andrea Bocelli",
+        "/AVMedia/Music/Library/Andy Williams",
+        "/AVMedia/Music/Library/Beach Boys",
+        "/AVMedia/Music/Library/Berlin Philharmonic Orchestra",
+        "/AVMedia/Music/Library/Billy Joel",
+        "/AVMedia/Music/Library/Bing Crosby",
+        "/AVMedia/Music/Library/Black Sabbath",
+        "/AVMedia/Music/Library/Boney M",
+        "/AVMedia/Music/Library/Brenda Lee",
+        "/AVMedia/Music/Library/Brian Eno; Roger Eno; Marty Paich",
+        "/AVMedia/Music/Library/Celine Dion",
+        "/AVMedia/Music/Library/Celtic Woman",
+        "/AVMedia/Music/Library/Charlotte Church",
+        "/AVMedia/Music/Library/Chicago",
+        "/AVMedia/Music/Library/Chris de Burgh",
+        "/AVMedia/Music/Library/Collective Soul",
+        "/AVMedia/Music/Library/Compilations",
+        "/AVMedia/Music/Library/Crashtest Dummies",
+        "/AVMedia/Music/Library/Dave Matthews Band",
+        "/AVMedia/Music/Library/David Archuleta",
+        "/AVMedia/Music/Library/David Cook",
+        "/AVMedia/Music/Library/Dido",
+        "/AVMedia/Music/Library/Don McLean",
+        "/AVMedia/Music/Library/Downloads",
+        "/AVMedia/Music/Library/Electric Light Orchestra",
+        "/AVMedia/Music/Library/Elton John",
+        "/AVMedia/Music/Library/Elvis Presley",
+        "/AVMedia/Music/Library/Eric Carmen",
+        "/AVMedia/Music/Library/Eric Clapton",
+        "/AVMedia/Music/Library/Esthero",
+        "/AVMedia/Music/Library/Eugene Ormandy",
+        "/AVMedia/Music/Library/Eugene Ormandy Philadelphia Orchestra",
+        "/AVMedia/Music/Library/Fleetwood Mac",
+        "/AVMedia/Music/Library/Frank Sinatra",
+        "/AVMedia/Music/Library/George Harrison",
+        "/AVMedia/Music/Library/Golden Earring",
+        "/AVMedia/Music/Library/GOO GOO DOLLS",
+        "/AVMedia/Music/Library/Heart",
+        "/AVMedia/Music/Library/Inventisking",
+        "/AVMedia/Music/Library/Itzhak Perlman and Daniel Barenboim",
+        "/AVMedia/Music/Library/Jefferson Starship",
+        "/AVMedia/Music/Library/Joe Walsh",
+        "/AVMedia/Music/Library/Johann Sebastian Bach",
+        "/AVMedia/Music/Library/John Lennon",
+        "/AVMedia/Music/Library/Johnny Reid",
+        "/AVMedia/Music/Library/Josh Groban",
+        "/AVMedia/Music/Library/Journey",
+        "/AVMedia/Music/Library/Justin Hayward_John Lodge",
+        "/AVMedia/Music/Library/Justin Hayward-John Lodge",
+        "/AVMedia/Music/Library/Led Zeppelin",
+        "/AVMedia/Music/Library/Little River Band",
+        "/AVMedia/Music/Library/Matthew Good Band",
+        "/AVMedia/Music/Library/Meat Loaf",
+        "/AVMedia/Music/Library/Meatloaf",
+        "/AVMedia/Music/Library/Michael Bublé",
+        "/AVMedia/Music/Library/Monty Python",
+        "/AVMedia/Music/Library/Moody Blues",
+        "/AVMedia/Music/Library/Neil Diamond",
+        "/AVMedia/Music/Library/Neville Marriner_ Royal Concertgebouw Or",
+        "/AVMedia/Music/Library/Nirvana",
+        "/AVMedia/Music/Library/Paul \u0026 Linda McCartney",
+        "/AVMedia/Music/Library/Paul Mccartney",
+        "/AVMedia/Music/Library/Paul Simon",
+        "/AVMedia/Music/Library/Phil Collins",
+        "/AVMedia/Music/Library/Philip Glass",
+        "/AVMedia/Music/Library/Phillipe Herreweghe \u0026 Collegium Vocale G",
+        "/AVMedia/Music/Library/Pink Floyd",
+        "/AVMedia/Music/Library/Playlists",
+        "/AVMedia/Music/Library/Podcasts",
+        "/AVMedia/Music/Library/Procol Harum",
+        "/AVMedia/Music/Library/Queen",
+        "/AVMedia/Music/Library/Rafael Kubelik_ Bavarian Radio Symphony",
+        "/AVMedia/Music/Library/Robert Plant",
+        "/AVMedia/Music/Library/Rush",
+        "/AVMedia/Music/Library/Santana",
+        "/AVMedia/Music/Library/Sheryl Crow",
+        "/AVMedia/Music/Library/Smashing Pumpkins",
+        "/AVMedia/Music/Library/Smokey Robinson",
+        "/AVMedia/Music/Library/Squeeze",
+        "/AVMedia/Music/Library/Steely Dan",
+        "/AVMedia/Music/Library/Stevie Wonder",
+        "/AVMedia/Music/Library/Sting",
+        "/AVMedia/Music/Library/Styx",
+        "/AVMedia/Music/Library/Supertramp",
+        "/AVMedia/Music/Library/Tears for Fears",
+        "/AVMedia/Music/Library/The Beatles",
+        "/AVMedia/Music/Library/The Black Keys",
+        "/AVMedia/Music/Library/The Cranberries",
+        "/AVMedia/Music/Library/The Doobie Brothers",
+        "/AVMedia/Music/Library/The Doors",
+        "/AVMedia/Music/Library/The Eagles",
+        "/AVMedia/Music/Library/The Guess Who",
+        "/AVMedia/Music/Library/The Illusionist Soundtrack",
+        "/AVMedia/Music/Library/The Moody Blues",
+        "/AVMedia/Music/Library/The Mormon Tabernacle Choir",
+        "/AVMedia/Music/Library/The Raspberries",
+        "/AVMedia/Music/Library/Theo Tams",
+        "/AVMedia/Music/Library/Tool",
+        "/AVMedia/Music/Library/Toto",
+        "/AVMedia/Music/Library/Traffic",
+        "/AVMedia/Music/Library/U2",
+        "/AVMedia/Music/Library/Unknown Artist",
+        "/AVMedia/Music/Library/Various",
+        "/AVMedia/Music/Library/Various Artists",
+        "/AVMedia/Music/Library/Wings",
+        "/AVMedia/Music/Library/Yes"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 25,
+      "FileSetName": "OnizakAlbums",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/AVMedia/My Images",
+        "/AVMedia/SamsungGalaxy",
+        "/AVMedia/ScannedPics",
+        "/AVMedia/Schick-Onizak",
+        "/AVMedia/Stellarium",
+        "/AVMedia/Webcam",
+        "/AVMedia/WorkingImagesFolders",
+        "/AVMedia/OnizakAlbum/1953",
+        "/AVMedia/OnizakAlbum/1954",
+        "/AVMedia/OnizakAlbum/1959",
+        "/AVMedia/OnizakAlbum/1962",
+        "/AVMedia/OnizakAlbum/1963",
+        "/AVMedia/OnizakAlbum/1964",
+        "/AVMedia/OnizakAlbum/1966",
+        "/AVMedia/OnizakAlbum/1968",
+        "/AVMedia/OnizakAlbum/1974",
+        "/AVMedia/OnizakAlbum/1975",
+        "/AVMedia/OnizakAlbum/1977",
+        "/AVMedia/OnizakAlbum/1978",
+        "/AVMedia/OnizakAlbum/1979",
+        "/AVMedia/OnizakAlbum/1980",
+        "/AVMedia/OnizakAlbum/1982",
+        "/AVMedia/OnizakAlbum/1983",
+        "/AVMedia/OnizakAlbum/1984",
+        "/AVMedia/OnizakAlbum/1985",
+        "/AVMedia/OnizakAlbum/1986",
+        "/AVMedia/OnizakAlbum/1987",
+        "/AVMedia/OnizakAlbum/1989",
+        "/AVMedia/OnizakAlbum/1990",
+        "/AVMedia/OnizakAlbum/1991",
+        "/AVMedia/OnizakAlbum/1992",
+        "/AVMedia/OnizakAlbum/1993",
+        "/AVMedia/OnizakAlbum/1994",
+        "/AVMedia/OnizakAlbum/1995",
+        "/AVMedia/OnizakAlbum/1996",
+        "/AVMedia/OnizakAlbum/1997",
+        "/AVMedia/OnizakAlbum/1998",
+        "/AVMedia/OnizakAlbum/1999",
+        "/AVMedia/OnizakAlbum/2000",
+        "/AVMedia/OnizakAlbum/2001",
+        "/AVMedia/OnizakAlbum/2002",
+        "/AVMedia/OnizakAlbum/2003",
+        "/AVMedia/OnizakAlbum/2004",
+        "/AVMedia/OnizakAlbum/2005",
+        "/AVMedia/OnizakAlbum/2006",
+        "/AVMedia/OnizakAlbum/2007",
+        "/AVMedia/OnizakAlbum/2008",
+        "/AVMedia/OnizakAlbum/2009",
+        "/AVMedia/OnizakAlbum/2010",
+        "/AVMedia/OnizakAlbum/2011",
+        "/AVMedia/OnizakAlbum/2012",
+        "/AVMedia/OnizakAlbum/2013",
+        "/AVMedia/OnizakAlbum/2014",
+        "/AVMedia/OnizakAlbum/2015",
+        "/AVMedia/OnizakAlbum/2016",
+        "/AVMedia/OnizakAlbum/2017",
+        "/AVMedia/OnizakAlbum/2018",
+        "/AVMedia/OnizakAlbum/2019",
+        "/AVMedia/OnizakAlbum/2020",
+        "/AVMedia/OnizakAlbum/Family",
+        "/AVMedia/OnizakAlbum/Finals for the stage",
+        "/AVMedia/OnizakAlbum/HerbVeraBuss",
+        "/AVMedia/OnizakAlbum/Ian_Edward",
+        "/AVMedia/OnizakAlbum/Jason_Annette",
+        "/AVMedia/OnizakAlbum/Jeff_and_Mel",
+        "/AVMedia/OnizakAlbum/Kris",
+        "/AVMedia/OnizakAlbum/Lorna",
+        "/AVMedia/OnizakAlbum/Mels Shower",
+        "/AVMedia/OnizakAlbum/Mike_and_Jess",
+        "/AVMedia/OnizakAlbum/Schick",
+        "/AVMedia/OnizakAlbum/Tammy",
+        "/AVMedia/OnizakAlbum/VeraBuss",
+        "/home/barry/Pictures/Android",
+        "/home/barry/Pictures/Scans"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 26,
+      "FileSetName": "OnizakVideos",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/AVMedia/Pinnacle Projects",
+        "/AVMedia/Produced",
+        "/AVMedia/Videos/Captured AVI",
+        "/AVMedia/Videos/Captured DVD",
+        "/AVMedia/Videos/Captured MPEG",
+        "/AVMedia/Videos/Captured Sites",
+        "/AVMedia/Videos/CapturedRawVideos",
+        "/AVMedia/Videos/ProcessedVideos"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 27,
+      "FileSetName": "PythonWork",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/DevApps/PyCharmProjects",
+        "/DevApps/Python"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 28,
+      "FileSetName": "Security",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/home/barry/Documents/Security"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 29,
+      "FileSetName": "Software",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/Archives/DataCrowV4",
+        "/Archives/OpenSource",
+        "/Archives/PurchasedSW/ASC",
+        "/Archives/PurchasedSW/Avid",
+        "/Archives/PurchasedSW/BitDefender",
+        "/Archives/PurchasedSW/DvdProfiler",
+        "/Archives/PurchasedSW/phpDVDProfiler",
+        "/Archives/PurchasedSW/phpdvdprofiler_v3-20111006_part1",
+        "/Archives/PurchasedSW/phpdvdprofiler_v3-20111006_part2",
+        "/Archives/PurchasedSW/SonyWalkman"
+      ],
+      "ExcludePaths": [
+        ""
+      ]
+    },
+    {
+      "id": 30,
+      "FileSetName": "VM\t\t",
+      "Compress": true,
+      "Recurse": true,
+      "IncludePaths": [
+        "/Archives/VirtualBoxVMs/Active WinVM7",
+        "/Archives/VirtualBoxVMs/Active WinVM7 Clone",
+        "/Archives/VirtualBoxVMs/Active WinVM7/Logs",
+        "/AVMedia/VirtualBox VMs/SassBook",
+        "/AVMedia/VirtualBox VMs/win98se",
+        "/AVMedia/VirtualBox VMs/WinVM7",
+        "/AVMedia/VirtualBox VMs/WinVM7 Clone"
       ],
       "ExcludePaths": [
         ""
