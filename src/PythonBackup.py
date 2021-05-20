@@ -2,23 +2,23 @@ import argparse
 import datetime
 import json
 import os
+import socket
 import sys
 import tarfile
 import time
-import re
 
+import Target_File_Builder as tfb
 from CommonLogger import LoggerServices as logger_services
 from CommonOs import OsServices as os_services
-import Target_File_Builder as tfb
 
 
-class PythonBackup(os_services, logger_services):
-    def __init__(self):
-        super().__init__()
-        #self.config_json = config_json
-        #self.backupset_json = backupset_json
-        #self.storageset_json = storageset_json
-        #self.fileset_json = fileset_json
+class PythonBackup(os_services):
+    def __init__(self, config_json=None, backupset_json=None, storageset_json=None, fileset_json=None):
+        #super().__init__()
+        self.config_json = config_json
+        self.backupset_json = backupset_json
+        self.storageset_json = storageset_json
+        self.fileset_json = fileset_json
         self.skipping = True
         self.args = ""
 
@@ -31,13 +31,8 @@ class PythonBackup(os_services, logger_services):
             parser = argparse.ArgumentParser(prog=str(sys.argv[0]),
                                              usage='%(prog)s Backups a database or a list of databases in the mode '
                                                    'specified.')
-            parser.add_argument(
-                "frequency",
-                help=f'Pass the backup frequency from DAILY, WEEKLY, MONTHLY, or ARCHIVE')
-
-            group_0 = parser.add_mutually_exclusive_group()
-
-            group_1 = parser.add_mutually_exclusive_group()
+            parser.add_argument("frequency",
+                help=f'Pass the backup frequency from DAILY, WEEKLY, MONTHLY, ARCHIVE or ANY')
             self.args = parser.parse_args()
         except Exception as e:
             print(
@@ -45,67 +40,58 @@ class PythonBackup(os_services, logger_services):
         else:
             return self.args
 
-    def run_object(self, frequency):
-        logger_services.info(self, f'Starting {os.uname()[1]} backup')
-        os_services.load_json(self)
-        self.backup_start(frequency)
+    def run_object(self):
+        #logger_services.info(self, f'Starting {os.uname()[1]} backup')
+        self.load_json()
+        self.backup_start(str(self.args.frequency).upper())
         logger_services.info(self, f'Completed {os.uname()[1]} backup')
 
     def backup_start(self, frequency):
-        json_in = self.backup_set_decoder()
-
-        backupset_name = None
-        file_set_name = None
-        storage_path = None
-        storage_set_name = None
-        backup_versions = 1
-        include_files_list = []
-        exclude_files_list = []
-        self.skipping = True
-        mounted = True
+        json_in = self.backupset_json
 
         # loop thru backup_set system json
         for major_key in json_in:
             if "BackupSets" in major_key:
-                # loop thru backup sets
-                for sSet in json_in[major_key]:
-                    self.skipping = True  # reset skipping before every backup set
-                    # collect backup set fields
-                    for key in sSet:
+                for buSet in json_in[major_key]:
+                    # reset the keys each loop
+                    backupset_name = None
+                    file_set_name = None
+                    storage_path = None
+                    backup_versions = 1
+                    include_files_list = []
+                    exclude_files_list = []
+                    self.skipping = True
+                    for key in buSet:
                         if "BackupSetName" in key:
-                            backupset_name = sSet[key]
+                            backupset_name = buSet["BackupSetName"]
+                            logger_services.info(self, f'Running BackupSet \'{backupset_name}\' ')
                         if "StorageSetName" in key:
-                            storage_path = self.storage_path_getter(sSet[key])
-                            storage_set_name = sSet[key]
+                            storage_path = self.storage_path_getter(buSet["StorageSetName"])
                         if "FileSetName" in key:
-                            include_files_list = self.fileset_includes_getter(sSet[key])
-                            exclude_files_list = self.fileset_excludes_getter(sSet[key])
-                            file_set_name = sSet[key]
-                        if "Frequency" in key and frequency in sSet["Frequency"]:
+                            include_files_list = self.fileset_includes_getter(buSet["FileSetName"])
+                            exclude_files_list = self.fileset_excludes_getter(buSet["FileSetName"])
+                            file_set_name = buSet["FileSetName"]
+                        if "Frequency" in key and frequency in str(buSet["Frequency"]).upper():
                             self.skipping = False
                         if "Versions" in key:
-                            backup_versions = sSet["Versions"]
-
-                    if re.search(rf'^{storage_path}', "Archives"):
-                        if not os.path.ismount(storage_path):
-                            mounted = False
+                            backup_versions = buSet["Versions"]
+                    # end of for key in buSet
 
                     if self.skipping:
                         logger_services.info(self,
                                              f" Skipping Backup Set \'{backupset_name}\' as "
                                              f"it is not scheduled for today\n")
                         continue
-                    elif not mounted:
-                        logger_services.info(self,
-                                             f" Skipping Backup Set \'{backupset_name}\' as "
-                                             f"Storage Path \'{storage_path}\' is not mounted")
+                    elif not os.path.exists(storage_path):
+                        logger_services.error(self,
+                                              f" Skipping Backup Set \'{backupset_name}\' as "
+                                              f"Storage Path \'{storage_path}\' does not exist.")
+                        continue
                     else:
-                        self.skipping = False
-                        logger_services.info(self, f'Running BackupSet {backupset_name} '
-                                                   f'for FileSet {file_set_name} '
-                                                   f'using StoragePath {storage_path}')
-                        logger_services.debug(self, f' Includes {include_files_list}')
-                        logger_services.debug(self, f' Excludes {exclude_files_list}')
+                        logger_services.info(self, f' FileSet: {file_set_name} ')
+                        logger_services.info(self,  f' StoragePath: {storage_path}')
+                        logger_services.debug(self, f'  Includes: {include_files_list} ')
+                        logger_services.debug(self, f'  Excludes: {exclude_files_list}')
 
                     # remove any excluded files from the includes list
                     if len(exclude_files_list) > 0:
@@ -122,11 +108,57 @@ class PythonBackup(os_services, logger_services):
                     logger_services.info(self, f'Back up of Backup Set Name {backupset_name} '
                                                f'into {archive_file} '
                                                f'returned {archive_rc}\n')
-
-                    # end of for key in sSet
-                # end of for sSet
+                # loop thru backup sets
             # end of if BackupSets
         # end of major_key loop
+
+    def load_config(self):
+        resource_path = os.path.join(os.path.dirname(os.path.abspath( __file__ )), "..", "resource")
+        json_in_file = ""
+        try:
+            json_in_file = f'{resource_path}/config.json'
+            with open(json_in_file, "r") as read_json:
+                self.config_json = json.load(read_json)
+                return self.config_json
+        except FileNotFoundError as fnfe:
+            print(f" {fnfe}: Unable to find {json_in_file}")
+            sys.exit(1)
+
+    def load_json(self):
+        resource_path = os.path.join(os.path.dirname(os.path.abspath( __file__ )), "..", "resource")
+        json_in_file = ""
+        try:
+            json_in_file = f'{resource_path}/config.json'
+            with open(json_in_file, "r") as read_json:
+                self.config_json = json.load(read_json)
+
+            json_in_file = f'{resource_path}/BackupSets.json'
+            with open(json_in_file, "r") as read_json:
+                self.backupset_json = json.load(read_json)
+
+            json_in_file = f'{resource_path}/StorageSets.json'
+            with open(json_in_file, "r") as read_json:
+                self.storageset_json = json.load(read_json)
+
+            json_in_file = f'{resource_path}/FileSets.json'
+            with open(json_in_file, "r") as read_json:
+                self.fileset_json = json.load(read_json)
+
+        except FileNotFoundError as fnfe:
+            logger_services.critical(self, f" {fnfe}: Unable to find {json_in_file}")
+            sys.exit(1)
+
+    def get_backupset_json(self):
+        return self.backupset_json
+
+    def get_storageset_json(self):
+        return self.storageset_json
+
+    def get_fileset_json(self):
+        return self.fileset_json
+
+    def get_config_json(self):
+        return self.config_json
 
     def storage_path_getter(self, storageSet_needle):
         json_in = self.storageset_json
@@ -149,8 +181,11 @@ class PythonBackup(os_services, logger_services):
                     for key in sSet:
                         if "FileSetName" in key and filesetname_needle in sSet[key]:
                             for fs in sSet["IncludePaths"]:
-                                fs_includes.append(fs)
-
+                                if os.path.exists(fs):
+                                    fs_includes.append(fs)
+                                else:
+                                    self.msg = f'  File Set {fs} does not exist. Remove it from FileSets.json'
+                                    logger_services.error(self, self.msg)
         return fs_includes
 
     def fileset_excludes_getter(self, filesetname_needle):
@@ -169,28 +204,13 @@ class PythonBackup(os_services, logger_services):
         return fs_excludes
 
     @staticmethod
-    def backup_set_decoder():
-        with open("/home/barry/.config/caladanbackup/caladan-2004/BackupSets.json", "r") as backupset_json:
-            return json.load(backupset_json)
-
-    @staticmethod
-    def file_date():
-        """This method returns a formatted string of the date in YYYYMMDD format"""
-        return datetime.datetime.now().strftime('%Y%m%d')
-
-    @staticmethod
-    def date():
-        """This method returns a formatted string of the date in YYYYMMDDhhmmss format"""
-        return datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
-
-    @staticmethod
     def is_file_older_than_x_days(file, days=1):
         file_time = os.path.getmtime(file)
         # Check against 24 hours
         return (time.time() - file_time) / 3600 > 24 * days
 
     def write_tar_file(self, target, sources, recursive):
-
+        """ Tar and compress the sources into the target """
         try:
             with tarfile.open(target, 'w:gz') as tar_out:
                 for src in sources:
@@ -205,7 +225,8 @@ class PythonBackup(os_services, logger_services):
 # =================================
 if __name__ == '__main__':
     obj = PythonBackup()
-    obj.getLogger()
     args = obj.parseCommandLine()
-    obj.start_template(sys.argv[1:], args)
-    obj.run_object(sys.argv[1])
+    obj.getLogger(__name__, obj.load_config())
+    obj.starting_template(sys.argv[1:], args)
+    obj.run_object()
+    obj.ending_template(sys.argv[1:], args)

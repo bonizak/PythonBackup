@@ -1,11 +1,7 @@
 import datetime
-import json
 import os
-import platform
-import socket
 import sys
 from pathlib import Path
-import xml.etree.ElementTree as BigTree
 
 from CommonLogger import LoggerServices as logger_services
 
@@ -34,7 +30,6 @@ class OsServices(logger_services):
     msg = ''
     params_XML = None
     reports_dir = ''
-    crontabs_dir = ''
     log_dir = ''
     log_file = ''
 
@@ -49,17 +44,6 @@ class OsServices(logger_services):
         self.storageset_json = storageset_json
         self.fileset_json = fileset_json
         self.setReportDir()  # set the reports dir path
-        self.setLogDir()  # set the logs dir path
-        self.setCronDir()  # the cron dir under UNIX/LINUX
-
-    def start_template(self, parameter_list, args):
-        """
-        This method takes the list of cmd line args passed
-        and opens the running script in a similar view
-        """
-        print(f'{self.date()}: Extracting input Params:', *parameter_list)
-        logger_services.info(self, f''"Extracting input params: {}".format(' '.join(map(str, parameter_list))))
-        return None
 
     def setReportDir(self):
         """
@@ -82,37 +66,35 @@ class OsServices(logger_services):
         """
         return self.reports_dir
 
-    def setCronDir(self):
-        """
-        This method sets the cron  directory
-        """
-        self.crontabs_dir = os.path.join(str(Path.home()), 'crontabs')
-
-        if os.path.isdir(self.crontabs_dir):
-            os.makedirs(self.crontabs_dir)
-
-            if not os.path.exists(self.crontabs_dir):
-                self.msg = 'Initial setup of crontab dir failed, exiting script run!'
-                print(f'{self.date()}: {self.msg}')
-                logger_services.error(self, self.msg)
-                sys.exit(1)
-
-    def getCronDir(self):
-        """
-        This method returns the cron
-        directory set on the class
-        """
-        return self.crontabs_dir
-
     def haltScript(self):
         """
-        This method stop the script  from executing if the
-        instance is not active and
-        notify, inactive instance
+        This method stop the script  from executing
         """
         print(f'{self.date()}: {self.msg}')
         logger_services.error(self, self.msg)
         return None
+
+    @staticmethod
+    def getScriptName():
+        """
+        This method returns the script name
+        """
+
+        return str(os.path.basename(sys.argv[0])).split('.')[0]
+
+    @staticmethod
+    def date():
+        """
+        This method returns a formatted string of the date in YYYY/MM/DD/hh/mm/ss format
+        """
+        return datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
+
+    @staticmethod
+    def file_date():
+        """
+        This method returns a formatted date string in YYYYMMDD for appending to file names
+        """
+        return datetime.datetime.now().strftime('%Y%m%d')
 
     def getHostName(self):
         """
@@ -126,55 +108,9 @@ class OsServices(logger_services):
         else:
             return hostname
 
-    @staticmethod
-    def date():
+    def scriptRunCheck(self):
         """
-        This method returns a formatted string of the date in YYYY/MM/DD/hh/mm/ss format
+        This method checks if the script about to be run is
+        already running and returns a boolean value
         """
-        return datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
-
-    @staticmethod
-    def file_date():
-        """
-            This method returns a formatted date string in YYYYMMDD for appending to file names
-        """
-        return datetime.datetime.now().strftime('%Y%m%d')
-
-    @staticmethod
-    def getScriptName():
-        """
-        This method returns the script name
-        """
-        return str(os.path.basename(sys.argv[0])).split('.')[0]
-
-    def load_json(self):
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(os.path.curdir)), 'resource')
-        with open(f'{resource_path}/config.json', "r") as config_json:
-            self.config_json = json.load(config_json)
-
-        with open(f'{resource_path}/BackupSets.json', "r") as backupset_json:
-            self.backupset_json = json.load(backupset_json)
-
-        with open(f'{resource_path}/StorageSets.json', "r") as storageset_json:
-            self.storageset_json = json.load(storageset_json)
-
-        with open(f'{resource_path}/FileSets.json', "r") as fileset_json:
-            self.fileset_json = json.load(fileset_json)
-
-    @staticmethod
-    def separationBar():
-        """
-        This method returns a separation
-        bar to be used as part of
-        the common template
-        """
-        return 75*f'='
-
-    @staticmethod
-    def separationBar2():
-        """
-        This method returns a separation
-        bar to be used as part of
-        the common template
-        """
-        return 75*f'#'
+        pass
