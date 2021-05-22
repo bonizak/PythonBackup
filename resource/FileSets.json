@@ -56,23 +56,6 @@
     },
     {
       "id": 2,
-      "FileSetName": "ArchivedCalibre\t",
-      "Compress": true,
-      "Recurse": true,
-      "IncludePaths": [
-        "/Archives/CalibreLibraries/LocalCalibreLibrary",
-        "/Archives/CalibreLibraries/SciFiCalibre",
-        "/Archives/CalibreLibraries/StarWarsBooks",
-        "/Archives/CalibreLibraries/StarWarsCalibre",
-        "/Archives/CalibreLibraries/TestCalibre",
-        "/Archives/CalibreLibraries/WebDevCalibre"
-      ],
-      "ExcludePaths": [
-        ""
-      ]
-    },
-    {
-      "id": 3,
       "FileSetName": "ArchivedDevAppls",
       "Compress": true,
       "Recurse": true,
@@ -95,27 +78,27 @@
       ]
     },
     {
-      "id": 4,
+      "id": 3,
       "FileSetName": "ArchivedLibrary",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/Archives/TecheBooks/Amazon",
-        "/Archives/TecheBooks/Casey Reas",
-        "/Archives/TecheBooks/Corphelion Interlude (by Troy Denning)",
-        "/Archives/TecheBooks/Count Dooku",
-        "/Archives/TecheBooks/David Roccheso",
-        "/Archives/TecheBooks/Enemy of the Empire 03",
-        "/Archives/TecheBooks/Invasion 00a",
-        "/Archives/TecheBooks/Kostas Terzidis",
-        "/Archives/TecheBooks/Mark Coker"
+        "/Archives/TechieBooks/Amazon",
+        "/Archives/TechieBooks/Casey Reas",
+        "/Archives/TechieBooks/Corphelion Interlude (by Troy Denning)",
+        "/Archives/TechieBooks/Count Dooku",
+        "/Archives/TechieBooks/David Roccheso",
+        "/Archives/TechieBooks/Enemy of the Empire 03",
+        "/Archives/TechieBooks/Invasion 00a",
+        "/Archives/TechieBooks/Kostas Terzidis",
+        "/Archives/TechieBooks/Mark Coker"
       ],
       "ExcludePaths": [
         ""
       ]
     },
     {
-      "id": 5,
+      "id": 4,
       "FileSetName": "CaladanWeb",
       "Compress": true,
       "Recurse": true,
@@ -131,7 +114,7 @@
       ]
     },
     {
-      "id": 6,
+      "id": 5,
       "FileSetName": "CalibreLibrary",
       "Compress": true,
       "Recurse": true,
@@ -161,7 +144,7 @@
       ]
     },
     {
-      "id": 7,
+      "id": 6,
       "FileSetName": "CodeSamples",
       "Compress": true,
       "Recurse": true,
@@ -195,7 +178,7 @@
       ]
     },
     {
-      "id": 8,
+      "id": 7,
       "FileSetName": "ComputerFiles",
       "Compress": true,
       "Recurse": true,
@@ -207,7 +190,7 @@
       ]
     },
     {
-      "id": 9,
+      "id": 8,
       "FileSetName": "DevAppls",
       "Compress": true,
       "Recurse": true,
@@ -245,7 +228,7 @@
       ]
     },
     {
-      "id": 10,
+      "id": 9,
       "FileSetName": "DevLibrary",
       "Compress": true,
       "Recurse": true,
@@ -269,7 +252,7 @@
       ]
     },
     {
-      "id": 11,
+      "id": 10,
       "FileSetName": "DevResources",
       "Compress": true,
       "Recurse": true,
@@ -282,7 +265,7 @@
       ]
     },
     {
-      "id": 12,
+      "id": 11,
       "FileSetName": "DevTools",
       "Compress": true,
       "Recurse": true,
@@ -304,7 +287,7 @@
       ]
     },
     {
-      "id": 13,
+      "id": 12,
       "FileSetName": "DevWork",
       "Compress": true,
       "Recurse": true,
@@ -318,7 +301,7 @@
       ]
     },
     {
-      "id": 14,
+      "id": 13,
       "FileSetName": "Documents",
       "Compress": true,
       "Recurse": true,
@@ -347,7 +330,7 @@
       ]
     },
     {
-      "id": 15,
+      "id": 14,
       "FileSetName": "EclipseSpace",
       "Compress": true,
       "Recurse": true,
@@ -374,7 +357,7 @@
       ]
     },
     {
-      "id": 16,
+      "id": 15,
       "FileSetName": "Family",
       "Compress": true,
       "Recurse": true,
@@ -392,7 +375,7 @@
       ]
     },
     {
-      "id": 17,
+      "id": 16,
       "FileSetName": "Financials",
       "Compress": true,
       "Recurse": true,
@@ -404,7 +387,7 @@
       ]
     },
     {
-      "id": 18,
+      "id": 17,
       "FileSetName": "Genealogy",
       "Compress": true,
       "Recurse": true,
@@ -417,7 +400,7 @@
       ]
     },
     {
-      "id": 19,
+      "id": 18,
       "FileSetName": "Git",
       "Compress": true,
       "Recurse": true,
@@ -460,7 +443,7 @@
       ]
     },
     {
-      "id": 20,
+      "id": 19,
       "FileSetName": "HomeFiles",
       "Compress": true,
       "Recurse": true,
@@ -506,7 +489,7 @@
       ]
     },
     {
-      "id": 21,
+      "id": 20,
       "FileSetName": "IBM",
       "Compress": true,
       "Recurse": true,
@@ -518,7 +501,7 @@
       ]
     },
     {
-      "id": 22,
+      "id": 21,
       "FileSetName": "Media",
       "Compress": true,
       "Recurse": true,
@@ -530,7 +513,7 @@
       ]
     },
     {
-      "id": 23,
+      "id": 22,
       "FileSetName": "Movies",
       "Compress": true,
       "Recurse": true,
@@ -551,15 +534,13 @@
       ]
     },
     {
-      "id": 24,
+      "id": 23,
       "FileSetName": "Music",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
         "/AVMedia/Music/Audacity",
-        "/AVMedia/Music/ChromeDownloaded",
         "/AVMedia/Music/iTunes",
-        "/AVMedia/Music/Various",
         "/AVMedia/Music/Library/100 Greatest Guitar Solos - The Complete Songs-FLAWL3SS",
         "/AVMedia/Music/Library/100 Hits Christmas Legends",
         "/AVMedia/Music/Library/40 Best Christmas Songs",
@@ -668,7 +649,6 @@
         "/AVMedia/Music/Library/Traffic",
         "/AVMedia/Music/Library/U2",
         "/AVMedia/Music/Library/Unknown Artist",
-        "/AVMedia/Music/Library/Various",
         "/AVMedia/Music/Library/Various Artists",
         "/AVMedia/Music/Library/Wings",
         "/AVMedia/Music/Library/Yes"
@@ -678,12 +658,12 @@
       ]
     },
     {
-      "id": 25,
+      "id": 24,
       "FileSetName": "OnizakAlbums",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/AVMedia/My Images",
+        "/AVMedia/MyImages",
         "/AVMedia/SamsungGalaxy",
         "/AVMedia/ScannedPics",
         "/AVMedia/Schick-Onizak",
@@ -750,7 +730,7 @@
         "/AVMedia/OnizakAlbum/Jeff_and_Mel",
         "/AVMedia/OnizakAlbum/Kris",
         "/AVMedia/OnizakAlbum/Lorna",
-        "/AVMedia/OnizakAlbum/Mels Shower",
+        "/AVMedia/OnizakAlbum/Mel's Wedding Shower",
         "/AVMedia/OnizakAlbum/Mike_and_Jess",
         "/AVMedia/OnizakAlbum/Schick",
         "/AVMedia/OnizakAlbum/Tammy",
@@ -763,12 +743,12 @@
       ]
     },
     {
-      "id": 26,
+      "id": 25,
       "FileSetName": "OnizakVideos",
       "Compress": true,
       "Recurse": true,
       "IncludePaths": [
-        "/AVMedia/Pinnacle Projects",
+        "/AVMedia/PinnacleProjects",
         "/AVMedia/Produced",
         "/AVMedia/Videos/Captured AVI",
         "/AVMedia/Videos/Captured DVD",
@@ -782,7 +762,7 @@
       ]
     },
     {
-      "id": 27,
+      "id": 26,
       "FileSetName": "PythonWork",
       "Compress": true,
       "Recurse": true,
@@ -795,7 +775,7 @@
       ]
     },
     {
-      "id": 28,
+      "id": 27,
       "FileSetName": "Security",
       "Compress": true,
       "Recurse": true,
@@ -807,7 +787,7 @@
       ]
     },
     {
-      "id": 29,
+      "id": 28,
       "FileSetName": "Software",
       "Compress": true,
       "Recurse": true,
@@ -828,7 +808,7 @@
       ]
     },
     {
-      "id": 30,
+      "id": 29,
       "FileSetName": "VM\t\t",
       "Compress": true,
       "Recurse": true,

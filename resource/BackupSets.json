@@ -78,7 +78,7 @@
       "BackupSetName": "DevAppls",
       "StorageSetName": "DevApps",
       "FileSetName": "DevAppls",
-      "Versions": 4,
+      "Versions": 3,
       "Frequency": "Weekly"
     },
     {
@@ -110,7 +110,7 @@
       "BackupSetName": "DevWork",
       "StorageSetName": "DevApps",
       "FileSetName": "DevWork",
-      "Versions": 4,
+      "Versions": 3,
       "Frequency": "Weekly"
     },
     {
@@ -119,7 +119,7 @@
       "StorageSetName": "CaladanDocuments",
       "FileSetName": "Documents",
       "Versions": 4,
-      "Frequency": "MONTHLY"
+      "Frequency": "Daily"
     },
     {
       "id": 15,
@@ -174,7 +174,7 @@
       "BackupSetName": "IBM",
       "StorageSetName": "CaladanDocuments",
       "FileSetName": "IBM",
-      "Versions": 2,
+      "Versions": 1,
       "Frequency": "Weekly"
     },
     {
@@ -246,7 +246,7 @@
       "BackupSetName": "VM",
       "StorageSetName": "ArchivesVM",
       "FileSetName": "VM",
-      "Versions": 2,
+      "Versions": 1,
       "Frequency": "Monthly"
     },
     {
