@@ -1,5 +1,6 @@
 import datetime
 import os
+import socket
 import sys
 from pathlib import Path
 
@@ -33,16 +34,12 @@ class OsServices(logger_services):
     log_dir = ''
     log_file = ''
 
-    def __init__(self, config_json, backupset_json, storageset_json, fileset_json):
+    def __init__(self):
         """
         This method constructs the CommonOS class object with the basic
         methods needed to setup all script runs
         """
         super().__init__()
-        self.config_json = config_json
-        self.backupset_json = backupset_json
-        self.storageset_json = storageset_json
-        self.fileset_json = fileset_json
         self.setReportDir()  # set the reports dir path
 
     def setReportDir(self):
@@ -114,3 +111,6 @@ class OsServices(logger_services):
         already running and returns a boolean value
         """
         pass
+
+    def object_size(self, object_path):
+        return sum(os.path.getsize(f) for f in os.listdir(object_path) if os.path.isfile(f))

@@ -7,14 +7,17 @@
   	  "DAILY",
   	  "WEEKLY",
   	  "MONTHLY",
-  	  "ARCHIVE"
+  	  "ARCHIVE",
+      "Test"
   ],
   "STORAGE_DEVICE_TYPES":[
-  	  "DISK",
-  	  "USB-STICK",
-  	  "TAPE"
-  	],
-  "LOG_LEVEL": "INFO",
+    "Disk",
+    "USB-Stick",
+    "File",
+    "CDROM",
+    "ExternalDisk"
+  ],
+  "LOG_LEVEL": "DEBUG",
   "BACKUP_EXT": ".tgz",
   "BACKUP_HOME": "/Backups"
   }
