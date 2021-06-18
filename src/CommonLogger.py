@@ -4,8 +4,6 @@ import os
 import sys
 from pathlib import Path
 
-from openpyxl import load_workbook
-
 
 class LoggerServices:
     """
@@ -25,10 +23,9 @@ class LoggerServices:
     __version__ = "0.01"
 
     # # # # # End of header # # # #
-    resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
-    log_file = ""
-    log_level = ""
 
+    def __init__(self):
+        self.log_file = self.setLogFile()
 
     @staticmethod
     def date():
@@ -68,51 +65,30 @@ class LoggerServices:
             else:
                 return log_dir
 
-    def getLogger(self, name):
+    def getLogger(self, name, config_json):
         """
         This method creates and returns a object used to log each script run
         """
-        self.log_file = self.setLogFile()
-        self.log_level = self.get_log_level()
-        logger = logging.getLogger(name)
-        logging.basicConfig(filename=self.log_file, level=self.log_level,
-                            format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
         self.openlogfile()
+        log_level = self.get_log_level(config_json)
+        # logger = logging.getLogger(sys.argv[0].strip(".\\"))
+        logger = logging.getLogger(name)
+        logging.basicConfig(filename=self.log_file, level=log_level,
+                            format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
+
         return logger
 
-    def starting_template(self, parameter_list, args):
+    def get_log_level(self, json_in):
         """
-        This method takes a list of cmd line args
-        passed and displays each running script in a similar view
+        This method gets the log_level setting from the config_json
         """
-        self.info(f'Initialising python script {self.getScriptName()}')
-        self.info(f"Extracting input params: {(' '.join(map(str, parameter_list)))}")
-        self.info(f"Log Level {self.log_level}")
-        return None
-
-    def ending_template(self, parameter_list, args):
-        """
-        This method takes a list of cmd line args
-        passed and displays each running script in a similar view
-        """
-        self.info(f'\nEnd of {self.getScriptName()}\n\n')
-        return None
-
-    def get_log_level(self):
-        """
-        This method reads in the AppConfig sheet from BackupList.xlsx workbook in the
-        resources directory of this project, and extracts the Log_Level value.
-
-        :return: Count of rows read in and written to  FileSystemsIn{}
-        """
-        wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
-        worksheet = wb["AppConfig"]
-
-        row_sets = [worksheetsets for worksheetsets in worksheet.iter_rows(
-            min_row=3, max_row=3, min_col=1, max_col=2, values_only=True)
-                    if None not in worksheetsets]
-        return row_sets[0][1]
-
+        log_level = "DEBUG"
+        for major_key in json_in:
+            if "Config" in major_key:
+                for cfg_Set in json_in[major_key]:
+                    for key in cfg_Set:
+                        if "LOG_LEVEL" in key:
+                            log_level = cfg_Set["LOG_LEVEL"]
         return log_level
 
     def openlogfile(self):
@@ -158,9 +134,9 @@ class LoggerServices:
     @staticmethod
     def separationBar():
         """
-        This method returns a 90 char separation bar
+        This method returns a 30 char separation bar
         """
-        return 90 * f'='
+        return 30 * f'='
 
     def critical(self, msg):
         """
@@ -200,4 +176,12 @@ class LoggerServices:
         DEBUG message to the script run log
         """
         logging.debug(msg)
+        return None
+
+    def notset(self, msg):
+        """
+        This method takes a message and logs it as a
+        NOTSET message to the script run log
+        """
+        logging.log(self, msg)
         return None
