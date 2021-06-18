@@ -85,7 +85,7 @@ class LoggerServices:
         This method takes a list of cmd line args
         passed and displays each running script in a similar view
         """
-        self.info(f'Starting {self.getScriptName()}')
+        self.info(f'Initialising python script {self.getScriptName()}')
         self.info(f"Extracting input params: {(' '.join(map(str, parameter_list)))}")
         self.info(f"Log Level {self.log_level}")
         return None

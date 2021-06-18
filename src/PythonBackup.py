@@ -7,6 +7,7 @@ import time
 from openpyxl import load_workbook
 
 import Target_File_Builder as tfb
+from FSWalker import FSWalker as fsw
 from CommonOs import OsServices as os_services
 
 
@@ -28,10 +29,9 @@ class PythonBackup(os_services):
             parser = argparse.ArgumentParser(prog=str(sys.argv[0]),
                                              usage="%(prog)s Backups a computer's file systems according to the "
                                                    "information provided in a companion spreadsheet.")
-            run_mode = parser.add_mutually_exclusive_group()
-            run_mode.add_argument("run_type",
+            parser.add_argument("run_type",
                                 help=f'Pass the backup frequency from DAILY, WEEKLY, MONTHLY, ARCHIVE or ANY')
-            run_mode.add_argument("--reload", required=False,
+            parser.add_argument("-reload", action="store_true", required=False,
                                 help=f'Pass to reload the FileSet sheet of the BackupSetList.xlsx in the '
                                      f'resources directory. Review and edit the FileSets sheet once reloaded.')
 
@@ -43,10 +43,17 @@ class PythonBackup(os_services):
             return self.args
 
     def run_object(self):
-        # logger_services.info(self, f'Starting {os.uname()[1]} backup')
-        self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD = self.excel_convert()
-        self.backup_start(str(args.run_type).upper())
-        os_services.info(self, f'Completed {os.uname()[1]} backup')
+        if args.reload:
+            fsw_rc = fsw.Build_FileSets()
+            if fsw_rc > 0:
+                os_services.info(self, f"Reload of FileSets in BackupList.xlsx loaded {fsw} rows.")
+            else:
+                os_services.error(self, f"Reload of FileSets in BackupList.xlsx failed.")
+        else:
+            os_services.info(self, f'Backing up host {os.uname()[1]}.')
+            self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD = self.excel_convert()
+            self.backup_start(str(args.run_type).upper())
+            os_services.info(self, f'Completed {os.uname()[1]} backup')
 
     def backup_start(self, run_type):
         backup_list_in = self.BackupSet_AoD
@@ -67,7 +74,6 @@ class PythonBackup(os_services):
                     os_services.info(self, f'Running BackupSet \'{backup_set_name}\' ')
                 elif key == "StorageSetName":
                     storage_path = self.storage_path_getter(backup_list_in[index][key])
-                    print(f' {backup_list_in[index][key]} {storage_path}')
                     if storage_path is None:
                         os_services.error(self, "Empty StoragePath. Skipping BackupSet")
                         break
@@ -86,7 +92,7 @@ class PythonBackup(os_services):
             try:
                 if skipping:
                     os_services.info(self,
-                                     f" Skipping Backup Set \'{backup_set_name}\' as it is not scheduled for today\n")
+                                     f" Skipping Backup Set \'{backup_set_name}\' as it is not scheduled for today.\n")
                     continue
                 else:
                     os_services.info(self, f' FileSet: {file_set_name} ')
@@ -112,6 +118,7 @@ class PythonBackup(os_services):
             # Determine the archive file name based on the current versions
             archive_target_basefile = os.path.join(storage_path, backup_set_name, f'{backup_set_name}')
             os_services.debug(self, f"Searching for the number of {archive_target_basefile}* files")
+            os_services.debug(self, f"  keeping only {backup_versions} versions")
             archive_builder = tfb.Target_File_Builder(f'{archive_target_basefile}', backup_versions)
             archive_file = archive_builder.archive_target_file
             archive_rc = self.write_tar_file(archive_file, include_files_list, True)

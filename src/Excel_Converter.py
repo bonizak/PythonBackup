@@ -81,7 +81,7 @@ class Excel_Converter(os_services):
                         self.FileSet_AoD.append(row_set_dict)
                         row_set_count += 1
 
-        os_services.info(self, f' read {len(self.BackupSet_AoD)} Backup sets')
-        os_services.info(self, f' read {len(self.StorageSet_AoD)} Storage sets')
-        os_services.info(self, f' read {len(self.FileSet_AoD)} File sets')
+        os_services.debug(self, f' read {len(self.BackupSet_AoD)} Backup sets')
+        os_services.debug(self, f' read {len(self.StorageSet_AoD)} Storage sets')
+        os_services.debug(self, f' read {len(self.FileSet_AoD)} File sets')
         return self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD

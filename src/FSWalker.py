@@ -17,6 +17,7 @@ class FSWalker(os_services):
     resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
     FileSystemsIn = []
     FileSetRows = []
+    bf_rc = 0
 
     def Build_FileSets(self):
         if self.read_fs_in() > 0:
@@ -58,7 +59,9 @@ class FSWalker(os_services):
                         pass
 
         self.write_fs(self.FileSetRows)
+        self.bf_rc = len(self.FileSetRows)
         os_services.info(self, f' \nFSWalker captured {len(self.FileSetRows)} file sets')
+        return self.bf_rc
 
     def read_fs_in(self):
         """
