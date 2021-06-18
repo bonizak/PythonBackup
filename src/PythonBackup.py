@@ -8,10 +8,11 @@ from openpyxl import load_workbook
 
 import Target_File_Builder as tfb
 from FSWalker import FSWalker as fsw
+from Update_General import UpdateGeneral as updg
 from CommonOs import OsServices as os_services
 
 
-class PythonBackup(os_services):
+class PythonBackup(updg, os_services):
     def __init__(self):
         super().__init__()
         self.BackupSet_AoD = []
@@ -29,11 +30,14 @@ class PythonBackup(os_services):
             parser = argparse.ArgumentParser(prog=str(sys.argv[0]),
                                              usage="%(prog)s Backups a computer's file systems according to the "
                                                    "information provided in a companion spreadsheet.")
-            parser.add_argument("run_type",
+            parser.add_argument("-run_frequency", required=False,
                                 help=f'Pass the backup frequency from DAILY, WEEKLY, MONTHLY, ARCHIVE or ANY')
             parser.add_argument("-reload", action="store_true", required=False,
                                 help=f'Pass to reload the FileSet sheet of the BackupSetList.xlsx in the '
                                      f'resources directory. Review and edit the FileSets sheet once reloaded.')
+            parser.add_argument("-upd_general", action="store_true", required=False,
+                                help=f'Pass upd_general to copy any non-user files into a folder to be captured '
+                                     f'during backups')
 
             self.args = parser.parse_args()
         except Exception as e:
@@ -44,18 +48,26 @@ class PythonBackup(os_services):
 
     def run_object(self):
         if args.reload:
-            fsw_rc = fsw.Build_FileSets()
+            fsw_rc = fsw.Build_FileSets(fsw.__init__(self))
             if fsw_rc > 0:
                 os_services.info(self, f"Reload of FileSets in BackupList.xlsx loaded {fsw} rows.")
             else:
                 os_services.error(self, f"Reload of FileSets in BackupList.xlsx failed.")
+        elif args.upd_general:
+            self.upd_general()
         else:
             os_services.info(self, f'Backing up host {os.uname()[1]}.')
             self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD = self.excel_convert()
-            self.backup_start(str(args.run_type).upper())
+            self.backup_start(str(args.run_frequency).upper())
             os_services.info(self, f'Completed {os.uname()[1]} backup')
 
-    def backup_start(self, run_type):
+    def upd_general(self):
+        updg_rc = updg.Collect_General_Files(updg.__init__(self))
+        if updg_rc <= 0:
+            os_services.error(self, f'Update of General files has failed.')
+            sys.exit(1)
+
+    def backup_start(self, run_frequency):
         backup_list_in = self.BackupSet_AoD
 
         # loop through backup_sets
@@ -81,7 +93,7 @@ class PythonBackup(os_services):
                     include_files_list = self.fileset_includes_getter(backup_list_in[index][key])
                     exclude_files_list = self.fileset_excludes_getter(backup_list_in[index][key])
                     file_set_name = backup_list_in[index][key]
-                elif key == "Frequency" and run_type.upper() == str(backup_list_in[index][key]).upper():
+                elif key == "Frequency" and run_frequency.upper() == str(backup_list_in[index][key]).upper():
                     frequency = str(backup_list_in[index][key]).upper()
                     skipping = False
                 elif key == "Versions":

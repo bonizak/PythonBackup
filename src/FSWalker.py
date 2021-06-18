@@ -1,8 +1,8 @@
 import os
-import sys
-import pandas as pd
 
+import pandas as pd
 from openpyxl import load_workbook
+
 from CommonOs import OsServices as os_services
 
 
@@ -72,6 +72,7 @@ class FSWalker(os_services):
         """
         wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
         sheetset = {'RootFileSystems': 3}
+        row_set_count = 0
 
         for ws in wb:
             if ws.title in sheetset.keys():
