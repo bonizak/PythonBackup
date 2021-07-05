@@ -7,12 +7,15 @@ import time
 from openpyxl import load_workbook
 
 import Target_File_Builder as tfb
-from FSWalker import FSWalker as fsw
+from Reload_Filesets import ReloadFileSets as rfs
 from Update_General import UpdateGeneral as updg
 from CommonOs import OsServices as os_services
 
 
-class PythonBackup(updg, os_services):
+# from CommonLogger import LoggerServices as logger_services
+
+
+class PythonBackup(updg, rfs, os_services):
     def __init__(self):
         super().__init__()
         self.BackupSet_AoD = []
@@ -28,7 +31,7 @@ class PythonBackup(updg, os_services):
          """
         try:
             parser = argparse.ArgumentParser(prog=str(sys.argv[0]),
-                                             usage="%(prog)s Backups a computer's file systems according to the "
+                                             usage="%(prog)s backs up a computer's file systems according to the "
                                                    "information provided in a companion spreadsheet.")
             parser.add_argument("-run_frequency", required=False,
                                 help=f'Pass the backup frequency from DAILY, WEEKLY, MONTHLY, ARCHIVE or ANY')
@@ -48,24 +51,21 @@ class PythonBackup(updg, os_services):
 
     def run_object(self):
         if args.reload:
-            fsw_rc = fsw.Build_FileSets(fsw.__init__(self))
-            if fsw_rc > 0:
-                os_services.info(self, f"Reload of FileSets in BackupList.xlsx loaded {fsw} rows.")
+            FileSetRows = rfs.Build_FileSets(self)
+            if len(FileSetRows) > 0:
+                os_services.info(self, f"Reload of FileSets in BackupList.xlsx loaded {len(FileSetRows)} rows.")
             else:
                 os_services.error(self, f"Reload of FileSets in BackupList.xlsx failed.")
         elif args.upd_general:
-            self.upd_general()
+            updg_rc = updg.Collect_General_Files(self)
+            if updg_rc <= 0:
+                os_services.error(self, f'Update of General files has failed.')
+                sys.exit(1)
         else:
             os_services.info(self, f'Backing up host {os.uname()[1]}.')
-            self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD = self.excel_convert()
+            self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD = self.extract_Sets()
             self.backup_start(str(args.run_frequency).upper())
             os_services.info(self, f'Completed {os.uname()[1]} backup')
-
-    def upd_general(self):
-        updg_rc = updg.Collect_General_Files(updg.__init__(self))
-        if updg_rc <= 0:
-            os_services.error(self, f'Update of General files has failed.')
-            sys.exit(1)
 
     def backup_start(self, run_frequency):
         backup_list_in = self.BackupSet_AoD
@@ -192,7 +192,7 @@ class PythonBackup(updg, os_services):
         except OSError as oserr:
             return oserr
 
-    def excel_convert(self):
+    def extract_Sets(self):
         wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
         sheetset = {'BackupSets': 6, 'StorageSets': 4, 'FileSets': 6}
 
@@ -263,9 +263,9 @@ class PythonBackup(updg, os_services):
                         self.FileSet_AoD.append(row_set_dict)
                         row_set_count += 1
 
-        os_services.info(self, f' read {len(self.BackupSet_AoD)} Backup sets')
-        os_services.info(self, f' read {len(self.StorageSet_AoD)} Storage sets')
-        os_services.info(self, f' read {len(self.FileSet_AoD)} File sets')
+        os_services.info(self, f' Read in {len(self.BackupSet_AoD)} Backup sets')
+        os_services.info(self, f' Read in {len(self.StorageSet_AoD)} Storage sets')
+        os_services.info(self, f' Read in {len(self.FileSet_AoD)} File sets')
         return self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD
 
 
@@ -273,7 +273,7 @@ class PythonBackup(updg, os_services):
 if __name__ == '__main__':
     obj = PythonBackup()
     args = obj.parseCommandLine()
-    obj.getLogger(__name__)
-    obj.starting_template(sys.argv[1:], args)
+    obj.getLogger("PythonBackup")
+    obj.starting_template(sys.argv[1:])
     obj.run_object()
-    obj.ending_template(sys.argv[1:], args)
+    obj.closelogfile()

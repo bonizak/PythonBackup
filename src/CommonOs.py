@@ -26,51 +26,34 @@ class OsServices(logger_services):
     __version__ = "1.0"
     # # # # # End of header # # # #
 
-    # sets the  path from which all scripts are run
-    script_path = os.path.join(os.getcwd(), sys.argv[0])
-    msg = ''
-    params_XML = None
-    reports_dir = ''
-    crontabs_dir = ''
-    log_dir = ''
-    log_file = ''
 
-    def __init__(self, config_json, backupset_json, storageset_json, fileset_json):
+    def __init__(self):
         """
         This method constructs the CommonOS class object with the basic
         methods needed to setup all script runs
         """
         super().__init__()
-        self.config_json = config_json
-        self.backupset_json = backupset_json
-        self.storageset_json = storageset_json
-        self.fileset_json = fileset_json
-        self.setReportDir()  # set the reports dir path
-        self.setLogDir()  # set the logs dir path
-        self.setCronDir()  # the cron dir under UNIX/LINUX
-
-    def display_template(self, parameter_list, args):
-        """
-        This method takes a list of cmd line args
-        passed and displays each running script in a similar view
-        """
-        logger_services.info(self, f''"Extracting input params: {}".format(' '.join(map(str, parameter_list))))
-        return None
+        # sets the  path from which all scripts are run
+        self.script_path = os.path.join(os.getcwd(), sys.argv[0])
+        self.reports_dir = self.setReportDir()  # set the reports dir path
+        self.crontabs_dir = self.setCronDir()  # the cron dir under UNIX/LINUX
+        self.msg = ''
 
     def setReportDir(self):
         """
         This method sets the report directory
         """
-        self.reports_dir = os.path.join(str(Path.home()), 'reports')
+        reports_dir = os.path.join(str(Path.home()), 'reports')
 
-        if not os.path.isdir(self.reports_dir):
-            os.makedirs(self.reports_dir)
+        if not os.path.isdir(reports_dir):
+            os.makedirs(reports_dir)
 
-            if not os.path.exists(self.reports_dir):
+            if not os.path.exists(reports_dir):
                 self.msg = 'Initial setup of reports dir failed, exiting script run!'
                 print(f'{self.date()}: {self.msg}')
                 logger_services.error(self, self.msg)
                 sys.exit(1)  # halt the script
+        return reports_dir
 
     def getReportDir(self):
         """
@@ -82,16 +65,17 @@ class OsServices(logger_services):
         """
         This method sets the cron  directory
         """
-        self.crontabs_dir = os.path.join(str(Path.home()), 'crontabs')
+        crontabs_dir = os.path.join(str(Path.home()), 'crontabs')
 
-        if not os.path.isdir(self.crontabs_dir):
-            os.makedirs(self.crontabs_dir)
+        if not os.path.isdir(crontabs_dir):
+            os.makedirs(crontabs_dir)
 
-            if not os.path.exists(self.crontabs_dir):
+            if not os.path.exists(crontabs_dir):
                 self.msg = 'Initial setup of crontab dir failed, exiting script run!'
                 print(f'{self.date()}: {self.msg}')
                 logger_services.error(self, self.msg)
                 sys.exit(1)
+        return crontabs_dir
 
     def getCronDir(self):
         """
@@ -127,17 +111,3 @@ class OsServices(logger_services):
         already running and returns a boolean value
         """
         pass
-
-    def startScriptLine(self):
-        """
-        This method introduces the script that is about to be run and returns
-        it in a variable to be called as a part of the Common Template
-        """
-        self.script_path = os.path.normpath(os.path.join(os.popen("pwd").read().strip(
-            '\n'), str(sys.argv[0])))
-        if not os.path.isfile(self.script_path):
-            print('No such script name in toolkit folder...exiting')
-            sys.exit(1)
-
-        script_start = f'\n{self.separationBar()} \n Starting script {self.script_path} \n{self.separationBar()}'
-        return script_start

@@ -11,51 +11,61 @@ class UpdateGeneral(os_services):
     """
     This class contains the methods required to copy non-user files into a user folder for backup
     """
-    resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
-    General_AoD = []
 
     def Collect_General_Files(self):
         """
         This method collect the non-user files and copies them into a $HOME/Documents/General folder
         :return:
         """
-        self.excel_convert()
+        General_AoD = self.extract_GeneralList()
 
         copy_count = 0
 
-        for index in range(len(self.General_AoD)):
-            for key in self.General_AoD[index]:
-                if key == "SourceFile_FolderName" and "*" in self.General_AoD[index]["SourceFile_FolderName"]:
-                    ff_dirname = os.path.dirname(self.General_AoD[index]["SourceFile_FolderName"])
-                    ff_basename = os.path.basename(self.General_AoD[index]["SourceFile_FolderName"])
+        for index in range(len(General_AoD)):
+            for key in General_AoD[index]:
+                if key == "SourceFile_FolderName" and "*" in General_AoD[index]["SourceFile_FolderName"]:
+                    ff_dirname = os.path.dirname(General_AoD[index]["SourceFile_FolderName"])
+                    ff_basename = os.path.basename(General_AoD[index]["SourceFile_FolderName"])
                     os_services.debug(self, f' Scan for {ff_basename} in Folder {ff_dirname}')
-                    for file in os.listdir(ff_dirname):
-                        if fnmatch.fnmatch(file, ff_basename):
-                            os_services.debug(self, f' Copying {file} into {self.General_AoD[index]["TargetFolder"]}')
-                            shutil.copy(os.path.join(ff_dirname, file), self.General_AoD[index]["TargetFolder"])
-                            copy_count += 1
-                elif key == "File_FolderName" and os.path.isdir(self.General_AoD[index]["SourceFile_FolderName"]):
+                    if os.path.exists(ff_dirname):
+                        for file in os.listdir(ff_dirname):
+                            if fnmatch.fnmatch(file, ff_basename):
+                                os_services.debug(self, f' Copying {file} into {General_AoD[index]["TargetFolder"]}')
+                                if not os.path.exists(General_AoD[index]["TargetFolder"]):
+                                    os.makedirs(General_AoD[index]["TargetFolder"])
+                                shutil.copy(os.path.join(ff_dirname, file), General_AoD[index]["TargetFolder"])
+                                copy_count += 1
+                    else:
+                        os_services.critical(self, f'{ff_dirname} does not exist.')
+                elif key == "SourceFile_FolderName" and os.path.isdir(General_AoD[index]["SourceFile_FolderName"]):
                     os_services.debug(self,
-                                      f' row {index} is a folder {self.General_AoD[index]["SourceFile_FolderName"]}')
+                                      f' row {index} is a folder {General_AoD[index]["SourceFile_FolderName"]}')
                     os_services.debug(self, f' Scan for all files in Folder '
-                                            f'{self.General_AoD[index]["SourceFile_FolderName"]}')
-                    for file in os.listdir(self.General_AoD[index]["SourceFile_FolderName"]):
-                        os_services.debug(self, f' Copying {file} into {self.General_AoD[index]["TargetFolder"]}')
-                        shutil.copy(os.path.join(self.General_AoD[index]["SourceFile_FolderName"], file),
-                                    self.General_AoD[index]["TargetFolder"])
+                                            f'{General_AoD[index]["SourceFile_FolderName"]}')
+                    for file in os.listdir(General_AoD[index]["SourceFile_FolderName"]):
+                        os_services.debug(self, f' Copying {file} into {General_AoD[index]["TargetFolder"]}')
+                        if not os.path.exists(General_AoD[index]["TargetFolder"]):
+                            os.makedirs(General_AoD[index]["TargetFolder"])
+                        shutil.copy2(os.path.join(General_AoD[index]["SourceFile_FolderName"], file),
+                                     General_AoD[index]["TargetFolder"])
                         copy_count += 1
-                elif key == "File_FolderName" and os.path.isfile(self.General_AoD[index]["SourceFile_FolderName"]):
-                    os_services.debug(self, f' Copying {self.General_AoD[index]["SourceFile_FolderName"]} into '
-                                            f'{self.General_AoD[index]["TargetFolder"]}')
-                    shutil.copy(self.General_AoD[index]["SourceFile_FolderName"],
-                                self.General_AoD[index]["TargetFolder"])
+                elif key == "SourceFile_FolderName" and os.path.isfile(General_AoD[index]["SourceFile_FolderName"]):
+                    os_services.debug(self, f' Copying {General_AoD[index]["SourceFile_FolderName"]} into '
+                                            f'{General_AoD[index]["TargetFolder"]}')
+                    if not os.path.exists(General_AoD[index]["TargetFolder"]):
+                        os.makedirs(General_AoD[index]["TargetFolder"])
+                    shutil.copy(General_AoD[index]["SourceFile_FolderName"],
+                                General_AoD[index]["TargetFolder"])
                     copy_count += 1
         os_services.info(self, f' Copied {copy_count} files.')
         return copy_count
 
-    def excel_convert(self):
-        wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
+    def extract_GeneralList(self):
+        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
+        wb = load_workbook(os.path.join(resource_path, "BackupList.xlsx"))
         sheetset = {'GeneralList': 4}
+
+        GeneralList_AoD = []
 
         for ws in wb:
             if ws.title in sheetset.keys():
@@ -85,7 +95,8 @@ class UpdateGeneral(os_services):
                                 else:
                                     raise AttributeError
 
-                            self.General_AoD.append(row_set_dict)
+                            GeneralList_AoD.append(row_set_dict)
                             row_set_count += 1
 
-        os_services.debug(self, f' read {len(self.General_AoD)} File_Folders sets')
+        os_services.debug(self, f' Read in {len(GeneralList_AoD)} File_Folders sets')
+        return GeneralList_AoD
