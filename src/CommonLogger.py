@@ -4,6 +4,8 @@ import os
 import sys
 from pathlib import Path
 
+from openpyxl import load_workbook
+
 
 class LoggerServices:
     """
@@ -24,7 +26,7 @@ class LoggerServices:
 
     # # # # # End of header # # # #
     log_file = ""
-
+    log_level = ""
 
     @staticmethod
     def date():
@@ -64,52 +66,36 @@ class LoggerServices:
             else:
                 return log_dir
 
-    def getLogger(self, name, config_json):
+    def getLogger(self, name):
         """
         This method creates and returns a object used to log each script run
         """
-        self.log_file = self.setLogFile()
-        log_level = self.get_log_level(config_json)
+        log_file = self.openlogfile()
+        self.log_level = self.set_log_level()
         logger = logging.getLogger(name)
-        logging.basicConfig(filename=self.log_file, level=log_level,
+        logging.basicConfig(filename=log_file, level=self.log_level,
                             format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
-        self.openlogfile()
+
         return logger
 
-    def starting_template(self, parameter_list, args):
+    def starting_template(self, parameter_list):
         """
         This method takes a list of cmd line args
         passed and displays each running script in a similar view
         """
         self.info(f'Starting {self.getScriptName()}')
         self.info(f"Extracting input params: {(' '.join(map(str, parameter_list)))}")
+        self.info(f"Log Level {self.get_log_level()}")
         return None
 
-    def ending_template(self, parameter_list, args):
-        """
-        This method takes a list of cmd line args
-        passed and displays each running script in a similar view
-        """
-        self.info(f'End of {self.getScriptName()}\n\n')
-        return None
-
-    def get_log_level(self, json_in):
-        """
-        This method gets the log_level setting from the config_json
-        """
-        log_level = "DEBUG"
-        for major_key in json_in:
-            if "Config" in major_key:
-                for cfg_Set in json_in[major_key]:
-                    for key in cfg_Set:
-                        if "LOG_LEVEL" in key:
-                            log_level = cfg_Set["LOG_LEVEL"]
-        return log_level
+    def get_log_level(self):
+        return self.log_level
 
     def openlogfile(self):
         """
         This method opens the logfile and prepends the starting info
         """
+        self.log_file = self.setLogFile()
         try:
             if os.path.exists(self.log_file):
                 fo = open(self.log_file, 'a', encoding='utf-8')
@@ -125,6 +111,25 @@ class LoggerServices:
         except IOError as ioe:
             msg = f'Log file {self.log_file} write error. {ioe}.'
             print(f'{self.date()}: {msg}')
+
+        return self.log_file
+
+    def closelogfile(self):
+        """
+        This method appends the closing log info and closes the logfile
+        """
+        self.log_file = self.setLogFile()
+        try:
+            fo = open(self.log_file, 'a', encoding='utf-8')
+            fo.write("\n")
+            fo.write(self.endingScriptLine())
+            fo.write("\n")
+            fo.close()
+        except IOError as ioe:
+            msg = f'Log file {self.log_file} write error. {ioe}.'
+            print(f'{self.date()}: {msg}')
+
+        return self.log_file
 
     @staticmethod
     def getScriptName():
@@ -145,12 +150,36 @@ class LoggerServices:
         script_start = f'{self.separationBar()} \n Starting script {script_path} \n{self.separationBar()}'
         return script_start
 
+    def endingScriptLine(self):
+        """
+        This method takes a list of cmd line args
+        passed and displays each running script in a similar view
+        """
+        script_path = os.path.normpath(os.path.join(os.popen("pwd").read().strip('\n'), str(sys.argv[0])))
+        script_end = f'{self.separationBar()} \n End of script {script_path} \n{self.separationBar()}'
+        return script_end
+
+    def set_log_level(self):
+        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
+        wb = load_workbook(os.path.join(resource_path, "BackupList.xlsx"))
+        sheetset = {'AppConfig': 6}
+
+        for ws in wb:
+            if ws.title in sheetset.keys():
+                worksheet = wb[ws.title]
+
+                row_sets = [worksheetsets for worksheetsets in worksheet.iter_rows(
+                    min_row=2, max_col=sheetset[ws.title], min_col=1, values_only=True)]
+
+                self.log_level = row_sets[2][1]
+        return self.log_level
+
     @staticmethod
     def separationBar():
         """
-        This method returns a 90 char separation bar
+        This method returns a 30 char separation bar
         """
-        return 90 * f'='
+        return 75 * f'='
 
     def critical(self, msg):
         """

@@ -1,5 +1,6 @@
 import datetime
 import os
+import socket
 import sys
 from pathlib import Path
 
@@ -25,46 +26,62 @@ class OsServices(logger_services):
     __version__ = "1.0"
     # # # # # End of header # # # #
 
-    # sets the  path from which all scripts are run
-    script_path = os.path.join(os.getcwd(), sys.argv[0])
-    msg = ''
-    params_XML = None
-    reports_dir = ''
-    log_dir = ''
-    log_file = ''
 
-    def __init__(self, config_json, backupset_json, storageset_json, fileset_json):
+    def __init__(self):
         """
         This method constructs the CommonOS class object with the basic
         methods needed to setup all script runs
         """
         super().__init__()
-        self.config_json = config_json
-        self.backupset_json = backupset_json
-        self.storageset_json = storageset_json
-        self.fileset_json = fileset_json
-        self.setReportDir()  # set the reports dir path
+        # sets the  path from which all scripts are run
+        self.script_path = os.path.join(os.getcwd(), sys.argv[0])
+        self.reports_dir = self.setReportDir()  # set the reports dir path
+        self.crontabs_dir = self.setCronDir()  # the cron dir under UNIX/LINUX
+        self.msg = ''
 
     def setReportDir(self):
         """
         This method sets the report directory
         """
-        self.reports_dir = os.path.join(str(Path.home()), 'reports')
+        reports_dir = os.path.join(str(Path.home()), 'reports')
 
-        if not os.path.isdir(self.reports_dir):
-            os.makedirs(self.reports_dir)
+        if not os.path.isdir(reports_dir):
+            os.makedirs(reports_dir)
 
-            if not os.path.exists(self.reports_dir):
+            if not os.path.exists(reports_dir):
                 self.msg = 'Initial setup of reports dir failed, exiting script run!'
                 print(f'{self.date()}: {self.msg}')
                 logger_services.error(self, self.msg)
                 sys.exit(1)  # halt the script
+        return reports_dir
 
     def getReportDir(self):
         """
         This method returns the report directory set on the class
         """
         return self.reports_dir
+
+    def setCronDir(self):
+        """
+        This method sets the cron  directory
+        """
+        crontabs_dir = os.path.join(str(Path.home()), 'crontabs')
+
+        if not os.path.isdir(crontabs_dir):
+            os.makedirs(crontabs_dir)
+
+            if not os.path.exists(crontabs_dir):
+                self.msg = 'Initial setup of crontab dir failed, exiting script run!'
+                print(f'{self.date()}: {self.msg}')
+                logger_services.error(self, self.msg)
+                sys.exit(1)
+        return crontabs_dir
+
+    def getCronDir(self):
+        """
+        This method returns the cron directory set on the class
+        """
+        return self.crontabs_dir
 
     def haltScript(self):
         """
@@ -73,14 +90,6 @@ class OsServices(logger_services):
         print(f'{self.date()}: {self.msg}')
         logger_services.error(self, self.msg)
         return None
-
-    @staticmethod
-    def getScriptName():
-        """
-        This method returns the script name
-        """
-
-        return str(os.path.basename(sys.argv[0])).split('.')[0]
 
     @staticmethod
     def date():
@@ -95,18 +104,6 @@ class OsServices(logger_services):
         This method returns a formatted date string in YYYYMMDD for appending to file names
         """
         return datetime.datetime.now().strftime('%Y%m%d')
-
-    def getHostName(self):
-        """
-        This method returns the hostname of the machine
-        """
-        try:
-            hostname = socket.gethostname()
-        except Exception as error:
-            print(f'{self.date()}: Cannot lookup hostname..see the following error')
-            raise error
-        else:
-            return hostname
 
     def scriptRunCheck(self):
         """
