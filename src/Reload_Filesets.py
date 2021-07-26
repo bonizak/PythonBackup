@@ -21,7 +21,7 @@ class ReloadFileSets(os_services):
         :return:
         """
         FileSetRows = []
-        FileSystemsIn = self.read_fs_in()
+        FileSystemsIn = self.read_rootpaths_in()
         if len(FileSystemsIn) > 0:
             for fsi in FileSystemsIn:
                 for dirpath, subdirList, filesList in self.walklevel(fsi["RootPath"], fsi["MaxDepth"]):
@@ -30,76 +30,88 @@ class ReloadFileSets(os_services):
                         pass
                     elif fsi["MaxDepth"] == -1:
                         ''' collect the files in the RootFileSystem directory and all subdirectories'''
-                        for subdir in subdirList:
-                            if os.path.join(dirpath, subdir).find("Trash") == -1 and \
-                                    os.path.join(dirpath, subdir).find("lost+found") == -1:
-                                FileSetRows.append(
-                                    {"FileSetName": "",
-                                     "Includes": os.path.join(dirpath, subdir),
-                                     "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
-                        for file in filesList:
-                            if os.path.join(dirpath, file).find("Trash") == -1 and \
-                                    os.path.join(dirpath, file).find("lost+found") == -1:
-                                FileSetRows.append(
-                                    {"FileSetName": "",
-                                     "Includes": os.path.join(dirpath, file),
-                                     "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
+                        if fsi["FilesFolders"] in ("Folders", "Both"):
+                            for subdir in subdirList:
+                                if os.path.join(dirpath, subdir).find("Trash") == -1 and \
+                                        os.path.join(dirpath, subdir).find("lost+found") == -1 and \
+                                        not os.path.islink(os.path.join(dirpath, subdir)):
+                                    FileSetRows.append(
+                                        {"FileSetName": "",
+                                         "Includes": os.path.join(dirpath, subdir),
+                                         "Excludes": "NA", "Compress": "YES", "Recurse": "Yes"})
+                        if fsi["FilesFolders"] in ("Files", "Both"):
+                            for file in filesList:
+                                if os.path.join(dirpath, file).find("Trash") == -1 and \
+                                        os.path.join(dirpath, file).find("lost+found") == -1 and \
+                                        not os.path.islink(os.path.join(dirpath, file)):
+                                    FileSetRows.append(
+                                        {"FileSetName": "",
+                                         "Includes": os.path.join(dirpath, file),
+                                         "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
                     elif fsi["MaxDepth"] == os.path.abspath(fsi["RootPath"]).count(os.path.sep):
                         ''' collect the files and directories ONLY in the RootFileSystem - no recursive scan'''
-                        for subdir in subdirList:
-                            if os.path.join(dirpath, subdir).find("Trash") == -1 and \
-                                    os.path.join(dirpath, subdir).find("lost+found") == -1:
-                                if os.path.join(dirpath, subdir).count(os.path.sep) <= fsi["MaxDepth"]:
-                                    FileSetRows.append(
-                                        {"FileSetName": "",
-                                         "Includes": os.path.join(dirpath, subdir),
-                                         "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
-                        for file in filesList:
-                            if os.path.join(dirpath, file).find("Trash") == -1 and \
-                                    os.path.join(dirpath, file).find("lost+found") == -1:
-                                if os.path.join(dirpath, file).count(os.path.sep) == fsi["MaxDepth"] + 1:
-                                    FileSetRows.append(
-                                        {"FileSetName": "",
-                                         "Includes": os.path.join(dirpath, file),
-                                         "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
+                        if fsi["FilesFolders"] in ("Folders", "Both"):
+                            for subdir in subdirList:
+                                if os.path.join(dirpath, subdir).find("Trash") == -1 and \
+                                        os.path.join(dirpath, subdir).find("lost+found") == -1 and \
+                                        not os.path.islink(os.path.join(dirpath, subdir)):
+                                    if os.path.join(dirpath, subdir).count(os.path.sep) <= fsi["MaxDepth"]:
+                                        FileSetRows.append(
+                                            {"FileSetName": "",
+                                             "Includes": os.path.join(dirpath, subdir),
+                                             "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
+                        if fsi["FilesFolders"] in ("Files", "Both"):
+                            for file in filesList:
+                                if os.path.join(dirpath, file).find("Trash") == -1 and \
+                                        os.path.join(dirpath, file).find("lost+found") == -1 and \
+                                        not os.path.islink(os.path.join(dirpath, file)):
+                                    if os.path.join(dirpath, file).count(os.path.sep) == fsi["MaxDepth"] + 1:
+                                        FileSetRows.append(
+                                            {"FileSetName": "",
+                                             "Includes": os.path.join(dirpath, file),
+                                             "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
                     elif fsi["MaxDepth"] >= os.path.abspath(fsi["RootPath"]).count(os.path.sep):
-                        ''' collect the files and directories in the RootPath - with recursive scan'''
-                        for subdir in subdirList:
-                            if os.path.join(dirpath, subdir).find("Trash") == -1 and \
-                                    os.path.join(dirpath, subdir).find("lost+found") == -1:
-                                if os.path.join(dirpath, subdir).count(os.path.sep) <= fsi["MaxDepth"]:
-                                    FileSetRows.append(
-                                        {"FileSetName": "",
-                                         "Includes": os.path.join(dirpath, subdir),
-                                         "Excludes": "NA", "Compress": "YES", "Recurse": "YES"})
-                        for file in filesList:
-                            if os.path.join(dirpath, file).find("Trash") == -1 and \
-                                    os.path.join(dirpath, file).find("lost+found") == -1:
-                                if os.path.join(dirpath, file).count(os.path.sep) == fsi["MaxDepth"] + 1:
-                                    FileSetRows.append(
-                                        {"FileSetName": "",
-                                         "Includes": os.path.join(dirpath, file),
-                                         "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
+                        ''' collect the files and directories in the RootFileSystem - with recursive scan'''
+                        if fsi["FilesFolders"] in ("Folders", "Both"):
+                            for subdir in subdirList:
+                                if os.path.join(dirpath, subdir).find("Trash") == -1 and \
+                                        os.path.join(dirpath, subdir).find("lost+found") == -1 and \
+                                        not os.path.islink(os.path.join(dirpath, subdir)):
+                                    if os.path.join(dirpath, subdir).count(os.path.sep) <= fsi["MaxDepth"]:
+                                        FileSetRows.append(
+                                            {"FileSetName": "",
+                                             "Includes": os.path.join(dirpath, subdir),
+                                             "Excludes": "NA", "Compress": "YES", "Recurse": "YES"})
+                        if fsi["FilesFolders"] in ("Files", "Both"):
+                            for file in filesList:
+                                if os.path.join(dirpath, file).find("Trash") == -1 and \
+                                        os.path.join(dirpath, file).find("lost+found") == -1 and \
+                                        not os.path.islink(os.path.join(dirpath, file)):
+                                    if os.path.join(dirpath, file).count(os.path.sep) == fsi["MaxDepth"] + 1:
+                                        FileSetRows.append(
+                                            {"FileSetName": "",
+                                             "Includes": os.path.join(dirpath, file),
+                                             "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
 
         if len(FileSetRows) == 0:
             print(f' Empty RootPath Scan Returned. Verify MaxDepth values in RootPath Sheet of workbook.'
                   f' \n Exiting!')
 
         sorted_FileSetRows = sorted(FileSetRows, key=lambda I: I["Includes"])
-        wfs_rc = self.write_fs(sorted_FileSetRows)
-        os_services.info(self, f' \nCaptured {wfs_rc} file sets')
+        write_filesets_rc = self.write_filesets(sorted_FileSetRows)
+        os_services.info(self, f' \nCaptured {write_filesets_rc} file sets')
         return FileSetRows
 
-    def read_fs_in(self):
+    def read_rootpaths_in(self):
         """
-        This method reads in the RootFileSystems sheet from BackupList.xlsx workbook in the
+        This method reads in the RootPath sheet from BackupList.xlsx workbook in the
         resources directory of this project, and loads the sheet into a class level dictionary.
 
         :return: Count of rows read in and written to  FileSystemsIn{}
         """
         resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
         wb = load_workbook(os.path.join(resource_path, "BackupList.xlsx"))
-        sheetset = {'RootPaths': 3}
+        sheetset = {'RootPaths': 4}
         row_set_count = 0
         FileSystemsIn = []
 
@@ -121,6 +133,8 @@ class ReloadFileSets(os_services):
                                 row_set_dict["RootPath"] = row_set[index]
                             elif index == 2:
                                 row_set_dict["MaxDepth"] = row_set[index]
+                            elif index == 3:
+                                row_set_dict["FilesFolders"] = row_set[index]
                             else:
                                 raise AttributeError
 
@@ -128,7 +142,7 @@ class ReloadFileSets(os_services):
                         row_set_count += 1
         return FileSystemsIn
 
-    def write_fs(self, fs_dict):
+    def write_filesets(self, fs_dict):
         """
         This method writes a supplied dictionary to the FileSets sheet  of the BackupList.xlsx workbook using pandas.
         :param fs_dict:

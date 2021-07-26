@@ -14,11 +14,11 @@ class UpdateGeneral(os_services):
 
     def Collect_General_Files(self):
         """
-        This method collect the non-user files and copies them into a $HOME/Documents/General folder
+        This method collects the non-user files list in the GeneralList sheet
+         and copies them into a $HOME/Documents/General folder
         :return:
         """
         General_AoD = self.extract_GeneralList()
-
         copy_count = 0
 
         for index in range(len(General_AoD)):
