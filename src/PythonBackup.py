@@ -76,7 +76,7 @@ class PythonBackup(updg, reload_filesets, file_sizes, excel_conv, os_services):
                 os_services.error(self, f'Update of File Sizes refresh has failed.')
 
         elif self.args.run_frequency:
-            os_services.info(self, f'Backing up host {os.uname()[1]}.')
+            os_services.info(self, f'Backing up host {os.uname()[1]}.\n')
             self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD = excel_conv.excel_convert(self)
             self.backup_start(self.args.run_frequency)
             os_services.info(self, f'Completed {os.uname()[1]} backup')
@@ -123,8 +123,8 @@ class PythonBackup(updg, reload_filesets, file_sizes, excel_conv, os_services):
 
             try:
                 if skipping:
-                    os_services.warn(self, f" Skipping Backup Set {backup_set_name} "
-                                            f"as it is not scheduled for today.\n")
+                    os_services.warn(self, f" Skipping Backup Set {backup_set_name}"
+                                           f" as it is not scheduled for today.\n")
                     continue
                 elif not os.path.exists(storage_path):
                     os_services.warn(self, f"StoragePath {storage_path} is not mounted. Skipping BackupSet\n")
@@ -135,6 +135,7 @@ class PythonBackup(updg, reload_filesets, file_sizes, excel_conv, os_services):
                     os_services.debug(self, f' Frequency: {frequency}')
                     os_services.debug(self, f'  Includes: {include_files_list} ')
                     os_services.debug(self, f'  Excludes: {exclude_files_list}')
+                    os_services.debug(self, f'  Recurse: {recurse}')
             except Exception as ex:
                 os_services.error(self, f"Exception with BackupSet {backup_set_name}. {ex}")
                 os_services.error(self, f' FileSet: {file_set_name} ')
@@ -142,6 +143,7 @@ class PythonBackup(updg, reload_filesets, file_sizes, excel_conv, os_services):
                 os_services.error(self, f' Frequency: {frequency}')
                 os_services.error(self, f'  Includes: {include_files_list} ')
                 os_services.error(self, f'  Excludes: {exclude_files_list}')
+                os_services.error(self, f'  Recurse: {recurse}')
                 continue
 
             # remove any excluded files from the includes list
@@ -179,8 +181,8 @@ class PythonBackup(updg, reload_filesets, file_sizes, excel_conv, os_services):
                     if os.path.exists(filesets_in[index]["Includes"]):
                         fs_includes.append(filesets_in[index]["Includes"])
                     else:
-                        msg = f'  File Set {filesets_in[index]["Includes"]} does not exist. Remove it from ' \
-                              f'FileSets sheet in BackupList.xlsx '
+                        msg = f'  File Set {filesets_in[index]["Includes"]} does not exist. Remove it from' \
+                              f' FileSets sheet in BackupList.xlsx '
                         os_services.warn(self, msg)
         return fs_includes
 
