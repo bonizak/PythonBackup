@@ -16,15 +16,14 @@ class LoggerServices:
         Required: none
         Optional: none
 
-    Alerts: Critical | WARN | ERROR
-
-    Logging: none
+    Logging: INFO
     
     """
-    __author__ = "Barry Onizak"
-    __version__ = "0.01"
 
+    __author__ = "Barry Onizak"
+    __version__ = "20210814.1"
     # # # # # End of header # # # #
+
     log_file = ""
     log_level = ""
 

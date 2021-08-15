@@ -16,6 +16,24 @@ from Update_General import UpdateGeneral as updg
 
 
 class PythonBackup(updg, reload_filesets, file_sizes, excel_conv, os_services):
+    """
+    This class contains the methods to read the FileSets sheet and
+    collects and updates the 'Estimated Size' cell for each row
+
+    Args
+        Required: none
+        Optional: none
+
+    Alerts: Critical | WARN | ERROR
+
+    Logging: none
+
+    """
+
+    __author__ = "Barry Onizak"
+    __version__ = "20210814.1"
+    # # # # # End of header # # # #
+
     def __init__(self):
         super().__init__()
         self.BackupSet_AoD = []

@@ -9,14 +9,27 @@ from CommonOs import OsServices as os_services
 
 class UpdateGeneral(os_services):
     """
-    This class contains the methods required to copy non-user files into a user folder for backup
+    This class contains the methods required to collect non-user files listed in the GeneralList sheet
+         and copy them into a named target folder, creating this folder if it does not exist.
+
+    Args
+        Required: none
+        Optional: none
+
+    Logging: CRITICAL | INFO | DEBUG
+
     """
+
+    __author__ = "Barry Onizak"
+    __version__ = "20210814.1"
+    # # # # # End of header # # # #
 
     def Collect_General_Files(self):
         """
-        This method collects the non-user files list in the GeneralList sheet
-         and copies them into a $HOME/Documents/General folder
-        :return:
+        Entry method to perform the purpose of the class
+
+        :return: copy_count
+
         """
         General_AoD = self.extract_GeneralList()
         copy_count = 0
@@ -61,6 +74,10 @@ class UpdateGeneral(os_services):
         return copy_count
 
     def extract_GeneralList(self):
+        """
+        Method to extract the contents of columns and append to a list
+        :return: GeneralList_AoD[]
+        """
         resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
         wb = load_workbook(os.path.join(resource_path, "BackupList.xlsx"))
         sheetset = {'GeneralList': 4}

@@ -16,16 +16,13 @@ class OsServices(logger_services):
         Required: none
         Optional: none
 
-    Alerts: Critical | WARN | ERROR
-
-    Logging: none
+    Logging: ERROR
     
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "1.0"
+    __version__ = "20210814.1"
     # # # # # End of header # # # #
-
 
     def __init__(self):
         """

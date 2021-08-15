@@ -9,10 +9,27 @@ class FSWriter(os_services):
     """
     This class contains the methods to read the FileSets sheet and
     collects and updates the 'Estimated Size' cell for each row
+
+    Args
+        Required: none
+        Optional: none
+
+    Logging: WARN | ERROR
+
     """
+
+    __author__ = "Barry Onizak"
+    __version__ = "20210814.1"
+    # # # # # End of header # # # #
+
     resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
 
     def Collect_file_sizes(self):
+        """
+        Entry method to perform the purpose of the class
+
+        :return: write_files_sizes_rc
+        """
         FileSizeRows = []
         IncludesRead = self.read_filesets_in()
         row_set_count = 0
@@ -37,7 +54,7 @@ class FSWriter(os_services):
                     FileSizeRows.append(FileSizeRow)
                     row_set_count += 1
                 elif key == "Includes":
-                    os_services.warn(f' {IncludesRead[index][key]} does not exist.  '
+                    os_services.warn(self, f' {IncludesRead[index][key]} does not exist.  '
                                      f'Consider removing it from FileSets.')
                 else:
                     pass
@@ -46,6 +63,13 @@ class FSWriter(os_services):
         return write_files_sizes_rc
 
     def getFolderSize(self, folder, recurse):
+        """
+        Method to calculate the size of a folder either with or without child files.
+
+        :param folder:
+        :param recurse:
+        :return: total_size
+        """
         itempath = ""
         total_size = os.path.getsize(folder)
         if str(recurse).upper() == "YES":
@@ -55,7 +79,7 @@ class FSWriter(os_services):
                     if os.path.isfile(itempath):
                         total_size += os.path.getsize(itempath)
                     elif os.path.isdir(itempath):
-                        total_size += self.getFolderSize(itempath)
+                        total_size += self.getFolderSize(itempath, recurse)
             except PermissionError as pe:
                 os_services.error(self, f'{itempath} is not accessible. {pe}')
                 return 0
@@ -66,7 +90,9 @@ class FSWriter(os_services):
 
     def read_filesets_in(self):
         """
-        This method reads in the FileSets sheet and writes the specific columns into an array of dictionaries
+        Method  to read in the FileSets sheet and write the specific columns into an array of dictionaries
+
+        :return: IncludesRead[]
         """
         resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
         wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
@@ -106,7 +132,7 @@ class FSWriter(os_services):
         """
         This method writes a supplied dictionary to the FileSizes sheet of the BackupList.xlsx workbook using pandas.
         :param fs_dict:
-        :return:
+        :return: df.size
         """
         wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
         writer = pd.ExcelWriter(os.path.join(self.resource_path, "BackupList.xlsx"), engine='openpyxl')

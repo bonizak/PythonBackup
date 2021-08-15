@@ -12,13 +12,19 @@ class ReloadFileSets(os_services):
         'INCLUDES', 'EXCLUDES , 'COMPRESS' and 'RECURSE columns of
         FILESETS sheet of BACKUPLIST.xls.
     """
+
+    __author__ = "Barry Onizak"
+    __version__ = "20210814.1"
+    # # # # # End of header # # # #
+
     resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
 
     def Build_FileSets(self):
         """
         This method starts the process to read a list of RootPaths and scan them for sub-directories and files,
         then writing these files and folders into the FileSets sheet of the BackupList.xlsx workbook.
-        :return:
+
+        :return: FileSetRows[]
         """
         FileSetRows = []
         FileSystemsIn = self.read_rootpaths_in()
@@ -36,7 +42,7 @@ class ReloadFileSets(os_services):
                                         os.path.join(dirpath, subdir).find("lost+found") == -1 and \
                                         not os.path.islink(os.path.join(dirpath, subdir)):
                                     FileSetRows.append(
-                                        {"FileSetName": "",
+                                        {"FileSetName": "ToBeUpdated",
                                          "Includes": os.path.join(dirpath, subdir),
                                          "Excludes": "NA", "Compress": "YES", "Recurse": "Yes"})
                         if fsi["FilesFolders"] in ("Files", "Both"):
@@ -45,7 +51,7 @@ class ReloadFileSets(os_services):
                                         os.path.join(dirpath, file).find("lost+found") == -1 and \
                                         not os.path.islink(os.path.join(dirpath, file)):
                                     FileSetRows.append(
-                                        {"FileSetName": "",
+                                        {"FileSetName": "ToBeUpdated",
                                          "Includes": os.path.join(dirpath, file),
                                          "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
                     elif fsi["MaxDepth"] == os.path.abspath(fsi["RootPath"]).count(os.path.sep):
@@ -57,7 +63,7 @@ class ReloadFileSets(os_services):
                                         not os.path.islink(os.path.join(dirpath, subdir)):
                                     if os.path.join(dirpath, subdir).count(os.path.sep) <= fsi["MaxDepth"]:
                                         FileSetRows.append(
-                                            {"FileSetName": "",
+                                            {"FileSetName": "ToBeUpdated",
                                              "Includes": os.path.join(dirpath, subdir),
                                              "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
                         if fsi["FilesFolders"] in ("Files", "Both"):
@@ -67,7 +73,7 @@ class ReloadFileSets(os_services):
                                         not os.path.islink(os.path.join(dirpath, file)):
                                     if os.path.join(dirpath, file).count(os.path.sep) == fsi["MaxDepth"] + 1:
                                         FileSetRows.append(
-                                            {"FileSetName": "",
+                                            {"FileSetName": "ToBeUpdated",
                                              "Includes": os.path.join(dirpath, file),
                                              "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
                     elif fsi["MaxDepth"] >= os.path.abspath(fsi["RootPath"]).count(os.path.sep):
@@ -79,7 +85,7 @@ class ReloadFileSets(os_services):
                                         not os.path.islink(os.path.join(dirpath, subdir)):
                                     if os.path.join(dirpath, subdir).count(os.path.sep) <= fsi["MaxDepth"]:
                                         FileSetRows.append(
-                                            {"FileSetName": "",
+                                            {"FileSetName": "ToBeUpdated",
                                              "Includes": os.path.join(dirpath, subdir),
                                              "Excludes": "NA", "Compress": "YES", "Recurse": "YES"})
                         if fsi["FilesFolders"] in ("Files", "Both"):
@@ -89,7 +95,7 @@ class ReloadFileSets(os_services):
                                         not os.path.islink(os.path.join(dirpath, file)):
                                     if os.path.join(dirpath, file).count(os.path.sep) == fsi["MaxDepth"] + 1:
                                         FileSetRows.append(
-                                            {"FileSetName": "",
+                                            {"FileSetName": "ToBeUpdated",
                                              "Includes": os.path.join(dirpath, file),
                                              "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
 
