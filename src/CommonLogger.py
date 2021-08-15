@@ -168,7 +168,7 @@ class LoggerServices:
                 worksheet = wb[ws.title]
 
                 row_sets = [worksheetsets for worksheetsets in worksheet.iter_rows(
-                    min_row=2, max_col=sheetset[ws.title], min_col=1, values_only=True)]
+                    min_row=1, max_col=sheetset[ws.title], min_col=1, values_only=True)]
 
                 self.log_level = row_sets[2][1]
         return self.log_level
