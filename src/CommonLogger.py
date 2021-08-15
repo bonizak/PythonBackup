@@ -21,7 +21,7 @@ class LoggerServices:
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20210814.1"
+    __version__ = "20210815.1"
     # # # # # End of header # # # #
 
     log_file = ""
@@ -170,7 +170,7 @@ class LoggerServices:
                 row_sets = [worksheetsets for worksheetsets in worksheet.iter_rows(
                     min_row=1, max_col=sheetset[ws.title], min_col=1, values_only=True)]
 
-                self.log_level = row_sets[2][1]
+                self.log_level = row_sets[3][1]
         return self.log_level
 
     @staticmethod
