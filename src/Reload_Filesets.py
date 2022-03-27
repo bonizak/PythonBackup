@@ -36,7 +36,7 @@ class ReloadFileSets(os_services):
                                         os.path.join(dirpath, subdir).find("lost+found") == -1 and \
                                         not os.path.islink(os.path.join(dirpath, subdir)):
                                     FileSetRows.append(
-                                        {"FileSetName": "",
+                                        {"FileSetName": "ToBeUpdated",
                                          "Includes": os.path.join(dirpath, subdir),
                                          "Excludes": "NA", "Compress": "YES", "Recurse": "Yes"})
                         if fsi["FilesFolders"] in ("Files", "Both"):
@@ -45,7 +45,7 @@ class ReloadFileSets(os_services):
                                         os.path.join(dirpath, file).find("lost+found") == -1 and \
                                         not os.path.islink(os.path.join(dirpath, file)):
                                     FileSetRows.append(
-                                        {"FileSetName": "",
+                                        {"FileSetName": "ToBeUpdated",
                                          "Includes": os.path.join(dirpath, file),
                                          "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
                     elif fsi["MaxDepth"] == os.path.abspath(fsi["RootPath"]).count(os.path.sep):
@@ -57,7 +57,7 @@ class ReloadFileSets(os_services):
                                         not os.path.islink(os.path.join(dirpath, subdir)):
                                     if os.path.join(dirpath, subdir).count(os.path.sep) <= fsi["MaxDepth"]:
                                         FileSetRows.append(
-                                            {"FileSetName": "",
+                                            {"FileSetName": "ToBeUpdated",
                                              "Includes": os.path.join(dirpath, subdir),
                                              "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
                         if fsi["FilesFolders"] in ("Files", "Both"):
@@ -67,7 +67,7 @@ class ReloadFileSets(os_services):
                                         not os.path.islink(os.path.join(dirpath, file)):
                                     if os.path.join(dirpath, file).count(os.path.sep) == fsi["MaxDepth"] + 1:
                                         FileSetRows.append(
-                                            {"FileSetName": "",
+                                            {"FileSetName": "ToBeUpdated",
                                              "Includes": os.path.join(dirpath, file),
                                              "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
                     elif fsi["MaxDepth"] >= os.path.abspath(fsi["RootPath"]).count(os.path.sep):
@@ -79,7 +79,7 @@ class ReloadFileSets(os_services):
                                         not os.path.islink(os.path.join(dirpath, subdir)):
                                     if os.path.join(dirpath, subdir).count(os.path.sep) <= fsi["MaxDepth"]:
                                         FileSetRows.append(
-                                            {"FileSetName": "",
+                                            {"FileSetName": "ToBeUpdated",
                                              "Includes": os.path.join(dirpath, subdir),
                                              "Excludes": "NA", "Compress": "YES", "Recurse": "YES"})
                         if fsi["FilesFolders"] in ("Files", "Both"):
@@ -89,7 +89,7 @@ class ReloadFileSets(os_services):
                                         not os.path.islink(os.path.join(dirpath, file)):
                                     if os.path.join(dirpath, file).count(os.path.sep) == fsi["MaxDepth"] + 1:
                                         FileSetRows.append(
-                                            {"FileSetName": "",
+                                            {"FileSetName": "ToBeUpdated",
                                              "Includes": os.path.join(dirpath, file),
                                              "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
 

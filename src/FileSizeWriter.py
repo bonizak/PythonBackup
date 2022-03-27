@@ -37,7 +37,7 @@ class FSWriter(os_services):
                     FileSizeRows.append(FileSizeRow)
                     row_set_count += 1
                 elif key == "Includes":
-                    os_services.warn(f' {IncludesRead[index][key]} does not exist.  '
+                    os_services.warn(self, f' {IncludesRead[index][key]} does not exist.  '
                                      f'Consider removing it from FileSets.')
                 else:
                     pass
@@ -55,7 +55,7 @@ class FSWriter(os_services):
                     if os.path.isfile(itempath):
                         total_size += os.path.getsize(itempath)
                     elif os.path.isdir(itempath):
-                        total_size += self.getFolderSize(itempath)
+                        total_size += self.getFolderSize(itempath, recurse)
             except PermissionError as pe:
                 os_services.error(self, f'{itempath} is not accessible. {pe}')
                 return 0
