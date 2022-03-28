@@ -1,5 +1,6 @@
 import argparse
 import os
+import socket
 import sys
 import tarfile
 import time
@@ -7,12 +8,36 @@ import time
 from openpyxl import load_workbook
 
 import Target_File_Builder as tfb
-from FSWalker import FSWalker as fsw
-from Update_General import UpdateGeneral as updg
 from CommonOs import OsServices as os_services
+from CommonTemplate import Template as Temp
+from Excel_Converter import Excel_Converter as excel_conv
+from FileSizeWriter import FSWriter as file_sizes
+from Reload_Filesets import ReloadFileSets as reload_filesets
+from Update_General import UpdateGeneral as updg
 
 
-class PythonBackup(updg, os_services):
+# from CommonLogger import LoggerServices as logger_services
+
+
+class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_services):
+    """
+    This class contains the methods to read the FileSets sheet and
+    collects and updates the 'Estimated Size' cell for each row
+
+    Args
+        Required: none
+        Optional: none
+
+    Alerts: Critical | WARN | ERROR
+
+    Logging: none
+
+    """
+
+    __author__ = "Barry Onizak"
+    __version__ = "20220328.1"
+    # # # # # End of header # # # #
+
     def __init__(self):
         super().__init__()
         self.BackupSet_AoD = []
@@ -28,16 +53,22 @@ class PythonBackup(updg, os_services):
          """
         try:
             parser = argparse.ArgumentParser(prog=str(sys.argv[0]),
-                                             usage="%(prog)s Backups a computer's file systems according to the "
+                                             usage="%(prog)s Back up your file systems according to the "
                                                    "information provided in a companion spreadsheet.")
-            parser.add_argument("-run_frequency", required=False,
-                                help=f'Pass the backup frequency from DAILY, WEEKLY, MONTHLY, ARCHIVE or ANY')
-            parser.add_argument("-reload", action="store_true", required=False,
-                                help=f'Pass to reload the FileSet sheet of the BackupSetList.xlsx in the '
-                                     f'resources directory. Review and edit the FileSets sheet once reloaded.')
-            parser.add_argument("-upd_general", action="store_true", required=False,
-                                help=f'Pass upd_general to copy any non-user files into a folder to be captured '
-                                     f'during backups')
+                                                   
+            parser.set_defaults(version=self.__version__)
+            megroup = parser.add_mutually_exclusive_group()
+            megroup.add_argument("-run_frequency", required=False,
+                                 help=f'Pass the backup frequency value of DAILY, WEEKLY, MONTHLY, ARCHIVE or ANY')
+            megroup.add_argument("-reload", action="store_true", required=False,
+                                 help=f'Pass to reload the FileSet sheet of the BackupSetList.xlsx in the '
+                                      f'resources directory. Review and edit the FileSets sheet once reloaded.')
+            megroup.add_argument("-upd_general", action="store_true", required=False,
+                                 help=f'Pass upd_general to copy any non-user files into the $USERHOME/GENERAL to be '
+                                      f'captured during backups')
+            megroup.add_argument("-refresh_sizes", action="store_true", required=False,
+                                 help=f'Pass refresh_sizes to collect and update the file size sheet '
+                                      f'of the BackupSetList.xlsx')
 
             self.args = parser.parse_args()
         except Exception as e:
@@ -46,25 +77,36 @@ class PythonBackup(updg, os_services):
         else:
             return self.args
 
-    def run_object(self):
-        if args.reload:
-            fsw_rc = fsw.Build_FileSets(fsw.__init__(self))
-            if fsw_rc > 0:
-                os_services.info(self, f"Reload of FileSets in BackupList.xlsx loaded {fsw} rows.")
+    def run_PythonBackup(self):
+        if self.args.reload:
+            FileSetRows = reload_filesets.Build_FileSets(self)
+            if len(FileSetRows) > 0:
+                os_services.info(self, f"Reload of FileSets in BackupList.xlsx loaded {len(FileSetRows)} rows.")
             else:
                 os_services.error(self, f"Reload of FileSets in BackupList.xlsx failed.")
-        elif args.upd_general:
-            self.upd_general()
-        else:
-            os_services.info(self, f'Backing up host {os.uname()[1]}.')
-            self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD = self.excel_convert()
-            self.backup_start(str(args.run_frequency).upper())
-            os_services.info(self, f'Completed {os.uname()[1]} backup')
 
-    def upd_general(self):
-        updg_rc = updg.Collect_General_Files(updg.__init__(self))
-        if updg_rc <= 0:
-            os_services.error(self, f'Update of General files has failed.')
+        elif self.args.upd_general:
+            updg_rc = updg.Collect_General_Files(self)
+            if updg_rc > 0:
+                os_services.info(self, f"Update of General folder loaded {updg_rc} rows.")
+            else:
+                os_services.error(self, f'Update of General files has failed.')
+
+        elif self.args.refresh_sizes:
+            file_sizes_rc = file_sizes.Collect_file_sizes(self)
+            if file_sizes_rc > 0:
+                os_services.info(self, f"File Size Refresh loaded {file_sizes_rc} rows.")
+            else:
+                os_services.error(self, f'Update of File Sizes refresh has failed.')
+
+        elif self.args.run_frequency:
+            os_services.info(self, f'Backing up host {socket.gethostname()}.\n')
+            self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD = excel_conv.excel_convert(self)
+            self.backup_start(self.args.run_frequency)
+            os_services.info(self, f'Completed {socket.gethostname()} backup')
+
+        else:
+            print(f"Missing a run type parameter of -reload, -upd_general, -refresh_sizes or -run_frequency. Exiting.")
             sys.exit(1)
 
     def backup_start(self, run_frequency):
@@ -79,19 +121,21 @@ class PythonBackup(updg, os_services):
             frequency = ""
             include_files_list = []
             exclude_files_list = []
+            recurse = ""
             skipping = True
             for key in backup_list_in[index]:  # loop through backup set key fields
                 if key == "BackupSetName":
                     backup_set_name = backup_list_in[index][key]
-                    os_services.info(self, f'Running BackupSet \'{backup_set_name}\' ')
+                    os_services.info(self, f'Checking BackupSet \'{backup_set_name}\' ')
                 elif key == "StorageSetName":
                     storage_path = self.storage_path_getter(backup_list_in[index][key])
                     if storage_path is None:
-                        os_services.error(self, "Empty StoragePath. Skipping BackupSet")
+                        os_services.warn(self, "Empty StoragePath. Skipping BackupSet")
                         break
                 elif key == "FileSetName":
                     include_files_list = self.fileset_includes_getter(backup_list_in[index][key])
                     exclude_files_list = self.fileset_excludes_getter(backup_list_in[index][key])
+                    recurse = self.fileset_recurse_getter(backup_list_in[index][key])
                     file_set_name = backup_list_in[index][key]
                 elif key == "Frequency" and run_frequency.upper() == str(backup_list_in[index][key]).upper():
                     frequency = str(backup_list_in[index][key]).upper()
@@ -103,8 +147,11 @@ class PythonBackup(updg, os_services):
 
             try:
                 if skipping:
-                    os_services.info(self,
-                                     f" Skipping Backup Set \'{backup_set_name}\' as it is not scheduled for today.\n")
+                    os_services.warn(self, f" Skipping Backup Set {backup_set_name}"
+                                           f" as it is not scheduled for today.\n")
+                    continue
+                elif not os.path.exists(storage_path):
+                    os_services.warn(self, f"StoragePath {storage_path} is not mounted. Skipping BackupSet\n")
                     continue
                 else:
                     os_services.info(self, f' FileSet: {file_set_name} ')
@@ -112,6 +159,7 @@ class PythonBackup(updg, os_services):
                     os_services.debug(self, f' Frequency: {frequency}')
                     os_services.debug(self, f'  Includes: {include_files_list} ')
                     os_services.debug(self, f'  Excludes: {exclude_files_list}')
+                    os_services.debug(self, f'  Recurse: {recurse}')
             except Exception as ex:
                 os_services.error(self, f"Exception with BackupSet {backup_set_name}. {ex}")
                 os_services.error(self, f' FileSet: {file_set_name} ')
@@ -119,6 +167,7 @@ class PythonBackup(updg, os_services):
                 os_services.error(self, f' Frequency: {frequency}')
                 os_services.error(self, f'  Includes: {include_files_list} ')
                 os_services.error(self, f'  Excludes: {exclude_files_list}')
+                os_services.error(self, f'  Recurse: {recurse}')
                 continue
 
             # remove any excluded files from the includes list
@@ -133,7 +182,7 @@ class PythonBackup(updg, os_services):
             os_services.debug(self, f"  keeping only {backup_versions} versions")
             archive_builder = tfb.Target_File_Builder(f'{archive_target_basefile}', backup_versions)
             archive_file = archive_builder.archive_target_file
-            archive_rc = self.write_tar_file(archive_file, include_files_list, True)
+            archive_rc = self.write_tar_file(archive_file, include_files_list, recurse)
             os_services.info(self, f'Back up of Backup Set Name {backup_set_name} '
                                    f'into {archive_file} '
                                    f'returned {archive_rc}\n')
@@ -156,9 +205,9 @@ class PythonBackup(updg, os_services):
                     if os.path.exists(filesets_in[index]["Includes"]):
                         fs_includes.append(filesets_in[index]["Includes"])
                     else:
-                        msg = f'  File Set {filesets_in[index]["Includes"]} does not exist. Remove it from ' \
-                              f'FileSets sheet in BackupList.xlsx '
-                        os_services.error(self, msg)
+                        msg = f'  File Set {filesets_in[index]["Includes"]} does not exist. Remove it from' \
+                              f' FileSets sheet in BackupList.xlsx '
+                        os_services.warn(self, msg)
         return fs_includes
 
     def fileset_excludes_getter(self, filesetname_needle):
@@ -168,10 +217,27 @@ class PythonBackup(updg, os_services):
         for index in range(len(filesets_in)):
             for key in filesets_in[index]:
                 if "FileSetName" in key and filesetname_needle in filesets_in[index][key]:
-                    if os.path.exists(filesets_in[index]["Excludes"]):
-                        fs_excludes.append(filesets_in[index]["Excludes"])
+                    expaths = None
+                    for expath in str(filesets_in[index]["Excludes"]).split(","):
+                        if os.path.exists(expath):
+                            if expaths is None:
+                                expaths = f'{expath}'
+                            else:
+                                expaths = f'{expaths}, {expath}'
+                    fs_excludes.append(expaths)
 
         return fs_excludes
+
+    def fileset_recurse_getter(self, filesetname_needle):
+        filesets_in = self.FileSet_AoD
+        fs_recurse = False
+
+        for index in range(len(filesets_in)):
+            for key in filesets_in[index]:
+                if key == "FileSetName" and filesets_in[index]["FileSetName"] == filesetname_needle:
+                    if str(filesets_in[index]["Recurse"]).upper() == "YES":
+                        fs_recurse = True
+        return fs_recurse
 
     @staticmethod
     def is_file_older_than_x_days(file, days=1):
@@ -179,12 +245,14 @@ class PythonBackup(updg, os_services):
         # Check against 24 hours
         return (time.time() - file_time) / 3600 > 24 * days
 
-    @staticmethod
-    def write_tar_file(target, sources, recursive):
+    def write_tar_file(self, target, sources, recursive):
         """ Tar and compress the sources into the target """
+        if recursive is None:
+            recursive = False
         try:
             with tarfile.open(target, 'w:gz') as tar_out:
                 for src in sources:
+                    os_services.debug(self, f'Processing {src} into backup')
                     tar_out.add(src, recursive=recursive)
 
             tar_out.close()
@@ -192,88 +260,12 @@ class PythonBackup(updg, os_services):
         except OSError as oserr:
             return oserr
 
-    def excel_convert(self):
-        wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
-        sheetset = {'BackupSets': 6, 'StorageSets': 4, 'FileSets': 6}
-
-        for ws in wb:
-            if ws.title in sheetset.keys():
-                worksheet = wb[ws.title]
-
-                row_sets = [worksheetsets for worksheetsets in worksheet.iter_rows(
-                    min_row=2, max_col=sheetset[ws.title], min_col=1, values_only=True)
-                            if None not in worksheetsets]
-
-                row_set_count = 0
-                for row_set in row_sets:
-                    row_set_dict = {}
-                    if worksheet.title == "BackupSets":
-                        for index in range(len(row_set)):
-                            if index == 0:
-                                row_set_dict["Index"] = row_set_count
-                            elif index == 1:
-                                row_set_dict["BackupSetName"] = row_set[index]
-                            elif index == 2:
-                                row_set_dict["StorageSetName"] = row_set[index]
-                            elif index == 3:
-                                row_set_dict["FileSetName"] = row_set[index]
-                            elif index == 4:
-                                row_set_dict["Versions"] = row_set[index]
-                            elif index == 5:
-                                row_set_dict["Frequency"] = row_set[index]
-                            else:
-                                raise AttributeError
-
-                        self.BackupSet_AoD.append(row_set_dict)
-                        row_set_count += 1
-
-                    elif worksheet.title == "StorageSets":
-                        for index in range(len(row_set)):
-                            if index == 0:
-                                row_set_dict["Index"] = row_set_count
-                            elif index == 1:
-                                row_set_dict["StorageSetName"] = row_set[index]
-                            elif index == 2:
-                                row_set_dict["StoragePath"] = row_set[index]
-                            elif index == 3:
-                                row_set_dict["DeviceType"] = row_set[index]
-                            else:
-                                raise AttributeError
-
-                        self.StorageSet_AoD.append(row_set_dict)
-                        row_set_count += 1
-
-                    elif worksheet.title == "FileSets":
-                        for index in range(len(row_set)):
-                            if index == 0:
-                                row_set_dict["Index"] = row_set_count
-                            elif index == 1:
-                                row_set_dict["FileSetName"] = row_set[index]
-                            elif index == 2:
-                                row_set_dict["Includes"] = row_set[index]
-                            elif index == 3:
-                                row_set_dict["Excludes"] = row_set[index]
-                            elif index == 4:
-                                row_set_dict["Compress"] = row_set[index]
-                            elif index == 5:
-                                row_set_dict["Recurse"] = row_set[index]
-                            else:
-                                raise AttributeError
-
-                        self.FileSet_AoD.append(row_set_dict)
-                        row_set_count += 1
-
-        os_services.info(self, f' read {len(self.BackupSet_AoD)} Backup sets')
-        os_services.info(self, f' read {len(self.StorageSet_AoD)} Storage sets')
-        os_services.info(self, f' read {len(self.FileSet_AoD)} File sets')
-        return self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD
-
 
 # =================================
 if __name__ == '__main__':
     obj = PythonBackup()
     args = obj.parseCommandLine()
-    obj.getLogger(__name__)
-    obj.starting_template(sys.argv[1:], args)
-    obj.run_object()
-    obj.ending_template(sys.argv[1:], args)
+    obj.getLogger()
+    obj.display_template(sys.argv[1:], args)
+    obj.run_PythonBackup()
+    obj.closelogfile()
