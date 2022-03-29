@@ -5,8 +5,6 @@ import sys
 import tarfile
 import time
 
-from openpyxl import load_workbook
-
 import Target_File_Builder as tfb
 from CommonOs import OsServices as os_services
 from CommonTemplate import Template as Temp
@@ -35,7 +33,7 @@ class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_servi
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20220328.1"
+    __version__ = "20220328.2"
     # # # # # End of header # # # #
 
     def __init__(self):

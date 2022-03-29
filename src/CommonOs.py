@@ -1,6 +1,6 @@
 import datetime
 import os
-import socket
+import platform
 import sys
 from pathlib import Path
 
@@ -23,7 +23,7 @@ class OsServices(logger_services):
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20220328.1"
+    __version__ = "20220328.2"
     # # # # # End of header # # # #
 
     def __init__(self):
@@ -40,19 +40,22 @@ class OsServices(logger_services):
         
     def setReportDir(self):
         """
-        This method sets the report directory
+        This method sets the report directory based on the OS
         """
-        reports_dir = os.path.join(str(Path.home()), 'reports')
+        if self.whichOs() == 'Windows':
+            self.reports_dir = os.path.join(os.path.normpath(os.getcwd()), os.pardir, 'reports')
+        else:
+            self.reports_dir = os.path.join(str(Path.home()), 'reports')
 
-        if not os.path.isdir(reports_dir):
-            os.makedirs(reports_dir)
+        if not os.path.isdir(self.reports_dir):
+            os.makedirs(self.reports_dir)
 
-            if not os.path.exists(reports_dir):
-                self.msg = 'Initial setup of reports dir failed, exiting script run!'
+            if not os.path.exists(self.reports_dir):
+                self.msg = 'Initial setup of reports dir not done, exiting script run!'
                 print(f'{self.date()}: {self.msg}')
-                logger_services.error(self, self.msg)
+                logger_services.critical(self, self.msg)
+                self.notify(logger_services.notify_list)
                 sys.exit(1)  # halt the script
-        return reports_dir
 
     def getReportDir(self):
         """
@@ -62,17 +65,18 @@ class OsServices(logger_services):
 
     def setCronDir(self):
         """
-        This method sets the cron  directory
+        This method sets the cron directory on the class for NON WINDOWS OS
         """
         crontabs_dir = os.path.join(str(Path.home()), 'crontabs')
 
-        if not os.path.isdir(crontabs_dir):
-            os.makedirs(crontabs_dir)
+        if self.whichOs() != 'Windows' and not os.path.isdir(self.crontabs_dir):
+            os.makedirs(self.crontabs_dir)
 
             if not os.path.exists(crontabs_dir):
                 self.msg = 'Initial setup of crontab dir failed, exiting script run!'
                 print(f'{self.date()}: {self.msg}')
-                logger_services.error(self, self.msg)
+                logger_services.critical(self, self.msg)
+                self.notify(logger_services.notify_list)
                 sys.exit(1)
         return crontabs_dir
 
@@ -81,6 +85,13 @@ class OsServices(logger_services):
         This method returns the cron directory set on the class
         """
         return self.crontabs_dir
+
+    def whichOs(self):
+        """
+        This method returns a string
+        of the current OS type
+        """
+        return platform.system()
 
     def haltScript(self):
         """
@@ -100,7 +111,7 @@ class OsServices(logger_services):
     @staticmethod
     def file_date():
         """
-        This method returns a formatted date string in YYYYMMDD for appending to file names
+            This method returns a formatted date string in YYYYMMDD for appending to file names
         """
         return datetime.datetime.now().strftime('%Y%m%d')
 
@@ -110,17 +121,3 @@ class OsServices(logger_services):
         already running and returns a boolean value
         """
         pass
-
-    def startScriptLine(self):
-        """
-        This method introduces the script that is about to be run and returns
-        it in a variable to be called as a part of the Common Template
-        """
-        self.script_path = os.path.normpath(os.path.join(os.popen("pwd").read().strip(
-            '\n'), str(sys.argv[0])))
-        if not os.path.isfile(self.script_path):
-            print('No such script name in toolkit folder...exiting')
-            sys.exit(1)
-
-        script_start = f'\n{self.separationBar()} \n Starting script {self.script_path} \n{self.separationBar()}'
-        return script_start
