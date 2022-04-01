@@ -34,8 +34,7 @@ class OsServices(logger_services):
         super().__init__()
         # sets the  path from which all scripts are run
         self.script_path = os.path.join(os.getcwd(), sys.argv[0])
-        self.reports_dir = self.setReportDir()  # set the reports dir path
-        self.crontabs_dir = self.setCronDir()  # the cron dir under UNIX/LINUX
+        self.setReportDir()
         self.msg = ''
         
     def setReportDir(self):
@@ -62,29 +61,6 @@ class OsServices(logger_services):
         This method returns the report directory set on the class
         """
         return self.reports_dir
-
-    def setCronDir(self):
-        """
-        This method sets the cron directory on the class for NON WINDOWS OS
-        """
-        crontabs_dir = os.path.join(str(Path.home()), 'crontabs')
-
-        if self.whichOs() != 'Windows' and not os.path.isdir(self.crontabs_dir):
-            os.makedirs(self.crontabs_dir)
-
-            if not os.path.exists(crontabs_dir):
-                self.msg = 'Initial setup of crontab dir failed, exiting script run!'
-                print(f'{self.date()}: {self.msg}')
-                logger_services.critical(self, self.msg)
-                self.notify(logger_services.notify_list)
-                sys.exit(1)
-        return crontabs_dir
-
-    def getCronDir(self):
-        """
-        This method returns the cron directory set on the class
-        """
-        return self.crontabs_dir
 
     def whichOs(self):
         """
