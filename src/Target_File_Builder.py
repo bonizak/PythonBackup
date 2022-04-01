@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 
 from CommonLogger import LoggerServices as logger_services
 from CommonOs import OsServices as os_services
@@ -11,7 +12,7 @@ class Target_File_Builder(os_services):
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20220328.1"
+    __version__ = "20220401.1"
 
     # # # # # End of header # # # #
     def __init__(self, archive_target_file, versions):
@@ -34,7 +35,11 @@ class Target_File_Builder(os_services):
                     # equal to or exceeded versions count - delete the oldest file
                     atf_eldest = os.path.join(archive_target_filename_path, sorted(atf_list)[0])
                     logger_services.debug(self, f'Deleting {atf_eldest}')
-                    os.remove(atf_eldest)
+                    try:
+                        os.remove(atf_eldest)
+                    except OSError as oserr:
+                        os_services.error(self, f'Error {oserr} trying to delete {atf_eldest}')
+                        sys.exit(1)
                     atf_list = self.atfp_scan(archive_target_filename_path)
                 else:
                     logger_services.debug(self, f'No previous files exist.')
