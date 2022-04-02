@@ -16,13 +16,12 @@ class OsServices(logger_services):
         Required: none
         Optional: none
 
-    Alerts: Critical | WARN | ERROR
-
-    Logging: none
+    Logging: ERROR
     
     """
 
     __author__ = "Barry Onizak"
+
     __version__ = "20220328.2"
     # # # # # End of header # # # #
 
@@ -34,20 +33,22 @@ class OsServices(logger_services):
         super().__init__()
         # sets the  path from which all scripts are run
         self.script_path = os.path.join(os.getcwd(), sys.argv[0])
+
         self.setReportDir()
         self.msg = ''
-        
+
     def setReportDir(self):
         """
         This method sets the report directory based on the OS
         """
+
         if self.whichOs() == 'Windows':
             self.reports_dir = os.path.join(os.path.normpath(os.getcwd()), os.pardir, 'reports')
         else:
             self.reports_dir = os.path.join(str(Path.home()), 'reports')
 
-        if not os.path.isdir(self.reports_dir):
-            os.makedirs(self.reports_dir)
+        if not os.path.isdir(reports_dir):
+            os.makedirs(reports_dir)
 
             if not os.path.exists(self.reports_dir):
                 self.msg = 'Initial setup of reports dir not done, exiting script run!'
@@ -55,12 +56,14 @@ class OsServices(logger_services):
                 logger_services.critical(self, self.msg)
                 self.notify(logger_services.notify_list)
                 sys.exit(1)  # halt the script
+        return reports_dir
 
     def getReportDir(self):
         """
         This method returns the report directory set on the class
         """
         return self.reports_dir
+
 
     def whichOs(self):
         """

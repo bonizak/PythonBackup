@@ -177,7 +177,6 @@ class ReloadFileSets(os_services):
             writer.save()
         except IOError as ioe:
             os_services.critical(self, f'IO error writing to "BackupList.xlsx : {ioe} ')
-
         return df.size
 
     def walklevel(self, rfspath, max_depth):

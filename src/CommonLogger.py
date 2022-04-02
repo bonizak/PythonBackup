@@ -5,6 +5,8 @@ import platform
 import sys
 from pathlib import Path
 
+from openpyxl import load_workbook
+
 
 class LoggerServices:
     """
@@ -14,6 +16,7 @@ class LoggerServices:
      Args
         Required: none
         Optional: none
+
 
     Alerts: As listed
     Level       Numeric value
@@ -34,6 +37,7 @@ class LoggerServices:
     log_dir = ''
     log_file = ''
     msg = ''
+
 
     def whichOs(self):
         """
@@ -90,11 +94,13 @@ class LoggerServices:
             else:
                 return self.log_dir
 
+
     def getLogDir(self):
         """
         This method returns the log
         directory set on the class
         """
+
         return self.log_dir
 
     def getLogFile(self):
@@ -180,7 +186,7 @@ class LoggerServices:
         bar to be used as part of
         the common template
         """
-        return '============================================================================='
+        return 75 * f'='
 
     def critical(self, msg):
         """
