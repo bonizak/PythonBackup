@@ -2,6 +2,8 @@ import os
 
 import pandas as pd
 from openpyxl import load_workbook
+
+
 from CommonOs import OsServices as os_services
 
 
@@ -19,7 +21,7 @@ class FSWriter(os_services):
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20210814.1"
+    __version__ = "20220328.1"
     # # # # # End of header # # # #
 
     resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
@@ -94,7 +96,7 @@ class FSWriter(os_services):
 
         :return: IncludesRead[]
         """
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
+
         wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
         sheetset = {'FileSets': 6}
         IncludesRead = []

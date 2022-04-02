@@ -15,7 +15,8 @@ class Excel_Converter(os_services):
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20210814.1"
+
+    __version__ = "20220328.1"
     # # # # # End of header # # # #
 
     resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")

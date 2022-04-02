@@ -1,6 +1,6 @@
 import datetime
 import os
-import socket
+import platform
 import sys
 from pathlib import Path
 
@@ -21,7 +21,8 @@ class OsServices(logger_services):
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20210814.1"
+
+    __version__ = "20220328.2"
     # # # # # End of header # # # #
 
     def __init__(self):
@@ -32,23 +33,28 @@ class OsServices(logger_services):
         super().__init__()
         # sets the  path from which all scripts are run
         self.script_path = os.path.join(os.getcwd(), sys.argv[0])
-        self.reports_dir = self.setReportDir()  # set the reports dir path
-        self.crontabs_dir = self.setCronDir()  # the cron dir under UNIX/LINUX
+
+        self.setReportDir()
         self.msg = ''
 
     def setReportDir(self):
         """
-        This method sets the report directory
+        This method sets the report directory based on the OS
         """
-        reports_dir = os.path.join(str(Path.home()), 'reports')
+
+        if self.whichOs() == 'Windows':
+            self.reports_dir = os.path.join(os.path.normpath(os.getcwd()), os.pardir, 'reports')
+        else:
+            self.reports_dir = os.path.join(str(Path.home()), 'reports')
 
         if not os.path.isdir(reports_dir):
             os.makedirs(reports_dir)
 
-            if not os.path.exists(reports_dir):
-                self.msg = 'Initial setup of reports dir failed, exiting script run!'
+            if not os.path.exists(self.reports_dir):
+                self.msg = 'Initial setup of reports dir not done, exiting script run!'
                 print(f'{self.date()}: {self.msg}')
-                logger_services.error(self, self.msg)
+                logger_services.critical(self, self.msg)
+                self.notify(logger_services.notify_list)
                 sys.exit(1)  # halt the script
         return reports_dir
 
@@ -58,27 +64,13 @@ class OsServices(logger_services):
         """
         return self.reports_dir
 
-    def setCronDir(self):
-        """
-        This method sets the cron  directory
-        """
-        crontabs_dir = os.path.join(str(Path.home()), 'crontabs')
 
-        if not os.path.isdir(crontabs_dir):
-            os.makedirs(crontabs_dir)
-
-            if not os.path.exists(crontabs_dir):
-                self.msg = 'Initial setup of crontab dir failed, exiting script run!'
-                print(f'{self.date()}: {self.msg}')
-                logger_services.error(self, self.msg)
-                sys.exit(1)
-        return crontabs_dir
-
-    def getCronDir(self):
+    def whichOs(self):
         """
-        This method returns the cron directory set on the class
+        This method returns a string
+        of the current OS type
         """
-        return self.crontabs_dir
+        return platform.system()
 
     def haltScript(self):
         """
@@ -98,7 +90,7 @@ class OsServices(logger_services):
     @staticmethod
     def file_date():
         """
-        This method returns a formatted date string in YYYYMMDD for appending to file names
+            This method returns a formatted date string in YYYYMMDD for appending to file names
         """
         return datetime.datetime.now().strftime('%Y%m%d')
 

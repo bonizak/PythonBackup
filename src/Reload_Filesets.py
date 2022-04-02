@@ -1,4 +1,5 @@
 import os
+import sys
 
 import pandas as pd
 from openpyxl import *
@@ -14,7 +15,7 @@ class ReloadFileSets(os_services):
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20210814.1"
+    __version__ = "20220328.2"
     # # # # # End of header # # # #
 
     resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
@@ -100,8 +101,10 @@ class ReloadFileSets(os_services):
                                              "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
 
         if len(FileSetRows) == 0:
-            print(f' Empty RootPath Scan Returned. Verify MaxDepth values in RootPath Sheet of workbook.'
-                  f' \n Exiting!')
+            os_services.critical(self, f' Empty RootPath Scan Returned. '
+                                       f'Verify MaxDepth values in RootPath Sheet of workbook. '
+                                       f'\n Exiting!')
+            sys.exit(-1)
 
         sorted_FileSetRows = sorted(FileSetRows, key=lambda I: I["Includes"])
         write_filesets_rc = self.write_filesets(sorted_FileSetRows)
@@ -118,7 +121,6 @@ class ReloadFileSets(os_services):
         resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
         wb = load_workbook(os.path.join(resource_path, "BackupList.xlsx"))
         sheetset = {'RootPaths': 4}
-        row_set_count = 0
         FileSystemsIn = []
 
         for ws in wb:
@@ -146,6 +148,8 @@ class ReloadFileSets(os_services):
 
                         FileSystemsIn.append(row_set_dict)
                         row_set_count += 1
+                    else:
+                        os_services.critical(self, f'No RootPaths sheet found')
         return FileSystemsIn
 
     def write_filesets(self, fs_dict):
@@ -154,22 +158,25 @@ class ReloadFileSets(os_services):
         :param fs_dict:
         :return:
         """
-        wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
-        writer = pd.ExcelWriter(os.path.join(self.resource_path, "BackupList.xlsx"), engine='openpyxl')
-        writer.book = wb
-        writer.sheets = dict((ws.title, ws) for ws in wb.worksheets)
+        try:
+            wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
+            writer = pd.ExcelWriter(os.path.join(self.resource_path, "BackupList.xlsx"), engine='openpyxl')
+            writer.book = wb
+            writer.sheets = dict((ws.title, ws) for ws in wb.worksheets)
 
-        ws = wb["FileSets"]
-        for row in ws["C2:F10000"]:
-            for cell in row:
-                cell.value = None
-        writer.save()
+            ws = wb["FileSets"]
+            for row in ws["C2:F10000"]:
+                for cell in row:
+                    cell.value = None
+            writer.save()
 
-        df = pd.DataFrame(data=fs_dict)
-        df.to_excel(writer, sheet_name="FileSets", startcol=1, startrow=0,
-                    columns=['FileSetName', 'Includes', 'Excludes', 'Compress', 'Recurse'],
-                    index=False)
-        writer.save()
+            df = pd.DataFrame(data=fs_dict)
+            df.to_excel(writer, sheet_name="FileSets", startcol=1, startrow=0,
+                        columns=['FileSetName', 'Includes', 'Excludes', 'Compress', 'Recurse'],
+                        index=False)
+            writer.save()
+        except IOError as ioe:
+            os_services.critical(self, f'IO error writing to "BackupList.xlsx : {ioe} ')
         return df.size
 
     def walklevel(self, rfspath, max_depth):
@@ -197,7 +204,7 @@ class ReloadFileSets(os_services):
                     if rfspath_depth + max_depth <= dirpath_depth:
                         del dirnames[:]
             else:
-                print(f'A valid directory was not provided')
+                os_services.critical(self, f'{rfspath} is not a valid directory')
 
     def build_file_sizes(self, file_path_dict):
         """
