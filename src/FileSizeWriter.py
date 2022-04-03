@@ -9,7 +9,19 @@ class FSWriter(os_services):
     """
     This class contains the methods to read the FileSets sheet and
     collects and updates the 'Estimated Size' cell for each row
+    
+    Args
+        Required: none
+        Optional: none
+
+    Logging: WARN | ERROR
+
     """
+
+    __author__ = "Barry Onizak"
+    __version__ = "20220330.1"
+    # # # # # End of header # # # #
+    
     resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
 
     def Collect_file_sizes(self):
