@@ -8,17 +8,13 @@ import time
 import Target_File_Builder as tfb
 from CommonOs import OsServices as os_services
 
-from CommonTemplate import Template as template
 from Excel_Converter import Excel_Converter as excel_conv
 from FileSizeWriter import FSWriter as file_sizes
 from Reload_Filesets import ReloadFileSets as reload_filesets
 from Update_General import UpdateGeneral as updg
 
 
-# from CommonLogger import LoggerServices as logger_services
-
-
-class PythonBackup(template, updg, reload_filesets, file_sizes, excel_conv, os_services):
+class PythonBackup(updg, reload_filesets, file_sizes, excel_conv, os_services):
     """
     This class contains the methods to read the FileSets sheet and
     collects and updates the 'Estimated Size' cell for each row
@@ -34,7 +30,8 @@ class PythonBackup(template, updg, reload_filesets, file_sizes, excel_conv, os_s
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20220403.1"
+    __version__ = "20220403.2"
+
     # # # # # End of header # # # #
 
     def __init__(self):
@@ -227,7 +224,7 @@ class PythonBackup(template, updg, reload_filesets, file_sizes, excel_conv, os_s
                         for fs_file in fs_listdir:
                             fs_includes.append(os.path.join(fd_obj, fs_file))
                     elif os.path.exists(fd_obj) and os.path.isfile(fd_obj):
-                        fs_includes.append(os.path.join(fd_obj, fs_file))
+                        fs_includes.append(fd_obj)
                     else:
                         msg = f'  File Set {fd_obj} does not exist. Remove it from' \
                               f' FileSets sheet in BackupList.xlsx '

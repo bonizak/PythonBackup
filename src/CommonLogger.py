@@ -23,9 +23,9 @@ class LoggerServices:
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20220403.1"
+    __version__ = "20220403.2"
     # # # # # End of header # # # #
-    
+
     log_file = ""
     log_level = ""
 
@@ -93,12 +93,12 @@ class LoggerServices:
     def get_log_level(self):
         return self.log_level
 
-    def get_script_version(self, args):
+    @staticmethod
+    def get_script_version(args):
         if hasattr(args, 'version'):
             return args.version
         else:
             return "UNKNOWN"
-        
 
     def openlogfile(self):
         """
