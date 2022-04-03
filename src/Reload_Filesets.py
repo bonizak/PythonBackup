@@ -1,5 +1,4 @@
 import os
-import sys
 
 import pandas as pd
 from openpyxl import *
@@ -12,20 +11,26 @@ class ReloadFileSets(os_services):
         as provided, under the supplied list of file systems' roots. It will then write the list into the
         'INCLUDES', 'EXCLUDES , 'COMPRESS' and 'RECURSE columns of
         FILESETS sheet of BACKUPLIST.xls.
+    
+    Args
+        Required: none
+        Optional: none
+
+    Logging: INFO | WARN | ERROR
+
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20220328.2"
+    __version__ = "20220330.1"
     # # # # # End of header # # # #
-
+    
     resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
 
     def Build_FileSets(self):
         """
         This method starts the process to read a list of RootPaths and scan them for sub-directories and files,
         then writing these files and folders into the FileSets sheet of the BackupList.xlsx workbook.
-
-        :return: FileSetRows[]
+        :return:
         """
         FileSetRows = []
         FileSystemsIn = self.read_rootpaths_in()
@@ -101,10 +106,8 @@ class ReloadFileSets(os_services):
                                              "Excludes": "NA", "Compress": "YES", "Recurse": "No"})
 
         if len(FileSetRows) == 0:
-            os_services.critical(self, f' Empty RootPath Scan Returned. '
-                                       f'Verify MaxDepth values in RootPath Sheet of workbook. '
-                                       f'\n Exiting!')
-            sys.exit(-1)
+            print(f' Empty RootPath Scan Returned. Verify MaxDepth values in RootPath Sheet of workbook.'
+                  f' \n Exiting!')
 
         sorted_FileSetRows = sorted(FileSetRows, key=lambda I: I["Includes"])
         write_filesets_rc = self.write_filesets(sorted_FileSetRows)
@@ -121,6 +124,7 @@ class ReloadFileSets(os_services):
         resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
         wb = load_workbook(os.path.join(resource_path, "BackupList.xlsx"))
         sheetset = {'RootPaths': 4}
+        row_set_count = 0
         FileSystemsIn = []
 
         for ws in wb:
@@ -148,8 +152,6 @@ class ReloadFileSets(os_services):
 
                         FileSystemsIn.append(row_set_dict)
                         row_set_count += 1
-                    else:
-                        os_services.critical(self, f'No RootPaths sheet found')
         return FileSystemsIn
 
     def write_filesets(self, fs_dict):
@@ -158,25 +160,22 @@ class ReloadFileSets(os_services):
         :param fs_dict:
         :return:
         """
-        try:
-            wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
-            writer = pd.ExcelWriter(os.path.join(self.resource_path, "BackupList.xlsx"), engine='openpyxl')
-            writer.book = wb
-            writer.sheets = dict((ws.title, ws) for ws in wb.worksheets)
+        wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
+        writer = pd.ExcelWriter(os.path.join(self.resource_path, "BackupList.xlsx"), engine='openpyxl')
+        writer.book = wb
+        writer.sheets = dict((ws.title, ws) for ws in wb.worksheets)
 
-            ws = wb["FileSets"]
-            for row in ws["C2:F10000"]:
-                for cell in row:
-                    cell.value = None
-            writer.save()
+        ws = wb["FileSets"]
+        for row in ws["C2:F10000"]:
+            for cell in row:
+                cell.value = None
+        writer.save()
 
-            df = pd.DataFrame(data=fs_dict)
-            df.to_excel(writer, sheet_name="FileSets", startcol=1, startrow=0,
-                        columns=['FileSetName', 'Includes', 'Excludes', 'Compress', 'Recurse'],
-                        index=False)
-            writer.save()
-        except IOError as ioe:
-            os_services.critical(self, f'IO error writing to "BackupList.xlsx : {ioe} ')
+        df = pd.DataFrame(data=fs_dict)
+        df.to_excel(writer, sheet_name="FileSets", startcol=1, startrow=0,
+                    columns=['FileSetName', 'Includes', 'Excludes', 'Compress', 'Recurse'],
+                    index=False)
+        writer.save()
         return df.size
 
     def walklevel(self, rfspath, max_depth):
@@ -204,7 +203,7 @@ class ReloadFileSets(os_services):
                     if rfspath_depth + max_depth <= dirpath_depth:
                         del dirnames[:]
             else:
-                os_services.critical(self, f'{rfspath} is not a valid directory')
+                print(f'A valid directory was not provided')
 
     def build_file_sizes(self, file_path_dict):
         """

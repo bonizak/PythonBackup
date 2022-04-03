@@ -8,17 +8,13 @@ import time
 import Target_File_Builder as tfb
 from CommonOs import OsServices as os_services
 
-from CommonTemplate import Template as Temp
 from Excel_Converter import Excel_Converter as excel_conv
 from FileSizeWriter import FSWriter as file_sizes
 from Reload_Filesets import ReloadFileSets as reload_filesets
 from Update_General import UpdateGeneral as updg
 
 
-# from CommonLogger import LoggerServices as logger_services
-
-
-class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_services):
+class PythonBackup(updg, reload_filesets, file_sizes, excel_conv, os_services):
     """
     This class contains the methods to read the FileSets sheet and
     collects and updates the 'Estimated Size' cell for each row
@@ -34,7 +30,8 @@ class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_servi
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20220401.1"
+    __version__ = "20220403.2"
+
     # # # # # End of header # # # #
 
     def __init__(self):
@@ -54,7 +51,6 @@ class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_servi
             parser = argparse.ArgumentParser(prog=str(sys.argv[0]),
                                              usage="%(prog)s Back up your file systems according to the "
                                                    "information provided in a companion spreadsheet.")
-
             parser.set_defaults(version=self.__version__)
             megroup = parser.add_mutually_exclusive_group()
             megroup.add_argument("-run_frequency", required=False,
@@ -124,6 +120,7 @@ class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_servi
             backup_set_name = ""
             file_set_name = ""
             storage_path = ""
+            storage_set_name = ""
             backup_versions = 1
             frequency = ""
             include_files_list = []
@@ -135,14 +132,8 @@ class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_servi
                     backup_set_name = backup_list_in[index][key]
                     os_services.info(self, f'Checking BackupSet \'{backup_set_name}\' ')
                 elif key == "StorageSetName":
-                    storage_path = self.storage_path_getter(backup_list_in[index][key])
-                    if storage_path is None:
-                        os_services.warn(self, "Empty StoragePath. Skipping BackupSet")
-                        break
+                    storage_set_name = backup_list_in[index][key]
                 elif key == "FileSetName":
-                    include_files_list = self.fileset_includes_getter(backup_list_in[index][key])
-                    exclude_files_list = self.fileset_excludes_getter(backup_list_in[index][key])
-                    recurse = self.fileset_recurse_getter(backup_list_in[index][key])
                     file_set_name = backup_list_in[index][key]
                 elif key == "Frequency" and run_frequency.upper() == str(backup_list_in[index][key]).upper():
                     frequency = str(backup_list_in[index][key]).upper()
@@ -157,16 +148,27 @@ class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_servi
                     os_services.warn(self, f" Skipping Backup Set {backup_set_name}"
                                            f" as it is not scheduled for this run.\n")
                     continue
-                elif not os.path.exists(storage_path):
+
+                storage_path = self.storage_path_getter(storage_set_name)
+                if not os.path.exists(storage_path):
+                    storage_path = self.storage_path_getter(storage_path)
+                    if storage_path is None:
+                        os_services.warn(self, "Empty StoragePath. Skipping BackupSet")
+                        break
                     os_services.warn(self, f"StoragePath {storage_path} is not mounted. Skipping BackupSet\n")
                     continue
-                else:
-                    os_services.info(self, f' FileSet: {file_set_name} ')
-                    os_services.info(self, f' StoragePath: {storage_path}')
-                    os_services.debug(self, f' Frequency: {frequency}')
-                    os_services.debug(self, f'  Includes: {include_files_list} ')
-                    os_services.debug(self, f'  Excludes: {exclude_files_list}')
-                    os_services.debug(self, f'  Recurse: {recurse}')
+
+                os_services.info(self, f' FileSet: {file_set_name} ')
+                include_files_list = self.fileset_includes_getter(file_set_name)
+                exclude_files_list = self.fileset_excludes_getter(file_set_name)
+                recurse = self.fileset_recurse_getter(file_set_name)
+
+                os_services.info(self, f' StoragePath: {storage_path}')
+                os_services.debug(self, f' Frequency: {frequency}')
+                os_services.debug(self, f'  Includes: {include_files_list} ')
+                os_services.debug(self, f'  Excludes: {exclude_files_list}')
+                os_services.debug(self, f'  Recurse: {recurse}')
+
             except Exception as ex:
                 os_services.error(self, f"Exception with BackupSet {backup_set_name}. {ex}")
                 os_services.error(self, f' FileSet: {file_set_name} ')
@@ -199,7 +201,7 @@ class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_servi
         This method reads in the BackupList.xlsx file and loads the various dictionaries.
         :return: Nothing
         """
-        self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD = excel_conv.excel_convert(self)
+        self.BackupSet_AoD, self.StorageSet_AoD, self.FileSet_AoD = excel_conv.excelSetsConvert(self)
 
     def storage_path_getter(self, storageSet_needle):
         storagesets_in = self.StorageSet_AoD
@@ -220,7 +222,7 @@ class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_servi
                     if os.path.exists(fd_obj) and os.path.isdir(fd_obj):
                         fs_listdir = os.listdir(fd_obj)
                         for fs_file in fs_listdir:
-                            fs_includes.append(fs_file)
+                            fs_includes.append(os.path.join(fd_obj, fs_file))
                     elif os.path.exists(fd_obj) and os.path.isfile(fd_obj):
                         fs_includes.append(fd_obj)
                     else:
@@ -300,7 +302,7 @@ class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_servi
         try:
             with tarfile.open(target, 'w:gz') as tar_out:
                 for src in sources:
-                    os_services.debug(self, f'Processing {src} into backup')
+                    os_services.debug(self, f'  Processing {src} into backup')
                     tar_out.add(src, recursive=recursive)
 
             tar_out.close()
@@ -313,7 +315,7 @@ class PythonBackup(Temp, updg, reload_filesets, file_sizes, excel_conv, os_servi
 if __name__ == '__main__':
     obj = PythonBackup()
     args = obj.parseCommandLine()
-    obj.getLogger()
-    obj.display_template(sys.argv[1:], args)
+    obj.getLogger("PythonBackup")
+    obj.starting_template(sys.argv[1:], args)
     obj.run_PythonBackup()
     obj.closelogfile()

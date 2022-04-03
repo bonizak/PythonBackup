@@ -1,22 +1,30 @@
 import os
 import re
-import sys
 
 from CommonLogger import LoggerServices as logger_services
 from CommonOs import OsServices as os_services
 
+""" This package contains methods to roll a provided number of files to archive"""
+
 
 class Target_File_Builder(os_services):
     """
-        This class contains the  methods to roll a provided number of files to archive.
+        This class contains the methods to roll a provided number of files to archive
+    
+    Args
+        Required: none
+        Optional: none
+
+    Logging: INFO | WARN | ERROR
+
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20220401.1"
-
+    __version__ = "20220330.1"
     # # # # # End of header # # # #
+    
     def __init__(self, archive_target_file, versions):
-        super().__init__()
+        # super().__init__()
         self.versions = versions
         self.archive_target_file = archive_target_file
         self.create_target_file()
@@ -25,6 +33,8 @@ class Target_File_Builder(os_services):
         archive_target_filename_path = os.path.dirname(self.archive_target_file)
         archive_target_basename = os.path.basename(self.archive_target_file)
         archive_target_basename = archive_target_basename.split('_')[0]
+
+        atf_list = []
         logger_services.debug(self, f'Looking for {archive_target_basename} files in {archive_target_filename_path}')
 
         # remove any excessive archive target files
@@ -35,11 +45,7 @@ class Target_File_Builder(os_services):
                     # equal to or exceeded versions count - delete the oldest file
                     atf_eldest = os.path.join(archive_target_filename_path, sorted(atf_list)[0])
                     logger_services.debug(self, f'Deleting {atf_eldest}')
-                    try:
-                        os.remove(atf_eldest)
-                    except OSError as oserr:
-                        os_services.error(self, f'Error {oserr} trying to delete {atf_eldest}')
-                        sys.exit(1)
+                    os.remove(atf_eldest)
                     atf_list = self.atfp_scan(archive_target_filename_path)
                 else:
                     logger_services.debug(self, f'No previous files exist.')

@@ -2,8 +2,6 @@ import os
 
 import pandas as pd
 from openpyxl import load_workbook
-
-
 from CommonOs import OsServices as os_services
 
 
@@ -11,7 +9,7 @@ class FSWriter(os_services):
     """
     This class contains the methods to read the FileSets sheet and
     collects and updates the 'Estimated Size' cell for each row
-
+    
     Args
         Required: none
         Optional: none
@@ -21,17 +19,12 @@ class FSWriter(os_services):
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20220328.1"
+    __version__ = "20220330.1"
     # # # # # End of header # # # #
-
+    
     resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
 
     def Collect_file_sizes(self):
-        """
-        Entry method to perform the purpose of the class
-
-        :return: write_files_sizes_rc
-        """
         FileSizeRows = []
         IncludesRead = self.read_filesets_in()
         row_set_count = 0
@@ -65,13 +58,6 @@ class FSWriter(os_services):
         return write_files_sizes_rc
 
     def getFolderSize(self, folder, recurse):
-        """
-        Method to calculate the size of a folder either with or without child files.
-
-        :param folder:
-        :param recurse:
-        :return: total_size
-        """
         itempath = ""
         total_size = os.path.getsize(folder)
         if str(recurse).upper() == "YES":
@@ -92,11 +78,9 @@ class FSWriter(os_services):
 
     def read_filesets_in(self):
         """
-        Method  to read in the FileSets sheet and write the specific columns into an array of dictionaries
-
-        :return: IncludesRead[]
+        This method reads in the FileSets sheet and writes the specific columns into an array of dictionaries
         """
-
+        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
         wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
         sheetset = {'FileSets': 6}
         IncludesRead = []
@@ -134,7 +118,7 @@ class FSWriter(os_services):
         """
         This method writes a supplied dictionary to the FileSizes sheet of the BackupList.xlsx workbook using pandas.
         :param fs_dict:
-        :return: df.size
+        :return:
         """
         wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
         writer = pd.ExcelWriter(os.path.join(self.resource_path, "BackupList.xlsx"), engine='openpyxl')
