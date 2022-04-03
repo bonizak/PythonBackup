@@ -23,7 +23,7 @@ class OsServices(logger_services):
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "1.0"
+    __version__ = "20220403.1"
     # # # # # End of header # # # #
 
 
