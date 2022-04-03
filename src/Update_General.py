@@ -10,7 +10,18 @@ from CommonOs import OsServices as os_services
 class UpdateGeneral(os_services):
     """
     This class contains the methods required to copy non-user files into a user folder for backup
+    
+    Args
+        Required: none
+        Optional: none
+
+    Logging: INFO | WARN | ERROR
+
     """
+
+    __author__ = "Barry Onizak"
+    __version__ = "20220330.1"
+    # # # # # End of header # # # #
 
     def Collect_General_Files(self):
         """

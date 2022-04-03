@@ -8,6 +8,21 @@ from CommonOs import OsServices as os_services
 
 
 class Target_File_Builder(os_services):
+    """
+        This class contains the methods to roll a provided number of files to archive
+    
+    Args
+        Required: none
+        Optional: none
+
+    Logging: INFO | WARN | ERROR
+
+    """
+
+    __author__ = "Barry Onizak"
+    __version__ = "20220330.1"
+    # # # # # End of header # # # #
+    
     def __init__(self, archive_target_file, versions):
         # super().__init__()
         self.versions = versions
