@@ -21,10 +21,11 @@ class LoggerServices:
     Logging: none
     
     """
-    __author__ = "Barry Onizak"
-    __version__ = "0.01"
 
+    __author__ = "Barry Onizak"
+    __version__ = "20220403.1"
     # # # # # End of header # # # #
+    
     log_file = ""
     log_level = ""
 
@@ -78,7 +79,7 @@ class LoggerServices:
 
         return logger
 
-    def starting_template(self, parameter_list):
+    def starting_template(self, parameter_list, args):
         """
         This method takes a list of cmd line args
         passed and displays each running script in a similar view
@@ -86,10 +87,18 @@ class LoggerServices:
         self.info(f'Starting {self.getScriptName()}')
         self.info(f"Extracting input params: {(' '.join(map(str, parameter_list)))}")
         self.info(f"Log Level {self.get_log_level()}")
+        self.info(f"Script Version {self.get_script_version(args)}")
         return None
 
     def get_log_level(self):
         return self.log_level
+
+    def get_script_version(self, args):
+        if hasattr(args, 'version'):
+            return args.version
+        else:
+            return "UNKNOWN"
+        
 
     def openlogfile(self):
         """
