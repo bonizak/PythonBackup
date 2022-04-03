@@ -11,7 +11,19 @@ class ReloadFileSets(os_services):
         as provided, under the supplied list of file systems' roots. It will then write the list into the
         'INCLUDES', 'EXCLUDES , 'COMPRESS' and 'RECURSE columns of
         FILESETS sheet of BACKUPLIST.xls.
+    
+    Args
+        Required: none
+        Optional: none
+
+    Logging: INFO | WARN | ERROR
+
     """
+
+    __author__ = "Barry Onizak"
+    __version__ = "20220330.1"
+    # # # # # End of header # # # #
+    
     resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
 
     def Build_FileSets(self):
