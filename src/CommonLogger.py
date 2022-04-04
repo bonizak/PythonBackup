@@ -23,7 +23,7 @@ class LoggerServices:
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20220403.2"
+    __version__ = "20220404.1"
     # # # # # End of header # # # #
 
     log_file = ""
@@ -151,7 +151,7 @@ class LoggerServices:
         """
         This method returns the script logfile opening info
         """
-        script_path = os.path.normpath(os.path.join(os.popen("pwd").read().strip('\n'), str(sys.argv[0])))
+        script_path = os.path.normpath(os.path.join(str(os.getcwd()).strip('\n'), str(sys.argv[0])))
         if not os.path.isfile(script_path):
             print('No such script name in toolkit folder...exiting')
             sys.exit(1)
@@ -164,7 +164,7 @@ class LoggerServices:
         This method takes a list of cmd line args
         passed and displays each running script in a similar view
         """
-        script_path = os.path.normpath(os.path.join(os.popen("pwd").read().strip('\n'), str(sys.argv[0])))
+        script_path = os.path.normpath(os.path.join(str(os.getcwd()).strip('\n'), str(sys.argv[0])))
         script_end = f'{self.separationBar()} \n End of script {script_path} \n{self.separationBar()}'
         return script_end
 
