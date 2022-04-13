@@ -22,7 +22,7 @@ class FSWriter(os_services):
     __version__ = "20220330.1"
     # # # # # End of header # # # #
     
-    resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
+    resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "resource")
 
     def Collect_file_sizes(self):
         FileSizeRows = []
@@ -80,7 +80,7 @@ class FSWriter(os_services):
         """
         This method reads in the FileSets sheet and writes the specific columns into an array of dictionaries
         """
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
+        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "resource")
         wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
         sheetset = {'FileSets': 6}
         IncludesRead = []

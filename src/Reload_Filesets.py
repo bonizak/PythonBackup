@@ -24,7 +24,7 @@ class ReloadFileSets(os_services):
     __version__ = "20220330.1"
     # # # # # End of header # # # #
     
-    resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
+    resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "resource")
 
     def Build_FileSets(self):
         """
@@ -121,7 +121,7 @@ class ReloadFileSets(os_services):
 
         :return: Count of rows read in and written to  FileSystemsIn{}
         """
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
+        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "resource")
         wb = load_workbook(os.path.join(resource_path, "BackupList.xlsx"))
         sheetset = {'RootPaths': 4}
         row_set_count = 0

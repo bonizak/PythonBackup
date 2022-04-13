@@ -72,7 +72,7 @@ class UpdateGeneral(os_services):
         return copy_count
 
     def extract_GeneralList(self):
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
+        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "resource")
         wb = load_workbook(os.path.join(resource_path, "BackupList.xlsx"))
         sheetset = {'GeneralList': 4}
 

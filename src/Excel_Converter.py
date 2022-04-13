@@ -21,7 +21,7 @@ class Excel_Converter(os_services):
     __version__ = "20220330.1"
     # # # # # End of header # # # #
     
-    resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
+    resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "resource")
     BackupSet_AoD = []
     StorageSet_AoD = []
     FileSet_AoD = []

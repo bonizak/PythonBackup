@@ -40,7 +40,7 @@ class PythonBackup(updg, reload_filesets, file_sizes, excel_conv, os_services):
         self.StorageSet_AoD = []
         self.FileSet_AoD = []
         self.args = ""
-        self.resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
+        self.resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "resource")
 
     def parseCommandLine(self):
         """

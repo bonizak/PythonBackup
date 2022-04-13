@@ -153,7 +153,7 @@ class LoggerServices:
         """
         script_path = os.path.normpath(os.path.join(os.popen("pwd").read().strip('\n'), str(sys.argv[0])))
         if not os.path.isfile(script_path):
-            print('No such script name in toolkit folder...exiting')
+            print('No such script name in toolkit folder..exiting')
             sys.exit(1)
 
         script_start = f'{self.separationBar()} \n Starting script {script_path} \n{self.separationBar()}'
@@ -169,7 +169,7 @@ class LoggerServices:
         return script_end
 
     def set_log_level(self):
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resource")
+        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "resource")
         wb = load_workbook(os.path.join(resource_path, "BackupList.xlsx"))
         sheetset = {'AppConfig': 6}
 
