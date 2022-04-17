@@ -2,8 +2,10 @@ import datetime
 import logging
 import os
 import sys
+from configparser import ConfigParser
 from pathlib import Path
 
+import psycopg2
 from openpyxl import load_workbook
 
 
@@ -23,11 +25,24 @@ class LoggerServices:
     """
 
     __author__ = "Barry Onizak"
-    __version__ = "20220403.2"
+    __version__ = "20220403.3"
     # # # # # End of header # # # #
 
     log_file = ""
-    log_level = ""
+    logLevel = ""
+    AppConfig_AOD = None
+
+    def getLogger(self, name):
+        """
+        This method creates and returns a object used to log each script run
+        """
+        log_file = self.setLogFile()
+        self.logLevel = self.setLogLevel()
+        logger = logging.getLogger(name)
+        logging.basicConfig(filename=log_file, level=self.getLogLevel(),
+                            format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
+
+        return logger
 
     @staticmethod
     def date():
@@ -42,13 +57,6 @@ class LoggerServices:
         This method returns a formatted date string in YYYYMMDD for appending to file names
         """
         return datetime.datetime.now().strftime('%Y%m%d')
-
-    def setLogFile(self):
-        """
-        This method sets log file to be written to for each script run
-        """
-        return os.path.join(self.getLogDir(),
-                            f'{str(os.path.basename(sys.argv[0])).replace(".py", "")}.{self.file_date()}.log')
 
     def getLogDir(self):
         """
@@ -67,17 +75,12 @@ class LoggerServices:
             else:
                 return log_dir
 
-    def getLogger(self, name):
+    def setLogFile(self):
         """
-        This method creates and returns a object used to log each script run
+        This method sets log file name to be written to for each script run
         """
-        log_file = self.openlogfile()
-        self.log_level = self.set_log_level()
-        logger = logging.getLogger(name)
-        logging.basicConfig(filename=log_file, level=self.log_level,
-                            format=' %(asctime)s %(levelname)s: %(message)s', datefmt='%Y/%m/%d %H:%M:%S')
-
-        return logger
+        return os.path.join(self.getLogDir(),
+                            f'{str(os.path.basename(sys.argv[0])).replace(".py", "")}.{self.file_date()}.log')
 
     def starting_template(self, parameter_list, args):
         """
@@ -86,12 +89,43 @@ class LoggerServices:
         """
         self.info(f'Starting {self.getScriptName()}')
         self.info(f"Extracting input params: {(' '.join(map(str, parameter_list)))}")
-        self.info(f"Log Level {self.get_log_level()}")
+        self.info(f"Log Level {self.getLogLevel()}")
         self.info(f"Script Version {self.get_script_version(args)}")
         return None
 
-    def get_log_level(self):
-        return self.log_level
+    def setLogLevel(self):
+        resource_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "resource")
+        log_level = "DEBUG"
+        dbConn = None
+        try:
+            # read connection parameters
+            params = self.dbParser(os.path.join(resource_path, 'database.ini'), 'postgresql')
+            dbConn = psycopg2.connect(**params)
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(f'Error connecting to PostgreSQL {error}')
+
+        try:
+            cur = dbConn.cursor()
+            sql = "SELECT id, key, value FROM \"BKUP\".\"AppConfig\" WHERE key = 'Log_Level'"
+
+            cur.execute(sql)
+            if cur.rowcount == 1:
+                rowData = cur.fetchone()
+                log_level = str(rowData[2]).upper()
+            else:
+                print("Invalid rows from AppConfig table")
+            cur.close()
+
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(f'An ERROR occurred when querying AppConfig: {error}. Setting LOG LEVEL to DEBUG!.')
+
+            log_level = "DEBUG"
+        finally:
+            dbConn.close()
+            return log_level
+
+    def getLogLevel(self):
+        return self.logLevel
 
     @staticmethod
     def get_script_version(args):
@@ -100,7 +134,7 @@ class LoggerServices:
         else:
             return "UNKNOWN"
 
-    def openlogfile(self):
+    def openLogFile(self):
         """
         This method opens the logfile and prepends the starting info
         """
@@ -123,7 +157,7 @@ class LoggerServices:
 
         return self.log_file
 
-    def closelogfile(self):
+    def closeLogFile(self):
         """
         This method appends the closing log info and closes the logfile
         """
@@ -169,8 +203,7 @@ class LoggerServices:
         return script_end
 
     def set_log_level(self):
-        resource_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "resource")
-        wb = load_workbook(os.path.join(resource_path, "BackupList.xlsx"))
+        wb = load_workbook(os.path.join(self.resource_path, "BackupList.xlsx"))
         sheetset = {'AppConfig': 6}
 
         for ws in wb:
@@ -182,6 +215,23 @@ class LoggerServices:
 
                 self.log_level = row_sets[2][1]
         return self.log_level
+
+    def dbParser(self, filename, section='postgresql'):
+        # create a parser
+        parser = ConfigParser()
+        # read config file
+        parser.read(filename)
+
+        # get section, default to postgresql
+        db = {}
+        if parser.has_section(section):
+            params = parser.items(section)
+            for param in params:
+                db[param[0]] = param[1]
+        else:
+            raise Exception('A Section {0} not found in the {1} file'.format(section, filename))
+
+        return db
 
     @staticmethod
     def separationBar():
